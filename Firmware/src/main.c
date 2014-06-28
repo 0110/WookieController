@@ -29,8 +29,10 @@
 /* Command line related.                                                     */
 /*===========================================================================*/
 
-static const ShellCommand commands[] = { { "mem", cmd_mem }, { "threads",
-		cmd_threads }, { NULL, NULL } };
+static const ShellCommand commands[] = {
+		{ "mem", cmd_mem },
+		{ "threads", cmd_threads },
+		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
 		{ (BaseSequentialStream *) &SD6, commands };
