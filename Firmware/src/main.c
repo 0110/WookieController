@@ -446,7 +446,8 @@ main(void)
 		  chThdRelease(shelltp); /* Recovers memory of the previous shell. */
 		  shelltp = NULL; /* Triggers spawning of a new shell. */
 	  }
-	  chThdSleep(MS2ST(100));
+	  /* Wait some time, to make the scheduler running tasks with lower prio */
+	  chThdSleep(MS2ST(500));
     }
 }
 
