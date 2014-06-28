@@ -1,4 +1,11 @@
-
+/** @file main.c
+ * @brief Entrypoint of the custom project
+ * @author Ollo
+ *
+ * @date 28.06.2014
+ * @defgroup WookieController
+ *
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -11,6 +18,12 @@
 
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
+
+/******************************************************************************
+ * DEFINITIONS
+ ******************************************************************************/
+
+#define UPRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
 
 /*===========================================================================*/
 /* Command line related.                                                     */
@@ -69,8 +82,6 @@ int main(void) {
 	 * Shell manager initialization.
 	 */
 	shellInit();
-	chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
-			blinkerThread, NULL);
 
 	/*
 	 * Activates the serial driver 6 and SDC driver 1 using default
@@ -80,12 +91,11 @@ int main(void) {
 
 	chThdSleep(MS2ST(100));
 
-	chprintf((BaseSequentialStream *) &SD6,
-			"\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
-
-	chprintf((BaseSequentialStream *) &SD6, "Start blinker thread ...");
-
-	chprintf((BaseSequentialStream *) &SD6, " Done\r\n");
+	UPRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
+	UPRINT("Start blinker thread ...");
+	chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
+			blinkerThread, NULL);
+	UPRINT( " Done\r\n");
 
 	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
