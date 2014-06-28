@@ -406,18 +406,18 @@ main(void)
    usbStart(serusbcfg.usbp, &usbcfg);
    usbConnectBus(serusbcfg.usbp);
 
-   /*
-   * Activates the serial driver 6 and SDC driver 1 using default
-   * configuration.
-   */
-   sdStart(&SD6, NULL);
-   sdcStart(&SDCD1, NULL);
 
   /*
   * Shell manager initialization.
   */
   shellInit();
   chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO, blinkerThread, NULL);
+
+  /*
+  * Activates the serial driver 6 and SDC driver 1 using default
+  * configuration.
+  */
+  sdStart(&SD6, NULL);
 
   chThdSleep(MS2ST(100));
 
@@ -429,10 +429,6 @@ main(void)
  
    chprintf((BaseSequentialStream *) &SD6, " Done\r\n");
 
-  /*
-   * Activates the SDC driver 1 using default configuration.
-   */
-  sdcStart(&SDCD1, NULL);
   
   shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
@@ -450,7 +446,7 @@ main(void)
 		  chThdRelease(shelltp); /* Recovers memory of the previous shell. */
 		  shelltp = NULL; /* Triggers spawning of a new shell. */
 	  }
-
+	  chThdSleep(MS2ST(100));
     }
 }
 
