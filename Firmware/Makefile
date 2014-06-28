@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16
+  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 -g
 endif
 
 # C specific options here (added to USE_OPT).
@@ -241,4 +241,8 @@ include $(CHIBIOS)/os/ports/GCC/ARMCMx/rules.mk
 OPENOCD=openocd
 
 flash:	build/$(PROJECT).elf
-	$(OPENOCD) -f interface/stlink-v2.cfg -c "set WORKAREASIZE 0x2000" -f target/stm32f4x_stlink.cfg -c "program build/$(PROJECT).elf verify reset"	
+	$(OPENOCD) -f interface/stlink-v2.cfg -c "set WORKAREASIZE 0x2000" -f target/stm32f4x_stlink.cfg -c "program build/$(PROJECT).elf verify reset"
+
+debug:	build/$(PROJECT).elf
+	$(OPENOCD) -f interface/stlink-v2.cfg -c "set WORKAREASIZE 0x2000" -f target/stm32f4x_stlink.cfg 	
+
