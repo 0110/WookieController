@@ -1,0 +1,91 @@
+Compiler Options
+arm-none-eabi-gcc -c -mcpu=cortex-m4 -O2 -ggdb -fomit-frame-pointer -falign-functions=16 -ffunction-sections -fdata-sections -fno-common -Wall -Wextra -Wstrict-prototypes -Wa,-alms=build/lst/ -DCORTEX_USE_FPU=FALSE -DCORTEX_USE_FPU=FALSE -D_CHIBIOS -DTHUMB_PRESENT -mno-thumb-interwork -DTHUMB_NO_INTERWORKING -MD -MP -MF .dep/build.d -I. -Ilib/ChibiOS/os/ports/common/ARMCMx/CMSIS/include -Ilib/ChibiOS/os/ports/common/ARMCMx -Ilib/ChibiOS/os/ports/GCC/ARMCMx -Ilib/ChibiOS/os/ports/GCC/ARMCMx/STM32F4xx -Ilib/ChibiOS/os/kernel/include -Ilib/ChibiOS/os/hal/include -Ilib/ChibiOS/os/hal/platforms/STM32F4xx -Ilib/ChibiOS/os/hal/platforms/STM32 -Ilib/ChibiOS/os/hal/platforms/STM32/GPIOv2 -Ilib/ChibiOS/os/hal/platforms/STM32/I2Cv1 -Ilib/ChibiOS/os/hal/platforms/STM32/OTGv1 -Ilib/ChibiOS/os/hal/platforms/STM32/RTCv2 -Ilib/ChibiOS/os/hal/platforms/STM32/SPIv1 -Ilib/ChibiOS/os/hal/platforms/STM32/TIMv1 -Ilib/ChibiOS/os/hal/platforms/STM32/USARTv1 -Iboard -Ilib/ChibiOS/os/various/lwip_bindings -Ilib/ChibiOS/ext/lwip/src/include -Ilib/ChibiOS/ext/lwip/src/include/ipv4 -Ilib/ChibiOS/os/various -Isrc main.c -o main.o
+
+mkdir -p build/obj
+mkdir -p build/lst
+Compiling crt0.c
+Compiling vectors.c
+Compiling chcore.c
+Compiling chcore_v7m.c
+Compiling nvic.c
+Compiling chsys.c
+Compiling chdebug.c
+Compiling chlists.c
+Compiling chvt.c
+Compiling chschd.c
+Compiling chthreads.c
+Compiling chdynamic.c
+Compiling chregistry.c
+Compiling chsem.c
+Compiling chmtx.c
+Compiling chcond.c
+Compiling chevents.c
+Compiling chmsg.c
+Compiling chmboxes.c
+Compiling chqueues.c
+Compiling chmemcore.c
+Compiling chheap.c
+Compiling chmempools.c
+Compiling hal.c
+In file included from lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:43:0,
+                 from lib/ChibiOS/os/hal/include/hal.h:43,
+                 from lib/ChibiOS/os/hal/src/hal.c:37:
+lib/ChibiOS/os/hal/platforms/STM32/stm32.h:76:2: error: #error "STM32 device not specified"
+ #error "STM32 device not specified"
+  ^
+In file included from lib/ChibiOS/os/hal/include/hal.h:43:0,
+                 from lib/ChibiOS/os/hal/src/hal.c:37:
+lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:78:2: error: #error "STM32F2xx/F4xx device not specified"
+ #error "STM32F2xx/F4xx device not specified"
+  ^
+lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:1199:2: error: #error "STM32_HSECLK outside acceptable range (STM32_HSECLK_MIN...STM32_HSECLK_MAX)"
+ #error "STM32_HSECLK outside acceptable range (STM32_HSECLK_MIN...STM32_HSECLK_MAX)"
+  ^
+lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:1293:2: error: #error "STM32_PLLCLKIN outside acceptable range (STM32_PLLIN_MIN...STM32_PLLIN_MAX)"
+ #error "STM32_PLLCLKIN outside acceptable range (STM32_PLLIN_MIN...STM32_PLLIN_MAX)"
+  ^
+lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:1356:2: error: #error "STM32_PLLVCO outside acceptable range (STM32_PLLVCO_MIN...STM32_PLLVCO_MAX)"
+ #error "STM32_PLLVCO outside acceptable range (STM32_PLLVCO_MIN...STM32_PLLVCO_MAX)"
+  ^
+lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:1368:2: error: #error "STM32_PLLCLKOUT outside acceptable range (STM32_PLLOUT_MIN...STM32_PLLOUT_MAX)"
+ #error "STM32_PLLCLKOUT outside acceptable range (STM32_PLLOUT_MIN...STM32_PLLOUT_MAX)"
+  ^
+lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:1388:2: error: #error "STM32_SYSCLK above maximum rated frequency (STM32_SYSCLK_MAX)"
+ #error "STM32_SYSCLK above maximum rated frequency (STM32_SYSCLK_MAX)"
+  ^
+lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:1457:2: error: #error "STM32_HCLK exceeding maximum frequency (STM32_SYSCLK_MAX)"
+ #error "STM32_HCLK exceeding maximum frequency (STM32_SYSCLK_MAX)"
+  ^
+lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:1481:2: error: #error "STM32_PCLK1 exceeding maximum frequency (STM32_PCLK1_MAX)"
+ #error "STM32_PCLK1 exceeding maximum frequency (STM32_PCLK1_MAX)"
+  ^
+lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:1505:2: error: #error "STM32_PCLK2 exceeding maximum frequency (STM32_PCLK2_MAX)"
+ #error "STM32_PCLK2 exceeding maximum frequency (STM32_PCLK2_MAX)"
+  ^
+lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:1550:2: error: #error "STM32_PLLI2SVCO outside acceptable range (STM32_PLLVCO_MIN...STM32_PLLVCO_MAX)"
+ #error "STM32_PLLI2SVCO outside acceptable range (STM32_PLLVCO_MIN...STM32_PLLVCO_MAX)"
+  ^
+In file included from lib/ChibiOS/os/hal/platforms/STM32F4xx/hal_lld.h:1763:0,
+                 from lib/ChibiOS/os/hal/include/hal.h:43,
+                 from lib/ChibiOS/os/hal/src/hal.c:37:
+lib/ChibiOS/os/hal/platforms/STM32F4xx/stm32_dma.h:219:3: error: unknown type name 'DMA_Stream_TypeDef'
+   DMA_Stream_TypeDef    *stream;        /**< @brief Associated DMA stream.  */
+   ^
+In file included from lib/ChibiOS/os/hal/include/i2c.h:99:0,
+                 from lib/ChibiOS/os/hal/include/hal.h:59,
+                 from lib/ChibiOS/os/hal/src/hal.c:37:
+lib/ChibiOS/os/hal/platforms/STM32/I2Cv1/i2c_lld.h:408:3: error: unknown type name 'I2C_TypeDef'
+   I2C_TypeDef               *i2c;
+   ^
+In file included from lib/ChibiOS/os/hal/include/hal.h:64:0,
+                 from lib/ChibiOS/os/hal/src/hal.c:37:
+lib/ChibiOS/os/hal/include/serial.h:138:3: error: unknown type name 'USART_TypeDef'
+   _serial_driver_data
+   ^
+In file included from lib/ChibiOS/os/hal/include/uart.h:96:0,
+                 from lib/ChibiOS/os/hal/include/hal.h:67,
+                 from lib/ChibiOS/os/hal/src/hal.c:37:
+lib/ChibiOS/os/hal/platforms/STM32/USARTv1/uart_lld.h:611:3: error: unknown type name 'USART_TypeDef'
+   USART_TypeDef             *usart;
+   ^
+make: *** [build/obj/hal.o] Error 1

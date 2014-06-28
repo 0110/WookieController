@@ -335,53 +335,6 @@ static const SerialUSBConfig serusbcfg = {
 #define USBD1_INTERRUPT_REQUEST_EP 2
 
 
-/* Generic large buffer.*/
-static uint8_t fbuff[1024];
-
-static FRESULT
-scan_files(BaseSequentialStream *chp, char *path)
-{
-  FRESULT res;
-  FILINFO fno;
-  DIR dir;
-  int i;
-  char *fn;
-
-#if _USE_LFN
-  fno.lfname = 0;
-  fno.lfsize = 0;
-#endif
-  res = wf_opendir(&dir, path);
-  if (res == FR_OK)
-    {
-      i = strlen(path);
-      for (;;)
-        {
-          res = wf_readdir(&dir, &fno);
-          if (res != FR_OK || fno.fname[0] == 0)
-            break;
-          if (fno.fname[0] == '.')
-            continue;
-          fn = fno.fname;
-          if (fno.fattrib & AM_DIR)
-            {
-              path[i++] = '/';
-              strcpy(&path[i], fn);
-              res = scan_files(chp, path);
-              if (res != FR_OK)
-                break;
-              path[--i] = 0;
-            }
-          else
-            {
-              chprintf(chp, "%s/%s\r\n", path, fn);
-            }
-        }
-    }
-  return res;
-}
-
-
 static const ShellCommand commands[] =
   {
     { "mem", cmd_mem },
@@ -510,7 +463,6 @@ main(void)
 		  chThdRelease(shelltp); /* Recovers memory of the previous shell. */
 		  shelltp = NULL; /* Triggers spawning of a new shell. */
 	  }
-      chEvtDispatch(evhndl, chEvtWaitOneTimeout(ALL_EVENTS, MS2ST(500)));
 
     }
 }

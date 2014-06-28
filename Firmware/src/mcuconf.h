@@ -290,7 +290,3 @@
 #define STM32_USB_OTG_THREAD_STACK_SIZE     128
 #define STM32_USB_OTGFIFO_FILL_BASEPRI      0
 
-/*
- * Default IPv4 address
- */
-#define LWIP_IPADDR(p)                      IP4_ADDR(p, 10, 23, 42, 88)

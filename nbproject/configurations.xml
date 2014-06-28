@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="94">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="Firmware/lib/ChibiOS" name="2">
+      <df name="os">
+        <df name="kernel">
+          <df name="src">
+            <in>chcond.c</in>
+            <in>chdebug.c</in>
+            <in>chdynamic.c</in>
+            <in>chevents.c</in>
+            <in>chheap.c</in>
+            <in>chlists.c</in>
+            <in>chmboxes.c</in>
+            <in>chmemcore.c</in>
+            <in>chmempools.c</in>
+            <in>chmsg.c</in>
+            <in>chmtx.c</in>
+            <in>chqueues.c</in>
+            <in>chregistry.c</in>
+            <in>chschd.c</in>
+            <in>chsem.c</in>
+            <in>chsys.c</in>
+            <in>chthreads.c</in>
+            <in>chvt.c</in>
+          </df>
+        </df>
+        <df name="ports">
+          <df name="common">
+            <df name="ARMCMx">
+              <in>nvic.c</in>
+            </df>
+          </df>
+          <df name="GCC">
+            <df name="ARMCMx">
+              <df name="STM32F4xx">
+                <in>vectors.c</in>
+              </df>
+              <in>chcore.c</in>
+              <in>chcore_v7m.c</in>
+              <in>crt0.c</in>
+            </df>
+          </df>
+        </df>
+      </df>
+    </df>
+    <df root="Firmware/src/cmd" name="1">
+    </df>
+    <df root="Firmware/src" name="0">
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Firmware/Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>Firmware/src</Elem>
+    <Elem>Firmware/lib/ChibiOS</Elem>
+  </sourceRootList>
+  <projectmakefile>Firmware/Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-std=c89"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>Firmware</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+        </makeTool>
+      </makefileType>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chcond.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chdebug.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chdynamic.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>/usr/lib/gcc/arm-none-eabi/4.8.3/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chevents.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chheap.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>/usr/lib/gcc/arm-none-eabi/4.8.3/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chlists.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chmboxes.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chmemcore.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>/usr/lib/gcc/arm-none-eabi/4.8.3/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chmempools.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>/usr/lib/gcc/arm-none-eabi/4.8.3/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chmsg.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chmtx.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chqueues.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>/usr/lib/gcc/arm-none-eabi/4.8.3/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chregistry.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>/usr/lib/gcc/arm-none-eabi/4.8.3/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chschd.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chsem.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chsys.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>/usr/lib/gcc/arm-none-eabi/4.8.3/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chthreads.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>/usr/lib/gcc/arm-none-eabi/4.8.3/include</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/kernel/src/chvt.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/src</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx/STM32F4xx/vectors.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx/chcore.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx/chcore_v7m.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/kernel/include</pElem>
+            <pElem>Firmware/lib/ChibiOS/os/ports/common/ARMCMx</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx/crt0.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </item>
+      <item path="Firmware/lib/ChibiOS/os/ports/common/ARMCMx/nvic.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+        <cTool flags="0">
+        </cTool>
+      </item>
+      <folder path="2/os/ports/GCC/ARMCMx/STM32F4xx">
+        <cTool>
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/ports/GCC/ARMCMx/STM32F4xx</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+      <folder path="2/os/ports/common">
+        <cTool>
+          <incDir>
+            <pElem>Firmware/lib/ChibiOS/os/ports/common/ARMCMx</pElem>
+            <pElem>/usr/arm-none-eabi/include/machine</pElem>
+            <pElem>/usr/arm-none-eabi/include</pElem>
+            <pElem>Firmware</pElem>
+          </incDir>
+        </cTool>
+      </folder>
+    </conf>
+  </confs>
+</configurationDescriptor>

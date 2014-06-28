@@ -1,0 +1,2542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="94">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="Firmware/lib/ChibiOS" name="2">
+      <df name="boards">
+        <df name="ARDUINO">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ARDUINO_MEGA">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="EA_LPCXPRESSO_11C24">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="EA_LPCXPRESSO_BB_1114">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="EA_LPCXPRESSO_BB_11U14">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="EA_LPCXPRESSO_BB_1343">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="EA_LPCXPRESSO_LPC812">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="MAPLEMINI_STM32_F103">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="NGX_BB_LPC11U14">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="NONSTANDARD_STM32F4_BARTHESS1">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_AVR_CAN">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_AVR_MT_128">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_LPC-P1227">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_LPC_P1343">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_LPC_P2148">
+          <in>board.c</in>
+          <in>board.h</in>
+          <in>buzzer.c</in>
+          <in>buzzer.h</in>
+        </df>
+        <df name="OLIMEX_MSP430_P1611">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_SAM7_EX256">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_SAM7_P256">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_STM32_103STK">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_STM32_E407">
+          <df name="cfg">
+          </df>
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_STM32_H103">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_STM32_H407">
+          <df name="cfg">
+          </df>
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_STM32_LCD">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_STM32_P103">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_STM32_P107">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="OLIMEX_STM32_P407">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="RAISONANCE_REVA_STM8S">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="simulator">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_EVB_SPC560BC">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_EVB_SPC560D">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_EVB_SPC560P">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_EVB_SPC563M">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_EVB_SPC564A">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_EVB_SPC56EL">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM3210C_EVAL">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM3210E_EVAL">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM3220G_EVAL">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM32373C_EVAL">
+          <df name="cfg">
+          </df>
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM32F0_DISCOVERY">
+          <df name="cfg">
+          </df>
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM32F3_DISCOVERY">
+          <df name="cfg">
+          </df>
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM32F4_DISCOVERY">
+          <df name="cfg">
+          </df>
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM32L_DISCOVERY">
+          <df name="cfg">
+          </df>
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM32VL_DISCOVERY">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM8L_DISCOVERY">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="ST_STM8S_DISCOVERY">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+        <df name="STUDIEL_AT91SAM7A3_EK">
+          <in>board.c</in>
+          <in>board.h</in>
+        </df>
+      </df>
+      <df name="demos">
+        <df name="ARM7-AT91SAM7X-FATFS-GCC">
+          <in>chconf.h</in>
+          <in>ffconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARM7-AT91SAM7X-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARM7-AT91SAM7X-LWIP-GCC">
+          <df name="web">
+            <in>web.c</in>
+            <in>web.h</in>
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>lwipopts.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARM7-AT91SAM7X-UIP-GCC">
+          <df name="web">
+            <in>cc-arch.h</in>
+            <in>clock-arch.h</in>
+            <in>uip-conf.h</in>
+            <in>webthread.c</in>
+            <in>webthread.h</in>
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARM7-LPC214x-FATFS-GCC">
+          <in>chconf.h</in>
+          <in>ffconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARM7-LPC214x-G++">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.cpp</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARM7-LPC214x-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM0-LPC1114-LPCXPRESSO">
+          <df name="iar">
+          </df>
+          <df name="keil">
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM0-LPC11U14-LPCXPRESSO">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM0-STM32F051-DISCOVERY">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM0P-LPC812-LPCXPRESSO">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-GENERIC-KERNEL">
+          <in>chconf.h</in>
+          <in>main.c</in>
+        </df>
+        <df name="ARMCM3-LPC1343-LPCXPRESSO">
+          <df name="iar">
+          </df>
+          <df name="keil">
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-LPC1343-OLIMEX">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-STM32F100-DISCOVERY">
+          <df name="iar">
+          </df>
+          <df name="keil">
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-STM32F103">
+          <df name="codeblocks">
+          </df>
+          <df name="iar">
+          </df>
+          <df name="keil">
+          </df>
+          <df name="ride7">
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-STM32F103-FATFS">
+          <in>chconf.h</in>
+          <in>ffconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-STM32F103-G++">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.cpp</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-STM32F103ZG-FATFS">
+          <in>chconf.h</in>
+          <in>ffconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-STM32F107">
+          <df name="iar">
+          </df>
+          <df name="keil">
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-STM32F107-FATFS">
+          <in>chconf.h</in>
+          <in>ffconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-STM32F107-LWIP">
+          <df name="web">
+            <in>web.c</in>
+            <in>web.h</in>
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>lwipopts.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM3-STM32L152-DISCOVERY">
+          <df name="iar">
+          </df>
+          <df name="keil">
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM4-SAM4L">
+        </df>
+        <df name="ARMCM4-STM32F303-DISCOVERY">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM4-STM32F373-STM32373C_EVAL">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM4-STM32F407-DISCOVERY">
+          <df name="iar">
+          </df>
+          <df name="keil">
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM4-STM32F407-DISCOVERY-G++">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.cpp</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM4-STM32F407-DISCOVERY-MEMS">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+          <in>usbcfg.c</in>
+          <in>usbcfg.h</in>
+        </df>
+        <df name="ARMCM4-STM32F407-LWIP">
+          <df name="web">
+            <in>web.c</in>
+            <in>web.h</in>
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>lwipopts.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="ARMCM4-STM32F407-LWIP-FATFS-USB">
+          <df name="web">
+            <in>web.c</in>
+            <in>web.h</in>
+          </df>
+          <in>chconf.h</in>
+          <in>ffconf.h</in>
+          <in>halconf.h</in>
+          <in>lwipopts.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="AVR-Arduino-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="AVR-ArduinoMega-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="AVR-AT90CANx-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="AVR-ATmega128-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>lcd.c</in>
+          <in>lcd.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="MSP430-MSP430F5437">
+          <df name="iar">
+          </df>
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="MSP430-MSP430x1611-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="Posix-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+        </df>
+        <df name="PPC-SPC560B-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="PPC-SPC560D-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="PPC-SPC560P-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="PPC-SPC563M-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="PPC-SPC564A-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="PPC-SPC56EL-GCC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="STM8L-STM8L152-DISCOVERY-STVD">
+          <df name="cosmic">
+            <in>vectors.c</in>
+          </df>
+          <df name="demo">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="raisonance">
+          </df>
+        </df>
+        <df name="STM8S-STM8S105-DISCOVERY-IAR">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="STM8S-STM8S105-DISCOVERY-STVD">
+          <df name="cosmic">
+            <in>vectors.c</in>
+          </df>
+          <df name="demo">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="raisonance">
+          </df>
+        </df>
+        <df name="STM8S-STM8S208-RC">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+          <in>mcuconf.h</in>
+        </df>
+        <df name="Win32-MinGW">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+        </df>
+      </df>
+      <df name="docs">
+        <df name="html">
+        </df>
+        <df name="reports">
+        </df>
+        <df name="rsc">
+        </df>
+        <df name="src">
+        </df>
+      </df>
+      <df name="ext">
+        <df name="fatfs">
+          <df name="doc">
+            <df name="en">
+            </df>
+            <df name="img">
+            </df>
+            <df name="ja">
+            </df>
+          </df>
+          <df name="src">
+            <df name="option">
+              <in>cc932.c</in>
+              <in>cc936.c</in>
+              <in>cc949.c</in>
+              <in>cc950.c</in>
+              <in>ccsbcs.c</in>
+            </df>
+            <in>diskio.h</in>
+            <in>ff.c</in>
+            <in>ff.h</in>
+            <in>ffconf_template.h</in>
+            <in>integer.h</in>
+          </df>
+        </df>
+        <df name="lwip">
+          <df name="doc">
+          </df>
+          <df name="src">
+            <df name="api">
+              <in>api_lib.c</in>
+              <in>api_msg.c</in>
+              <in>err.c</in>
+              <in>netbuf.c</in>
+              <in>netdb.c</in>
+              <in>netifapi.c</in>
+              <in>sockets.c</in>
+              <in>tcpip.c</in>
+            </df>
+            <df name="core">
+              <df name="ipv4">
+                <in>autoip.c</in>
+                <in>icmp.c</in>
+                <in>igmp.c</in>
+                <in>inet.c</in>
+                <in>inet_chksum.c</in>
+                <in>ip.c</in>
+                <in>ip_addr.c</in>
+                <in>ip_frag.c</in>
+              </df>
+              <df name="ipv6">
+                <in>icmp6.c</in>
+                <in>inet6.c</in>
+                <in>ip6.c</in>
+                <in>ip6_addr.c</in>
+              </df>
+              <df name="snmp">
+                <in>asn1_dec.c</in>
+                <in>asn1_enc.c</in>
+                <in>mib2.c</in>
+                <in>mib_structs.c</in>
+                <in>msg_in.c</in>
+                <in>msg_out.c</in>
+              </df>
+              <in>def.c</in>
+              <in>dhcp.c</in>
+              <in>dns.c</in>
+              <in>init.c</in>
+              <in>mem.c</in>
+              <in>memp.c</in>
+              <in>netif.c</in>
+              <in>pbuf.c</in>
+              <in>raw.c</in>
+              <in>stats.c</in>
+              <in>sys.c</in>
+              <in>tcp.c</in>
+              <in>tcp_in.c</in>
+              <in>tcp_out.c</in>
+              <in>timers.c</in>
+              <in>udp.c</in>
+            </df>
+            <df name="include">
+              <df name="ipv4">
+                <df name="lwip">
+                  <in>autoip.h</in>
+                  <in>icmp.h</in>
+                  <in>igmp.h</in>
+                  <in>inet.h</in>
+                  <in>inet_chksum.h</in>
+                  <in>ip.h</in>
+                  <in>ip_addr.h</in>
+                  <in>ip_frag.h</in>
+                </df>
+              </df>
+              <df name="ipv6">
+                <df name="lwip">
+                  <in>icmp.h</in>
+                  <in>inet.h</in>
+                  <in>ip.h</in>
+                  <in>ip_addr.h</in>
+                </df>
+              </df>
+              <df name="lwip">
+                <in>api.h</in>
+                <in>api_msg.h</in>
+                <in>arch.h</in>
+                <in>debug.h</in>
+                <in>def.h</in>
+                <in>dhcp.h</in>
+                <in>dns.h</in>
+                <in>err.h</in>
+                <in>init.h</in>
+                <in>mem.h</in>
+                <in>memp.h</in>
+                <in>memp_std.h</in>
+                <in>netbuf.h</in>
+                <in>netdb.h</in>
+                <in>netif.h</in>
+                <in>netifapi.h</in>
+                <in>opt.h</in>
+                <in>pbuf.h</in>
+                <in>raw.h</in>
+                <in>sio.h</in>
+                <in>snmp.h</in>
+                <in>snmp_asn1.h</in>
+                <in>snmp_msg.h</in>
+                <in>snmp_structs.h</in>
+                <in>sockets.h</in>
+                <in>stats.h</in>
+                <in>sys.h</in>
+                <in>tcp.h</in>
+                <in>tcp_impl.h</in>
+                <in>tcpip.h</in>
+                <in>timers.h</in>
+                <in>udp.h</in>
+              </df>
+              <df name="netif">
+                <in>etharp.h</in>
+                <in>ppp_oe.h</in>
+                <in>slipif.h</in>
+              </df>
+              <df name="posix">
+                <df name="sys">
+                  <in>socket.h</in>
+                </df>
+                <in>netdb.h</in>
+              </df>
+            </df>
+            <df name="netif">
+              <df name="ppp">
+                <in>auth.c</in>
+                <in>auth.h</in>
+                <in>chap.c</in>
+                <in>chap.h</in>
+                <in>chpms.c</in>
+                <in>chpms.h</in>
+                <in>fsm.c</in>
+                <in>fsm.h</in>
+                <in>ipcp.c</in>
+                <in>ipcp.h</in>
+                <in>lcp.c</in>
+                <in>lcp.h</in>
+                <in>magic.c</in>
+                <in>magic.h</in>
+                <in>md5.c</in>
+                <in>md5.h</in>
+                <in>pap.c</in>
+                <in>pap.h</in>
+                <in>ppp.c</in>
+                <in>ppp.h</in>
+                <in>ppp_impl.h</in>
+                <in>ppp_oe.c</in>
+                <in>pppdebug.h</in>
+                <in>randm.c</in>
+                <in>randm.h</in>
+                <in>vj.c</in>
+                <in>vj.h</in>
+              </df>
+              <in>etharp.c</in>
+              <in>ethernetif.c</in>
+              <in>slipif.c</in>
+            </df>
+          </df>
+          <df name="test">
+            <df name="unit">
+              <df name="core">
+                <in>test_mem.c</in>
+                <in>test_mem.h</in>
+              </df>
+              <df name="etharp">
+                <in>test_etharp.c</in>
+                <in>test_etharp.h</in>
+              </df>
+              <df name="tcp">
+                <in>tcp_helper.c</in>
+                <in>tcp_helper.h</in>
+                <in>test_tcp.c</in>
+                <in>test_tcp.h</in>
+                <in>test_tcp_oos.c</in>
+                <in>test_tcp_oos.h</in>
+              </df>
+              <df name="udp">
+                <in>test_udp.c</in>
+                <in>test_udp.h</in>
+              </df>
+              <in>lwip_check.h</in>
+              <in>lwip_unittests.c</in>
+              <in>lwipopts.h</in>
+            </df>
+          </df>
+        </df>
+      </df>
+      <df name="os">
+        <df name="fs">
+          <df name="fatfs">
+            <in>fatfs_fsimpl.cpp</in>
+            <in>fatfs_fsimpl.hpp</in>
+          </df>
+          <in>fs.hpp</in>
+        </df>
+        <df name="hal">
+          <df name="dox">
+          </df>
+          <df name="include">
+            <in>adc.h</in>
+            <in>can.h</in>
+            <in>dac.h</in>
+            <in>ext.h</in>
+            <in>gpt.h</in>
+            <in>hal.h</in>
+            <in>i2c.h</in>
+            <in>i2s.h</in>
+            <in>icu.h</in>
+            <in>io_block.h</in>
+            <in>io_channel.h</in>
+            <in>mac.h</in>
+            <in>mii.h</in>
+            <in>mmc_spi.h</in>
+            <in>mmcsd.h</in>
+            <in>pal.h</in>
+            <in>pwm.h</in>
+            <in>rtc.h</in>
+            <in>sdc.h</in>
+            <in>serial.h</in>
+            <in>serial_usb.h</in>
+            <in>spi.h</in>
+            <in>tm.h</in>
+            <in>uart.h</in>
+            <in>usb.h</in>
+          </df>
+          <df name="platforms">
+            <df name="AT91SAM7">
+              <df name="at91lib">
+                <in>AT91SAM7A3.h</in>
+                <in>AT91SAM7S128.h</in>
+                <in>AT91SAM7S256.h</in>
+                <in>AT91SAM7S512.h</in>
+                <in>AT91SAM7S64.h</in>
+                <in>AT91SAM7X128.h</in>
+                <in>AT91SAM7X256.h</in>
+                <in>AT91SAM7X512.h</in>
+                <in>aic.c</in>
+                <in>aic.h</in>
+              </df>
+              <in>adc_lld.c</in>
+              <in>adc_lld.h</in>
+              <in>at91sam7.h</in>
+              <in>at91sam7_mii.c</in>
+              <in>at91sam7_mii.h</in>
+              <in>ext_lld.c</in>
+              <in>ext_lld.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>i2c_lld.c</in>
+              <in>i2c_lld.h</in>
+              <in>mac_lld.c</in>
+              <in>mac_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>pwm_lld.c</in>
+              <in>pwm_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+              <in>spi_lld.c</in>
+              <in>spi_lld.h</in>
+            </df>
+            <df name="AVR">
+              <in>adc_lld.c</in>
+              <in>adc_lld.h</in>
+              <in>avr_pins.h</in>
+              <in>avr_timers.h</in>
+              <in>gpt_lld.c</in>
+              <in>gpt_lld.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>i2c_lld.c</in>
+              <in>i2c_lld.h</in>
+              <in>icu_lld.c</in>
+              <in>icu_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>pwm_lld.c</in>
+              <in>pwm_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+              <in>spi_lld.c</in>
+              <in>spi_lld.h</in>
+            </df>
+            <df name="LPC11Uxx">
+              <in>LPC11Uxx.h</in>
+              <in>ext_lld.c</in>
+              <in>ext_lld.h</in>
+              <in>ext_lld_isr.c</in>
+              <in>ext_lld_isr.h</in>
+              <in>gpt_lld.c</in>
+              <in>gpt_lld.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+              <in>spi_lld.c</in>
+              <in>spi_lld.h</in>
+              <in>system_LPC11Uxx.h</in>
+            </df>
+            <df name="LPC11xx">
+              <in>LPC11xx.h</in>
+              <in>ext_lld.c</in>
+              <in>ext_lld.h</in>
+              <in>ext_lld_isr.c</in>
+              <in>ext_lld_isr.h</in>
+              <in>gpt_lld.c</in>
+              <in>gpt_lld.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>i2c_lld.c</in>
+              <in>i2c_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>pwm_lld.c</in>
+              <in>pwm_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+              <in>spi_lld.c</in>
+              <in>spi_lld.h</in>
+              <in>system_LPC11xx.h</in>
+            </df>
+            <df name="LPC122x">
+              <in>LPC122x.h</in>
+              <in>ext_lld.c</in>
+              <in>ext_lld.h</in>
+              <in>ext_lld_isr.c</in>
+              <in>ext_lld_isr.h</in>
+              <in>gpt_lld.c</in>
+              <in>gpt_lld.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>i2c_lld.c</in>
+              <in>i2c_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>pwm_lld.c</in>
+              <in>pwm_lld.h</in>
+              <in>rtc_lld.c</in>
+              <in>rtc_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+              <in>spi_lld.c</in>
+              <in>spi_lld.h</in>
+              <in>system_LPC122x.h</in>
+            </df>
+            <df name="LPC13xx">
+              <in>LPC13xx.h</in>
+              <in>gpt_lld.c</in>
+              <in>gpt_lld.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+              <in>spi_lld.c</in>
+              <in>spi_lld.h</in>
+              <in>system_LPC13xx.h</in>
+            </df>
+            <df name="LPC214x">
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>lpc214x.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+              <in>spi_lld.c</in>
+              <in>spi_lld.h</in>
+              <in>vic.c</in>
+              <in>vic.h</in>
+            </df>
+            <df name="LPC8xx">
+              <in>LPC8xx.h</in>
+              <in>ext_lld.c</in>
+              <in>ext_lld.h</in>
+              <in>ext_lld_isr.c</in>
+              <in>ext_lld_isr.h</in>
+              <in>gpt_lld.c</in>
+              <in>gpt_lld.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+              <in>spi_lld.c</in>
+              <in>spi_lld.h</in>
+              <in>system_LPC8xx.h</in>
+            </df>
+            <df name="MSP430">
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+            </df>
+            <df name="Posix">
+              <in>console.c</in>
+              <in>console.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+            </df>
+            <df name="SPC560BCxx">
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>spc560bc_registry.h</in>
+              <in>typedefs.h</in>
+              <in>xpc560bc.h</in>
+            </df>
+            <df name="SPC560Dxx">
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>spc560d_registry.h</in>
+              <in>typedefs.h</in>
+              <in>xpc560d.h</in>
+            </df>
+            <df name="SPC560Pxx">
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>spc560p_registry.h</in>
+              <in>typedefs.h</in>
+              <in>xpc560p.h</in>
+            </df>
+            <df name="SPC563Mxx">
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>spc563m_registry.h</in>
+              <in>typedefs.h</in>
+              <in>xpc563m.h</in>
+            </df>
+            <df name="SPC564Axx">
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>spc564a_registry.h</in>
+              <in>typedefs.h</in>
+              <in>xpc564a.h</in>
+            </df>
+            <df name="SPC56ELxx">
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>spc56el_registry.h</in>
+              <in>typedefs.h</in>
+              <in>xpc56el.h</in>
+            </df>
+            <df name="SPC5xx">
+              <df name="DSPI_v1">
+                <in>spc5_dspi.h</in>
+                <in>spi_lld.c</in>
+                <in>spi_lld.h</in>
+              </df>
+              <df name="EDMA_v1">
+                <in>spc5_edma.c</in>
+                <in>spc5_edma.h</in>
+              </df>
+              <df name="eMIOS200_v1">
+                <in>icu_lld.c</in>
+                <in>icu_lld.h</in>
+                <in>pwm_lld.c</in>
+                <in>pwm_lld.h</in>
+                <in>spc5_emios.c</in>
+                <in>spc5_emios.h</in>
+              </df>
+              <df name="eMIOS_v1">
+                <in>icu_lld.c</in>
+                <in>icu_lld.h</in>
+                <in>pwm_lld.c</in>
+                <in>pwm_lld.h</in>
+                <in>spc5_emios.c</in>
+                <in>spc5_emios.h</in>
+              </df>
+              <df name="EQADC_v1">
+                <in>adc_lld.c</in>
+                <in>adc_lld.h</in>
+              </df>
+              <df name="ESCI_v1">
+                <in>serial_lld.c</in>
+                <in>serial_lld.h</in>
+              </df>
+              <df name="eTimer_v1">
+                <in>icu_lld.c</in>
+                <in>icu_lld.h</in>
+                <in>spc5_etimer.h</in>
+              </df>
+              <df name="FlexCAN_v1">
+                <in>can_lld.c</in>
+                <in>can_lld.h</in>
+                <in>spc5_flexcan.h</in>
+              </df>
+              <df name="FlexPWM_v1">
+                <in>pwm_lld.c</in>
+                <in>pwm_lld.h</in>
+                <in>spc5_flexpwm.h</in>
+              </df>
+              <df name="LINFlex_v1">
+                <in>serial_lld.c</in>
+                <in>serial_lld.h</in>
+                <in>spc5_linflex.h</in>
+              </df>
+              <df name="SIU_v1">
+                <in>pal_lld.c</in>
+                <in>pal_lld.h</in>
+              </df>
+              <df name="SIUL_v1">
+                <in>pal_lld.c</in>
+                <in>pal_lld.h</in>
+              </df>
+            </df>
+            <df name="STM32">
+              <df name="GPIOv1">
+                <in>pal_lld.c</in>
+                <in>pal_lld.h</in>
+              </df>
+              <df name="GPIOv2">
+                <in>pal_lld.c</in>
+                <in>pal_lld.h</in>
+              </df>
+              <df name="I2Cv1">
+                <in>i2c_lld.c</in>
+                <in>i2c_lld.h</in>
+              </df>
+              <df name="I2Cv2">
+                <in>i2c_lld.c</in>
+                <in>i2c_lld.h</in>
+              </df>
+              <df name="OTGv1">
+                <in>stm32_otg.h</in>
+                <in>usb_lld.c</in>
+                <in>usb_lld.h</in>
+              </df>
+              <df name="RTCv1">
+                <in>rtc_lld.c</in>
+                <in>rtc_lld.h</in>
+              </df>
+              <df name="RTCv2">
+                <in>rtc_lld.c</in>
+                <in>rtc_lld.h</in>
+              </df>
+              <df name="SPIv1">
+                <in>spi_lld.c</in>
+                <in>spi_lld.h</in>
+              </df>
+              <df name="SPIv2">
+                <in>spi_lld.c</in>
+                <in>spi_lld.h</in>
+              </df>
+              <df name="TIMv1">
+                <in>gpt_lld.c</in>
+                <in>gpt_lld.h</in>
+                <in>icu_lld.c</in>
+                <in>icu_lld.h</in>
+                <in>pwm_lld.c</in>
+                <in>pwm_lld.h</in>
+                <in>stm32_tim.h</in>
+              </df>
+              <df name="USARTv1">
+                <in>serial_lld.c</in>
+                <in>serial_lld.h</in>
+                <in>uart_lld.c</in>
+                <in>uart_lld.h</in>
+              </df>
+              <df name="USARTv2">
+                <in>serial_lld.c</in>
+                <in>serial_lld.h</in>
+                <in>uart_lld.c</in>
+                <in>uart_lld.h</in>
+              </df>
+              <df name="USBv1">
+                <in>stm32_usb.h</in>
+                <in>usb_lld.c</in>
+                <in>usb_lld.h</in>
+              </df>
+              <in>can_lld.c</in>
+              <in>can_lld.h</in>
+              <in>ext_lld.c</in>
+              <in>ext_lld.h</in>
+              <in>i2s_lld.c</in>
+              <in>i2s_lld.h</in>
+              <in>mac_lld.c</in>
+              <in>mac_lld.h</in>
+              <in>sdc_lld.c</in>
+              <in>sdc_lld.h</in>
+              <in>stm32.h</in>
+            </df>
+            <df name="STM32F0xx">
+              <in>adc_lld.c</in>
+              <in>adc_lld.h</in>
+              <in>ext_lld_isr.c</in>
+              <in>ext_lld_isr.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>stm32_dma.c</in>
+              <in>stm32_dma.h</in>
+              <in>stm32_isr.h</in>
+              <in>stm32_rcc.h</in>
+              <in>stm32_registry.h</in>
+              <in>stm32f0xx.h</in>
+            </df>
+            <df name="STM32F1xx">
+              <in>adc_lld.c</in>
+              <in>adc_lld.h</in>
+              <in>ext_lld_isr.c</in>
+              <in>ext_lld_isr.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>hal_lld_f100.h</in>
+              <in>hal_lld_f103.h</in>
+              <in>hal_lld_f105_f107.h</in>
+              <in>stm32_dma.c</in>
+              <in>stm32_dma.h</in>
+              <in>stm32_isr.h</in>
+              <in>stm32_rcc.h</in>
+              <in>stm32f10x.h</in>
+            </df>
+            <df name="STM32F30x">
+              <in>adc_lld.c</in>
+              <in>adc_lld.h</in>
+              <in>ext_lld_isr.c</in>
+              <in>ext_lld_isr.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>stm32_dma.c</in>
+              <in>stm32_dma.h</in>
+              <in>stm32_isr.h</in>
+              <in>stm32_rcc.h</in>
+              <in>stm32_registry.h</in>
+              <in>stm32f30x.h</in>
+            </df>
+            <df name="STM32F37x">
+              <in>adc_lld.c</in>
+              <in>adc_lld.h</in>
+              <in>ext_lld_isr.c</in>
+              <in>ext_lld_isr.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>stm32_dma.c</in>
+              <in>stm32_dma.h</in>
+              <in>stm32_isr.h</in>
+              <in>stm32_rcc.h</in>
+              <in>stm32_registry.h</in>
+              <in>stm32f37x.h</in>
+            </df>
+            <df name="STM32F4xx">
+              <in>adc_lld.c</in>
+              <in>adc_lld.h</in>
+              <in>ext_lld_isr.c</in>
+              <in>ext_lld_isr.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>stm32_dma.c</in>
+              <in>stm32_dma.h</in>
+              <in>stm32_isr.h</in>
+              <in>stm32_rcc.h</in>
+              <in>stm32f2xx.h</in>
+              <in>stm32f4xx.h</in>
+            </df>
+            <df name="STM32L1xx">
+              <in>adc_lld.c</in>
+              <in>adc_lld.h</in>
+              <in>ext_lld_isr.c</in>
+              <in>ext_lld_isr.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>stm32_dma.c</in>
+              <in>stm32_dma.h</in>
+              <in>stm32_isr.h</in>
+              <in>stm32_rcc.h</in>
+              <in>stm32l1xx.h</in>
+            </df>
+            <df name="STM8L">
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>hal_lld_stm8l_hd.h</in>
+              <in>hal_lld_stm8l_md.h</in>
+              <in>hal_lld_stm8l_mdp.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+              <in>shared_isr.c</in>
+              <in>stm8l15x.h</in>
+            </df>
+            <df name="STM8S">
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+              <in>spi_lld.c</in>
+              <in>spi_lld.h</in>
+              <in>stm8s.h</in>
+              <in>stm8s_type.h</in>
+            </df>
+            <df name="Win32">
+              <in>console.c</in>
+              <in>console.h</in>
+              <in>hal_lld.c</in>
+              <in>hal_lld.h</in>
+              <in>pal_lld.c</in>
+              <in>pal_lld.h</in>
+              <in>serial_lld.c</in>
+              <in>serial_lld.h</in>
+            </df>
+          </df>
+          <df name="src">
+            <in>adc.c</in>
+            <in>can.c</in>
+            <in>dac.c</in>
+            <in>ext.c</in>
+            <in>gpt.c</in>
+            <in>hal.c</in>
+            <in>i2c.c</in>
+            <in>i2s.c</in>
+            <in>icu.c</in>
+            <in>mac.c</in>
+            <in>mmc_spi.c</in>
+            <in>mmcsd.c</in>
+            <in>pal.c</in>
+            <in>pwm.c</in>
+            <in>rtc.c</in>
+            <in>sdc.c</in>
+            <in>serial.c</in>
+            <in>serial_usb.c</in>
+            <in>spi.c</in>
+            <in>tm.c</in>
+            <in>uart.c</in>
+            <in>usb.c</in>
+          </df>
+          <df name="templates">
+            <df name="meta">
+              <in>driver.c</in>
+              <in>driver.h</in>
+              <in>driver_lld.c</in>
+              <in>driver_lld.h</in>
+            </df>
+            <in>adc_lld.c</in>
+            <in>adc_lld.h</in>
+            <in>can_lld.c</in>
+            <in>can_lld.h</in>
+            <in>dac_lld.c</in>
+            <in>dac_lld.h</in>
+            <in>ext_lld.c</in>
+            <in>ext_lld.h</in>
+            <in>gpt_lld.c</in>
+            <in>gpt_lld.h</in>
+            <in>hal_lld.c</in>
+            <in>hal_lld.h</in>
+            <in>halconf.h</in>
+            <in>i2c_lld.c</in>
+            <in>i2c_lld.h</in>
+            <in>icu_lld.c</in>
+            <in>icu_lld.h</in>
+            <in>mac_lld.c</in>
+            <in>mac_lld.h</in>
+            <in>mcuconf.h</in>
+            <in>pal_lld.c</in>
+            <in>pal_lld.h</in>
+            <in>pwm_lld.c</in>
+            <in>pwm_lld.h</in>
+            <in>sdc_lld.c</in>
+            <in>sdc_lld.h</in>
+            <in>serial_lld.c</in>
+            <in>serial_lld.h</in>
+            <in>spi_lld.c</in>
+            <in>spi_lld.h</in>
+            <in>uart_lld.c</in>
+            <in>uart_lld.h</in>
+            <in>usb_lld.c</in>
+            <in>usb_lld.h</in>
+          </df>
+        </df>
+        <df name="kernel">
+          <df name="include">
+            <in>ch.h</in>
+            <in>chbsem.h</in>
+            <in>chcond.h</in>
+            <in>chdebug.h</in>
+            <in>chdynamic.h</in>
+            <in>chevents.h</in>
+            <in>chfiles.h</in>
+            <in>chheap.h</in>
+            <in>chinline.h</in>
+            <in>chlists.h</in>
+            <in>chmboxes.h</in>
+            <in>chmemcore.h</in>
+            <in>chmempools.h</in>
+            <in>chmsg.h</in>
+            <in>chmtx.h</in>
+            <in>chqueues.h</in>
+            <in>chregistry.h</in>
+            <in>chschd.h</in>
+            <in>chsem.h</in>
+            <in>chstreams.h</in>
+            <in>chsys.h</in>
+            <in>chthreads.h</in>
+            <in>chvt.h</in>
+          </df>
+          <df name="src">
+            <in>chcond.c</in>
+            <in>chdebug.c</in>
+            <in>chdynamic.c</in>
+            <in>chevents.c</in>
+            <in>chheap.c</in>
+            <in>chlists.c</in>
+            <in>chmboxes.c</in>
+            <in>chmemcore.c</in>
+            <in>chmempools.c</in>
+            <in>chmsg.c</in>
+            <in>chmtx.c</in>
+            <in>chqueues.c</in>
+            <in>chregistry.c</in>
+            <in>chschd.c</in>
+            <in>chsem.c</in>
+            <in>chsys.c</in>
+            <in>chthreads.c</in>
+            <in>chvt.c</in>
+          </df>
+          <df name="templates">
+            <in>chconf.h</in>
+            <in>chcore.c</in>
+            <in>chcore.h</in>
+            <in>chtypes.h</in>
+          </df>
+        </df>
+        <df name="ports">
+          <df name="common">
+            <df name="ARMCMx">
+              <df name="CMSIS">
+                <df name="include">
+                  <in>arm_common_tables.h</in>
+                  <in>arm_math.h</in>
+                  <in>core_cm0.h</in>
+                  <in>core_cm0plus.h</in>
+                  <in>core_cm3.h</in>
+                  <in>core_cm4.h</in>
+                  <in>core_cm4_simd.h</in>
+                  <in>core_cmFunc.h</in>
+                  <in>core_cmInstr.h</in>
+                </df>
+              </df>
+              <in>nvic.c</in>
+              <in>nvic.h</in>
+            </df>
+          </df>
+          <df name="cosmic">
+            <df name="STM8">
+              <in>chcore.c</in>
+              <in>chcore.h</in>
+              <in>chtypes.h</in>
+            </df>
+          </df>
+          <df name="GCC">
+            <df name="ARM">
+              <df name="AT91SAM7">
+                <df name="ld">
+                </df>
+                <in>armparams.h</in>
+                <in>vectors.s</in>
+                <in>wfi.h</in>
+              </df>
+              <df name="LPC214x">
+                <df name="ld">
+                </df>
+                <in>armparams.h</in>
+                <in>vectors.s</in>
+                <in>wfi.h</in>
+              </df>
+              <in>chcore.c</in>
+              <in>chcore.h</in>
+              <in>chcoreasm.s</in>
+              <in>chtypes.h</in>
+              <in>crt0.s</in>
+            </df>
+            <df name="ARMCMx">
+              <df name="LPC11xx">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <df name="LPC122x">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <df name="LPC13xx">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <df name="LPC8xx">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <df name="SAM4L">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <df name="STM32F0xx">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <df name="STM32F1xx">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <df name="STM32F2xx">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <df name="STM32F3xx">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <df name="STM32F4xx">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <df name="STM32L1xx">
+                <df name="ld">
+                </df>
+                <in>cmparams.h</in>
+                <in>vectors.c</in>
+              </df>
+              <in>chcore.c</in>
+              <in>chcore.h</in>
+              <in>chcore_v6m.c</in>
+              <in>chcore_v6m.h</in>
+              <in>chcore_v7m.c</in>
+              <in>chcore_v7m.h</in>
+              <in>chtypes.h</in>
+              <in>crt0.c</in>
+            </df>
+            <df name="AVR">
+              <in>chcore.c</in>
+              <in>chcore.h</in>
+              <in>chtypes.h</in>
+            </df>
+            <df name="MSP430">
+              <in>chcore.h</in>
+              <in>chcoreasm.s</in>
+              <in>chtypes.h</in>
+            </df>
+            <df name="PPC">
+              <df name="SPC560BCxx">
+                <df name="ld">
+                </df>
+                <in>bam.s</in>
+                <in>core.s</in>
+                <in>ppcparams.h</in>
+                <in>vectors.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="SPC560Bxx">
+                <df name="ld">
+                </df>
+                <in>bam.s</in>
+                <in>core.s</in>
+                <in>ppcparams.h</in>
+                <in>vectors.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="SPC560Dxx">
+                <df name="ld">
+                </df>
+                <in>bam.s</in>
+                <in>core.s</in>
+                <in>ppcparams.h</in>
+                <in>vectors.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="SPC560Pxx">
+                <df name="ld">
+                </df>
+                <in>bam.s</in>
+                <in>core.s</in>
+                <in>ppcparams.h</in>
+                <in>vectors.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="SPC563Mxx">
+                <df name="ld">
+                </df>
+                <in>bam.s</in>
+                <in>core.s</in>
+                <in>ppcparams.h</in>
+                <in>vectors.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="SPC564Axx">
+                <df name="ld">
+                </df>
+                <in>bam.s</in>
+                <in>core.s</in>
+                <in>ppcparams.h</in>
+                <in>vectors.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="SPC56ELxx">
+                <df name="ld">
+                </df>
+                <in>bam.s</in>
+                <in>core.s</in>
+                <in>ppcparams.h</in>
+                <in>vectors.h</in>
+                <in>vectors.s</in>
+              </df>
+              <in>chcore.c</in>
+              <in>chcore.h</in>
+              <in>chtypes.h</in>
+              <in>crt0.s</in>
+              <in>ivor.s</in>
+            </df>
+            <df name="SIMIA32">
+              <in>chcore.c</in>
+              <in>chcore.h</in>
+              <in>chtypes.h</in>
+            </df>
+          </df>
+          <df name="IAR">
+            <df name="ARMCMx">
+              <df name="LPC11xx">
+                <in>cmparams.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="LPC13xx">
+                <in>cmparams.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="STM32F1xx">
+                <in>cmparams.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="STM32F4xx">
+                <in>cmparams.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="STM32L1xx">
+                <in>cmparams.h</in>
+                <in>vectors.s</in>
+              </df>
+              <in>chcore.c</in>
+              <in>chcore.h</in>
+              <in>chcore_v6m.c</in>
+              <in>chcore_v6m.h</in>
+              <in>chcore_v7m.c</in>
+              <in>chcore_v7m.h</in>
+              <in>chcoreasm_v6m.s</in>
+              <in>chcoreasm_v7m.s</in>
+              <in>chtypes.h</in>
+              <in>cstartup.s</in>
+            </df>
+            <df name="STM8">
+              <in>chcore.c</in>
+              <in>chcore.h</in>
+              <in>chcore_stm8.s</in>
+              <in>chtypes.h</in>
+            </df>
+          </df>
+          <df name="RC">
+            <df name="STM8">
+              <in>chcore.c</in>
+              <in>chcore.h</in>
+              <in>chtypes.h</in>
+            </df>
+          </df>
+          <df name="RVCT">
+            <df name="ARMCMx">
+              <df name="LPC11xx">
+                <in>cmparams.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="LPC13xx">
+                <in>cmparams.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="STM32F1xx">
+                <in>cmparams.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="STM32F4xx">
+                <in>cmparams.h</in>
+                <in>vectors.s</in>
+              </df>
+              <df name="STM32L1xx">
+                <in>cmparams.h</in>
+                <in>vectors.s</in>
+              </df>
+              <in>chcore.c</in>
+              <in>chcore.h</in>
+              <in>chcore_v6m.c</in>
+              <in>chcore_v6m.h</in>
+              <in>chcore_v7m.c</in>
+              <in>chcore_v7m.h</in>
+              <in>chcoreasm_v6m.s</in>
+              <in>chcoreasm_v7m.s</in>
+              <in>chtypes.h</in>
+              <in>cstartup.s</in>
+            </df>
+          </df>
+        </df>
+        <df name="various">
+          <df name="cpp_wrappers">
+            <in>ch.cpp</in>
+            <in>ch.hpp</in>
+          </df>
+          <df name="devices_lib">
+            <df name="accel">
+              <in>lis302dl.c</in>
+              <in>lis302dl.h</in>
+            </df>
+            <df name="lcd">
+              <in>lcd3310.c</in>
+              <in>lcd3310.h</in>
+            </df>
+          </df>
+          <df name="fatfs_bindings">
+            <in>fatfs_diskio.c</in>
+            <in>fatfs_syscall.c</in>
+          </df>
+          <df name="lwip_bindings">
+            <df name="arch">
+              <in>cc.h</in>
+              <in>perf.h</in>
+              <in>sys_arch.c</in>
+              <in>sys_arch.h</in>
+            </df>
+            <in>lwipthread.c</in>
+            <in>lwipthread.h</in>
+          </df>
+          <in>chprintf.c</in>
+          <in>chprintf.h</in>
+          <in>chrtclib.c</in>
+          <in>chrtclib.h</in>
+          <in>evtimer.c</in>
+          <in>evtimer.h</in>
+          <in>memstreams.c</in>
+          <in>memstreams.h</in>
+          <in>shell.c</in>
+          <in>shell.h</in>
+          <in>syscalls.c</in>
+          <in>usb_msc.c</in>
+          <in>usb_msc.h</in>
+        </df>
+      </df>
+      <df name="test">
+        <df name="coverage">
+          <in>chconf.h</in>
+          <in>halconf.h</in>
+          <in>main.c</in>
+        </df>
+        <in>test.c</in>
+        <in>test.h</in>
+        <in>testbmk.c</in>
+        <in>testbmk.h</in>
+        <in>testdyn.c</in>
+        <in>testdyn.h</in>
+        <in>testevt.c</in>
+        <in>testevt.h</in>
+        <in>testheap.c</in>
+        <in>testheap.h</in>
+        <in>testmbox.c</in>
+        <in>testmbox.h</in>
+        <in>testmsg.c</in>
+        <in>testmsg.h</in>
+        <in>testmtx.c</in>
+        <in>testmtx.h</in>
+        <in>testpools.c</in>
+        <in>testpools.h</in>
+        <in>testqueues.c</in>
+        <in>testqueues.h</in>
+        <in>testsem.c</in>
+        <in>testsem.h</in>
+        <in>testthd.c</in>
+        <in>testthd.h</in>
+      </df>
+      <df name="testhal">
+        <df name="AVR">
+          <df name="ADC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="GPT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="ICU">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>master.c</in>
+            <in>mcuconf.h</in>
+            <in>slave.c</in>
+          </df>
+        </df>
+        <df name="common">
+          <df name="testbuild">
+            <in>board.h</in>
+            <in>chconf.h</in>
+            <in>main.c</in>
+          </df>
+        </df>
+        <df name="LPC11xx">
+          <df name="EXT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="IRQ_STORM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="LPC122x">
+          <df name="EXT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="IRQ_STORM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="RTC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="LPC13xx">
+          <df name="IRQ_STORM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="SPC560BCxx">
+          <df name="CAN">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="ICU-PWM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="SPC560Dxx">
+          <df name="SPI">
+            <df name="UDE">
+            </df>
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="SPC560Pxx">
+          <df name="CAN">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM-ICU">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="SPC563Mxx">
+          <df name="ADC">
+            <in>adc_cfg.c</in>
+            <in>adc_cfg.h</in>
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="CAN">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="ICU-PWM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="SPC564Axx">
+          <df name="CAN">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="ICU-PWM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="SPC56ELxx">
+          <df name="CAN">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM-ICU">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="STM32F0xx">
+          <df name="ADC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="EXT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="IRQ_STORM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM-ICU">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="UART">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="STM32F1xx">
+          <df name="ADC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="CAN">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="EXT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="GPT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="I2C">
+            <in>chconf.h</in>
+            <in>fake.c</in>
+            <in>fake.h</in>
+            <in>halconf.h</in>
+            <in>i2c_pns.c</in>
+            <in>i2c_pns.h</in>
+            <in>lis3.c</in>
+            <in>lis3.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+            <in>tmp75.c</in>
+            <in>tmp75.h</in>
+          </df>
+          <df name="IRQ_STORM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM-ICU">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="RTC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="RTC_FATTIME">
+            <in>chconf.h</in>
+            <in>ffconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SDC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="UART">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="USB_CDC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="USB_CDC_F107">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="USB_MSC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="STM32F30x">
+          <df name="ADC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="ADC_DUAL">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="CAN">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="EXT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="IRQ_STORM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM-ICU">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="UART">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="USB_CDC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="STM32F37x">
+          <df name="ADC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="CAN">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="EXT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="I2C">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="IRQ_STORM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM-ICU">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SDADC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="UART">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="USB_CDC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="STM32F4xx">
+          <df name="ADC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="BKPSRAM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="CAN">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="DMA_STORM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="EXT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="GPT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="I2C">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="IRQ_STORM">
+            <df name="iar">
+            </df>
+            <df name="keil">
+            </df>
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="IRQ_STORM_FPU">
+            <df name="iar">
+            </df>
+            <df name="keil">
+            </df>
+            <in>chconf.h</in>
+            <in>extfunc.c</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM-ICU">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="RTC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="RTC_FATTIME">
+            <in>chconf.h</in>
+            <in>ffconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SDC">
+            <in>chconf.h</in>
+            <in>ffconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="UART">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="USB_CDC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="STM32L1xx">
+          <df name="ADC">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="EXT">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="IRQ_STORM">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="PWM-ICU">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="SPI">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+          <df name="UART">
+            <in>chconf.h</in>
+            <in>halconf.h</in>
+            <in>main.c</in>
+            <in>mcuconf.h</in>
+          </df>
+        </df>
+        <df name="STM8S">
+          <df name="SPI">
+            <df name="cosmic">
+              <in>vectors.c</in>
+            </df>
+            <df name="demo">
+              <in>chconf.h</in>
+              <in>halconf.h</in>
+              <in>main.c</in>
+              <in>mcuconf.h</in>
+            </df>
+            <df name="raisonance">
+            </df>
+          </df>
+        </df>
+      </df>
+      <df name="tools">
+        <df name="gencfg">
+          <df name="lib">
+          </df>
+          <df name="processors">
+            <df name="boards">
+              <df name="stm32f4xx">
+                <df name="templates">
+                </df>
+              </df>
+            </df>
+            <df name="hal">
+              <df name="stm32f4xx">
+                <df name="templates">
+                </df>
+              </df>
+            </df>
+          </df>
+          <df name="schema">
+            <df name="boards">
+            </df>
+            <df name="common">
+              <df name="stm32">
+              </df>
+            </df>
+            <df name="hal">
+              <df name="stm32f4xx">
+              </df>
+            </df>
+          </df>
+          <df name="xml">
+          </df>
+        </df>
+      </df>
+    </df>
+    <df root="Firmware/src/cmd" name="1">
+    </df>
+    <df root="Firmware/src" name="0">
+      <df name="cmd">
+        <in>cmd.h</in>
+        <in>cmd_cat.c</in>
+        <in>cmd_flash.c</in>
+        <in>cmd_mem.c</in>
+        <in>cmd_threads.c</in>
+      </df>
+      <in>chconf.h</in>
+      <in>halconf.h</in>
+      <in>main.c</in>
+      <in>mcuconf.h</in>
+    </df>
+  </logicalFolder>
+  <projectmakefile>Firmware/Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>Firmware</rundir>
+        <buildfirst>false</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>
