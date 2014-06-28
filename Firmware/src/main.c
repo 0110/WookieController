@@ -406,48 +406,35 @@ main(void)
    usbStart(serusbcfg.usbp, &usbcfg);
    usbConnectBus(serusbcfg.usbp);
 
+   /*
+   * Activates the serial driver 6 and SDC driver 1 using default
+   * configuration.
+   */
+   sdStart(&SD6, NULL);
+   sdcStart(&SDCD1, NULL);
+
   /*
   * Shell manager initialization.
   */
   shellInit();
   chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO, blinkerThread, NULL);
 
-
-  /*
-  * Activates the serial driver 6 and SDC driver 1 using default
-  * configuration.
-  */
-  sdStart(&SD6, NULL);
-  sdcStart(&SDCD1, NULL);
+  chThdSleep(MS2ST(100));
 
   chprintf((BaseSequentialStream *) &SD6,
       "\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
-
-
-  /*
-   * Activates the SDC driver 1 using default configuration.
-   */
-  sdcStart(&SDCD1, NULL);
-
-   chprintf((BaseSequentialStream *) &SD6, " Done\r\n");
-
  
   chprintf((BaseSequentialStream *) &SD6, "Start blinker thread ...");
 
  
    chprintf((BaseSequentialStream *) &SD6, " Done\r\n");
 
-
-  /**************************************
-   * Shell manager initialization.
+  /*
+   * Activates the SDC driver 1 using default configuration.
    */
-  shellInit();
-
-
-  chprintf((BaseSequentialStream *) &SD6, "Create new Shell\r\n");
-
+  sdcStart(&SDCD1, NULL);
+  
   shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
-  chprintf((BaseSequentialStream *) &SD6, "Done\r\n");
 
   /*
    * Normal main() thread activity, in this demo it does nothing except
