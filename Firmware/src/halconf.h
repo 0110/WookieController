@@ -229,7 +229,7 @@
  *          use a DMA channel and heavily loads the CPU.
  */
 #if !defined(MMC_NICE_WAITING) || defined(__DOXYGEN__)
-#define MMC_NICE_WAITING            FALSE
+#define MMC_NICE_WAITING            TRUE
 #endif
 
 /*===========================================================================*/
