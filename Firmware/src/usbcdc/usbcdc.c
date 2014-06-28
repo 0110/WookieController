@@ -1,4 +1,11 @@
-
+/** @file usbcdc.c
+ * @brief Module to provide an USB CDC (USB serial interface)
+ * @author Ollo
+ *
+ * @date 28.06.2014
+ * @defgroup USB
+ *
+ */
 #include "usbcdc/usbcdc.h"
 
 /*===========================================================================*/
