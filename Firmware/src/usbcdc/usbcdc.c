@@ -370,3 +370,12 @@ void usbcdc_process(void)
 		  shelltp = NULL; /* Triggers spawning of a new shell. */
 	  }
 }
+
+
+void usbcdc_print(const char *s)
+{
+	if (!shelltp && (SDU1.config->usbp->state == USB_ACTIVE))
+	{
+		chprintf((BaseSequentialStream *)&SDU1, s);
+	}
+}

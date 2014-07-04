@@ -36,6 +36,12 @@ void usbcdc_init(const ShellCommand * commands);
  */
 void usbcdc_process(void);
 
+/** @fn void usbcdc_print(const char *s)
+ * @brief prints the given string on the USB CDC
+ * @param[in]	s	string to print
+ */
+void usbcdc_print(const char *s);
+
 #ifdef __cplusplus
 }
 #endif
