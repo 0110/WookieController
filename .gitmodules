@@ -4,6 +4,3 @@
 [submodule "Firmware/lib/ChibiOS"]
 	path = Firmware/lib/ChibiOS
 	url = https://github.com/mabl/ChibiOS.git
-[submodule "Firmware/lib/lcd"]
-	path = Firmware/lib/lcd
-	url = https://github.com/Anubirux/ChibiOS-LCD-Driver.git

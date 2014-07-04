@@ -72,6 +72,11 @@ include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F4xx/port.mk
 include $(CHIBIOS)/os/kernel/kernel.mk
 
+# LCD includes
+GFXLIB = lib/ugfx
+GFXINC += $(GFXLIB)/include
+include $(GFXLIB)/drivers/tdisp/HD44780/tdisp_lld.mk
+
 # Init custom extensions
 LIBSRC = 
 LIBINC =
@@ -98,6 +103,7 @@ CSRC = $(PORTSRC) \
        $(CHIBIOS)/os/various/chprintf.c \
        $(CHIBIOS)/os/various/shell.c \
        $(LIBSRC) \
+       $(GFXSRC) \
        $(APPSRC)
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
@@ -131,6 +137,7 @@ INCDIR = $(PORTINC) $(KERNINC) $(LIBINC) \
          $(HALINC) $(PLATFORMINC) $(BOARDINC) \
          $(LWINC)  \
          $(CHIBIOS)/os/various \
+         $(GFXINC) \
          $(APPINC)
 
 #
