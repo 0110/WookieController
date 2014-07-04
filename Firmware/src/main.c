@@ -137,7 +137,7 @@ int main(void) {
 		if (palReadPad(GPIOA, GPIOA_BUTTON))
 		{
 			palSetPad(GPIOD, GPIOD_LED5);	/* Red On*/
-			/*usbcdc_print("Button pressed\n");*/
+			usbcdc_print("Button pressed\r\n");
 		}
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */

@@ -374,7 +374,7 @@ void usbcdc_process(void)
 
 void usbcdc_print(const char *s)
 {
-	if (!shelltp && (SDU1.config->usbp->state == USB_ACTIVE))
+	if (SDU1.config->usbp->state == USB_ACTIVE)
 	{
 		chprintf((BaseSequentialStream *)&SDU1, s);
 	}
