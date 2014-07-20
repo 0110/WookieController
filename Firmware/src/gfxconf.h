@@ -22,7 +22,7 @@
 
 /* GFX subsystems to turn on */
 #define GFX_USE_GDISP			FALSE
-#define GFX_USE_TDISP			FALSE
+#define GFX_USE_TDISP			TRUE
 #define GFX_USE_GWIN			FALSE
 #define GFX_USE_GEVENT			FALSE
 #define GFX_USE_GTIMER			FALSE

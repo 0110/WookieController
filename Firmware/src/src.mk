@@ -4,6 +4,7 @@ APPSRC = src/main.c \
 		src/cmd/cmd_threads.c \
 		src/cmd/cmd_mem.c 
 
+APPSRC += src/HD44780/lcdMain.c
 
 # Required include directories
 APPINC = ${APP}

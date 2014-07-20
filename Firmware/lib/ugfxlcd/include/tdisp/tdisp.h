@@ -24,8 +24,6 @@
 #ifndef _TDISP_H
 #define _TDISP_H
 
-#include "gfx.h"
-
 #if GFX_USE_TDISP || defined(__DOXYGEN__)
 
 /**

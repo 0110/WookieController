@@ -19,6 +19,8 @@
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
 
+#include "HD44780/lcdMain.h"
+
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
@@ -124,6 +126,9 @@ int main(void) {
 	UPRINT( " Done\r\n");
 
 	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
+
+	// Start the LCD display
+	lcd_startMain();
 
 	/*
 	 * Normal main() thread activity, in this demo it does nothing except
