@@ -62,6 +62,7 @@ endif
 
 # Define project name here
 PROJECT = wookiectrl
+APP = src
 
 # Imported source files and paths
 CHIBIOS = lib/ChibiOS
@@ -73,9 +74,10 @@ include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F4xx/port.mk
 include $(CHIBIOS)/os/kernel/kernel.mk
 
 # LCD includes
-GFXLIB = lib/ugfx
+GFXLIB = lib/ugfxlcd
 GFXINC += $(GFXLIB)/include
 include $(GFXLIB)/drivers/tdisp/HD44780/tdisp_lld.mk
+GFXINC += $(APP)/HD44780
 
 # Init custom extensions
 LIBSRC = 
@@ -84,7 +86,6 @@ LIBINC =
 # Include some custom extensions:
 APP_LIBS = lib
 
-APP = src
 include $(APP)/src.mk
 
 # Define linker script file here
