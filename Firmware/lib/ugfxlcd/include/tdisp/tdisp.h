@@ -24,6 +24,10 @@
 #ifndef _TDISP_H
 #define _TDISP_H
 
+/* Some LCD hacks */
+#include "gfxconf.h"
+typedef int16_t	coord_t;
+
 #if GFX_USE_TDISP || defined(__DOXYGEN__)
 
 /**

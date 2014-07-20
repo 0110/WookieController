@@ -12,7 +12,6 @@
  * @addtogroup TDISP
  * @{
  */
-#include "gfx.h"
 
 #if GFX_USE_TDISP || defined(__DOXYGEN__)
 
