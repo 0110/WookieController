@@ -25,6 +25,7 @@
 #define _TDISP_H
 
 /* Some LCD hacks */
+#include "ch.h"
 #include "gfxconf.h"
 typedef int16_t	coord_t;
 
