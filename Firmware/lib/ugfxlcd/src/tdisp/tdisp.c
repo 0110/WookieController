@@ -15,7 +15,6 @@
 
 #include "gfxconf.h"
 
-#if GFX_USE_TDISP || defined(__DOXYGEN__)
 
 #include "tdisp_lld_board.h"
 
@@ -116,5 +115,4 @@ void tdispSetBacklight(uint16_t percentage) {
 }
 #endif
 
-#endif /* GFX_USE_TDISP */
 /** @} */

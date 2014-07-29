@@ -13,9 +13,10 @@
  * @{
  */
 
-#if GFX_USE_TDISP /*|| defined(__DOXYGEN__)*/
+#include "chibios.h"
 
-#include "tdisp_lld.h"
+#include "tdisp.h"
+#include "tdisp_lld_board.h"
 
 /* Controller Specific Properties */
 #define CUSTOM_CHAR_COUNT		8
@@ -238,6 +239,5 @@ void tdisp_lld_set_backlight(uint16_t percentage) {
 }
 #endif
 
-#endif /* GFX_USE_TDISP */
 /** @} */
 

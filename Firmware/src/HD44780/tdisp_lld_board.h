@@ -16,10 +16,14 @@
 #ifndef _TDISP_LLD_BOARD_H
 #define _TDISP_LLD_BOARD_H
 
+#include "gfx.h"
+
 #include "ch.h"
 #include "hal.h"
 
-#define gfxSleepMicroseconds(a)		chThdSleep(MS2ST((a)));
+/* Define the used LCD here */
+#define	TDISP_COLUMNS	16	/**< Amount of horizontal displayable characters */
+#define TDISP_ROWS		2	/**< Amount of rows, that could be displayed at maximum */
 
 /* Configure these to match the hardware connections on your board */
 #define BUS_4BITS	TRUE

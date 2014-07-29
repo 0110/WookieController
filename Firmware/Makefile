@@ -76,8 +76,9 @@ include $(CHIBIOS)/os/kernel/kernel.mk
 # LCD includes
 GFXLIB = lib/ugfxlcd
 GFXINC += $(GFXLIB)/include
-include $(GFXLIB)/drivers/tdisp/HD44780/tdisp_lld.mk
+include $(GFXLIB)/src/gos/gos.mk
 include $(GFXLIB)/src/tdisp/tdisp.mk
+include $(GFXLIB)/drivers/tdisp/HD44780/tdisp_lld.mk
 GFXINC += $(APP)/HD44780
 
 # Init custom extensions
