@@ -13,7 +13,6 @@
  * @{
  */
 
-#include "gfxconf.h"
 
 #ifndef _TDISP_LLD_H
 #define _TDISP_LLD_H

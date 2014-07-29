@@ -11,9 +11,6 @@
  * Edit your copy to turn on the GFX features you want to use.
  */
 
-#ifndef _GFXCONF_H
-#define _GFXCONF_H
-
 /* The operating system to use - one of these must be defined */
 #define GFX_USE_OS_CHIBIOS		TRUE
 #define GFX_USE_OS_WIN32		FALSE
@@ -32,5 +29,3 @@
 #define GFX_USE_GAUDIN			FALSE
 #define GFX_USE_GAUDOUT			FALSE
 #define GFX_USE_GMISC			FALSE
-
-#endif /* _GFXCONF_H */

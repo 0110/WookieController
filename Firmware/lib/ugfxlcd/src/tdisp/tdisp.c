@@ -13,7 +13,6 @@
  * @{
  */
 
-#include "tdisp_lld.h"
 #include "gfxconf.h"
 
 #if GFX_USE_TDISP || defined(__DOXYGEN__)
