@@ -13,11 +13,12 @@
  * @{
  */
 
-#include "tdisp.h"
+#include "tdisp_lld.h"
+#include "gfxconf.h"
 
 #if GFX_USE_TDISP || defined(__DOXYGEN__)
 
-#include "tdisp/lld/tdisp_lld.h"
+#include "tdisp_lld_board.h"
 
 /* cursor controllers */
 #define TDISP_CURSOR		1

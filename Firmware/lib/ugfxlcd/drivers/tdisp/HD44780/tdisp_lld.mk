@@ -2,5 +2,6 @@
 GFXSRC += $(GFXLIB)/drivers/tdisp/HD44780/tdisp_lld.c
 
 # Required include directories
-GFXINC += $(GFXLIB)/drivers/tdisp/HD44780
+GFXINC += $(GFXLIB)/include/tdisp \
+		  $(GFXLIB)/include/tdisp/lld
 

@@ -13,11 +13,9 @@
  * @{
  */
 
-#include "tdisp/lld/tdisp_lld.h"
-
 #if GFX_USE_TDISP /*|| defined(__DOXYGEN__)*/
 
-#include "tdisp_lld_board.h"
+#include "tdisp_lld.h"
 
 /* Controller Specific Properties */
 #define CUSTOM_CHAR_COUNT		8

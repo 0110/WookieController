@@ -7,10 +7,8 @@
  * 
  */
 
-#include "ch.h"
-#include "hal.h"
-#include "tdisp/tdisp.h"
-#include "HD44780/lcdMain.h"
+#include "lcdMain.h"
+#include "tdisp.h"
 
 static WORKING_AREA(waThreadTdisp, 128);
 

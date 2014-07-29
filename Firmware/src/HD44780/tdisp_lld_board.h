@@ -16,6 +16,11 @@
 #ifndef _TDISP_LLD_BOARD_H
 #define _TDISP_LLD_BOARD_H
 
+#include "ch.h"
+#include "hal.h"
+
+#define gfxSleepMicroseconds(a)		chThdSleep(MS2ST((a)));
+
 /* Configure these to match the hardware connections on your board */
 #define BUS_4BITS	TRUE
 
