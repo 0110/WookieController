@@ -10,22 +10,26 @@
  * Copy this file into your project directory and rename it as gfxconf.h
  * Edit your copy to turn on the GFX features you want to use.
  */
+#ifndef _GFXCONF_H
+#define _GFXCONF_H
 
 /* The operating system to use - one of these must be defined */
 #define GFX_USE_OS_CHIBIOS		TRUE
-#define GFX_USE_OS_WIN32		FALSE
-#define GFX_USE_OS_LINUX		FALSE
-#define GFX_USE_OS_OSX			FALSE
+//#define GFX_USE_OS_WIN32		FALSE
+//#define GFX_USE_OS_LINUX		FALSE
+//#define GFX_USE_OS_OSX			FALSE
 
 /* GFX subsystems to turn on */
-#define GFX_USE_GDISP			FALSE
+//#define GFX_USE_GDISP			FALSE
 #define GFX_USE_TDISP			TRUE
-#define GFX_USE_GWIN			FALSE
-#define GFX_USE_GEVENT			FALSE
-#define GFX_USE_GTIMER			FALSE
-#define GFX_USE_GQUEUE			FALSE
-#define GFX_USE_GINPUT			FALSE
-#define GFX_USE_GADC			FALSE
-#define GFX_USE_GAUDIN			FALSE
-#define GFX_USE_GAUDOUT			FALSE
-#define GFX_USE_GMISC			FALSE
+//#define GFX_USE_GWIN			FALSE
+//#define GFX_USE_GEVENT			FALSE
+//#define GFX_USE_GTIMER			FALSE
+//#define GFX_USE_GQUEUE			FALSE
+//#define GFX_USE_GINPUT			FALSE
+//#define GFX_USE_GADC			FALSE
+//#define GFX_USE_GAUDIN			FALSE
+//#define GFX_USE_GAUDOUT			FALSE
+//#define GFX_USE_GMISC			FALSE
+
+#endif /* End of _GFXCONF_H */
