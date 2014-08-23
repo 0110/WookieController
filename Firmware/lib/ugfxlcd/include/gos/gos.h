@@ -21,6 +21,8 @@
 #ifndef _GOS_H
 #define _GOS_H
 
+#include "gfxconf.h"
+
 #if defined(__DOXYGEN__)
 	/*===========================================================================*/
 	/* Type definitions                                                          */
