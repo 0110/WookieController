@@ -19,6 +19,8 @@
 
 #if GFX_USE_TDISP || defined(__DOXYGEN__)
 
+#include "gfx.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

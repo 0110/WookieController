@@ -16,7 +16,8 @@
 #include "gfxconf.h"
 
 
-#include "tdisp_lld_board.h"
+#include "tdisp/tdisp.h"
+#include "tdisp/lld/tdisp_lld.h"
 
 /* cursor controllers */
 #define TDISP_CURSOR		1

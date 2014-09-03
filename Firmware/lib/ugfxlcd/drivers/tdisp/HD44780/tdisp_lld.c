@@ -13,9 +13,8 @@
  * @{
  */
 
-#include "chibios.h"
-
-#include "tdisp.h"
+#include "gos/chibios.h"
+#include "tdisp/tdisp.h"
 #include "tdisp_lld_board.h"
 
 /* Controller Specific Properties */

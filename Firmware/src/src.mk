@@ -7,7 +7,8 @@ APPSRC = ${APP}/main.c \
 APPSRC += ${APP}/HD44780/lcdMain.c
 
 # Required include directories
-APPINC = ${APP}
+APPINC = ${APP} \
+		 ${APP}/HD44780
 		 
 
 # List all user C define here

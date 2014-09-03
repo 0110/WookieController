@@ -16,7 +16,7 @@
 #ifndef _TDISP_LLD_BOARD_H
 #define _TDISP_LLD_BOARD_H
 
-#include "gfx.h"
+#include "gos/chibios.h" /*FIXME will only work for Chibios */
 
 #include "ch.h"
 #include "hal.h"

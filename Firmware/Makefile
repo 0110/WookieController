@@ -74,11 +74,11 @@ include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F4xx/port.mk
 include $(CHIBIOS)/os/kernel/kernel.mk
 
 # LCD includes
+GFXINC += $(APP)/HD44780
 GFXLIB = lib/ugfxlcd
 include $(GFXLIB)/src/gos/gos.mk
 include $(GFXLIB)/src/tdisp/tdisp.mk
 include $(GFXLIB)/drivers/tdisp/HD44780/tdisp_lld.mk
-GFXINC += $(APP)/HD44780
 
 # Init custom extensions
 LIBSRC = 
