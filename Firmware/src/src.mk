@@ -1,12 +1,15 @@
 # List of all the board related files.
-APPSRC = src/main.c \
-		src/usbcdc/usbcdc.c \
-		src/cmd/cmd_threads.c \
-		src/cmd/cmd_mem.c 
+APPSRC = ${APP}/main.c \
+		${APP}/usbcdc/usbcdc.c \
+		${APP}/cmd/cmd_threads.c \
+		${APP}/cmd/cmd_mem.c 
 
+APPSRC += ${APP}/HD44780/lcdMain.c
 
 # Required include directories
-APPINC = ${APP}
+APPINC = ${APP} \
+		 ${APP}/HD44780
+		 
 
 # List all user C define here
 APPDEFS =
