@@ -9,6 +9,8 @@
 
 #include "lcdMain.h"
 #include "tdisp/tdisp.h"
+#include "ch.h"
+#include "hal.h"
 
 static WORKING_AREA(waThreadTdisp, 128);
 

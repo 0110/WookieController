@@ -18,6 +18,7 @@
 
 #include "ch.h"
 #include "hal.h"
+#include "gfx.h"
 
 /* Define the used LCD here */
 #define	TDISP_COLUMNS	16	/**< Amount of horizontal displayable characters */
@@ -78,7 +79,7 @@ static void writeToLCD(uint8_t data) {
 	palSetPad(PORT_CTRL, PIN_EN);
 	gfxSleepMicroseconds(1);
 	palClearPad(PORT_CTRL, PIN_EN);
-	/* wait a little while so that de display can process the data */
+	/* wait a little while so that the display can process the data */
 	gfxSleepMicroseconds(5);
 }
 

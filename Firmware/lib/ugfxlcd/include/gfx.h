@@ -10,8 +10,8 @@
 #ifndef _GFX_H_
 #define _GFX_H_
 
-#include "gos/gos.h"
 #include "gfxconf.h"
+#include "gos/gos.h"
 
 /**
  * @brief   The type for a coordinate or length on the screen.

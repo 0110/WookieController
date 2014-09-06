@@ -89,10 +89,8 @@ static msg_t blinkerThread(void *arg) {
 /*
  * Application entry point.
  */
-int main(void) {
-	uint8_t charmap[8];
-	uint8_t n;
-
+int main(void)
+{
 	/*
 	 * System initializations.
 	 * - HAL initialization, this also initializes the configured device drivers
@@ -139,17 +137,8 @@ int main(void) {
 	 * pressed the test procedure is launched with output on the serial
 	 * driver 2.
 	 */
-	while (TRUE) {
-
-		tdispSetCursor(0, 3);
-	  tdispDrawString("Cursor   OFF: ");
-	  tdispSetCursorShape(cursorOff);
-	  chThdSleepMilliseconds(5000);
-
-	  tdispSetCursor(0, 3);
-	  tdispDrawString("Cursor    ON: ");
-	  tdispSetCursorShape(cursorBlock);
-	  chThdSleepMilliseconds(5000);
+	while (TRUE)
+	{
 
 	 /* tdispSetCursor(0, 3);
 	  tdispDrawString("Cursor BLINK: ");
