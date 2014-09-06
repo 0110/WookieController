@@ -19,6 +19,8 @@
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
 
+#include "gfx.h"
+
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
@@ -88,6 +90,8 @@ static msg_t blinkerThread(void *arg) {
  * Application entry point.
  */
 int main(void) {
+	uint8_t charmap[8];
+	uint8_t n;
 
 	/*
 	 * System initializations.
@@ -125,6 +129,70 @@ int main(void) {
 
 	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
+
+	halInit();
+	chSysInit();
+	tdispInit();
+
+	/* reset cursor position and clear the screen */
+ 	tdispHome();
+	tdispClear();
+
+	/* draw a string to a given location */
+	tdispSetCursor(0, 0);
+	tdispDrawChar('C');
+	chThdSleepMilliseconds(500);
+	tdispDrawChar('h');
+	chThdSleepMilliseconds(500);
+	tdispDrawChar('i');
+	chThdSleepMilliseconds(500);
+	tdispDrawChar('b');
+	chThdSleepMilliseconds(500);
+	tdispDrawChar('i');
+	chThdSleepMilliseconds(500);
+	tdispDrawChar('O');
+	chThdSleepMilliseconds(500);
+	tdispDrawChar('S');
+	chThdSleepMilliseconds(500);
+	tdispDrawChar('/');
+	chThdSleepMilliseconds(500);
+	tdispDrawChar('G');
+	chThdSleepMilliseconds(500);
+	tdispDrawChar('F');
+	chThdSleepMilliseconds(500);
+	tdispDrawChar('X');
+	chThdSleepMilliseconds(500);
+
+	// After 2 seconds blank the screen and
+	// print tekst on the next line en 
+	// enable the display again
+	chThdSleepMilliseconds(1000);
+	tdispDisplayMode(displayOff);
+	tdispSetCursor(1, 1);
+	tdispDrawString("TDISP/HD44780");
+	chThdSleepMilliseconds(1000);
+	tdispDisplayMode(displayOn);
+
+	/* create and display a custom made character after 1S*/
+	chThdSleepMilliseconds(1000);
+	charmap[0] = 0b00100;
+	charmap[1] = 0b01110;
+	charmap[2] = 0b01110;
+	charmap[3] = 0b01110;
+	charmap[4] = 0b11111;
+	charmap[5] = 0b00000;
+	charmap[6] = 0b00100;
+	charmap[7] = 0b00000;
+	tdispCreateChar(0, charmap);
+	tdispSetCursor(0, 1);
+	tdispDrawChar(0);
+	
+
+	// after 1 second turn to 50%
+	chThdSleepMilliseconds(1000);
+	tdispSetBacklight(50);
+
+
 	/*
 	 * Normal main() thread activity, in this demo it does nothing except
 	 * sleeping in a loop and check the button state, when the button is
@@ -132,6 +200,22 @@ int main(void) {
 	 * driver 2.
 	 */
 	while (TRUE) {
+
+		tdispSetCursor(0, 3);
+	  tdispDrawString("Cursor   OFF: ");
+	  tdispSetCursorShape(cursorOff);
+	  chThdSleepMilliseconds(5000);
+
+	  tdispSetCursor(0, 3);
+	  tdispDrawString("Cursor    ON: ");
+	  tdispSetCursorShape(cursorBlock);
+	  chThdSleepMilliseconds(5000);
+
+	 /* tdispSetCursor(0, 3);
+	  tdispDrawString("Cursor BLINK: ");
+	  tdispSetCursorShape(cursorBlinkingBlock);
+	  chThdSleepMilliseconds(5000);
+	 */
 		usbcdc_process();
 
 		if (palReadPad(GPIOA, GPIOA_BUTTON))
