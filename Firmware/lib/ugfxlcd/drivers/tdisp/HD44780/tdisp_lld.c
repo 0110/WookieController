@@ -68,14 +68,14 @@ bool_t tdisp_lld_init(void) {
 		writeToLCD(0x03); // 1x
 		gfxSleepMilliseconds(20);
 		writeToLCD(0x03); // 2x
-// 		gfxSleepMilliseconds(20);
+ 		gfxSleepMilliseconds(1);
 		writeToLCD(0x03); // 3x
-// 		gfxSleepMilliseconds(20);
+ 		gfxSleepMilliseconds(1);
 		/* Put display in 4-bit mode by
 		* write 0x02 to display.
 		*/
 		writeToLCD(0x02); // 4bit-modus
-// 		gfxSleepMilliseconds(20);
+ 		gfxSleepMilliseconds(5);
 // 	#else
 		/* write three times 0x30 to display (8-bit mode only)
 		* with RS = low.
@@ -93,14 +93,14 @@ bool_t tdisp_lld_init(void) {
 	
 	/* 4-bit modus, 2 lines en 5x7 characters */
 	write_cmd(0x28);
-// 	gfxSleepMilliseconds(20);
+ 	gfxSleepMilliseconds(20);
 	
 	/* set display on, cursor off and no blinking */
 	write_cmd(0x0C);
-// 	gfxSleepMilliseconds(20);
+ 	gfxSleepMilliseconds(20);
 	/* set cursor increase and direction */
 	write_cmd(0x06);
-// 	gfxSleepMilliseconds(20);
+ 	gfxSleepMilliseconds(20);
 	
 	displaycontrol = TDISP_DISPLAY_ON;
 	cursorcontrol = TDISP_CURSOR_INC;

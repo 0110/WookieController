@@ -77,7 +77,7 @@ static void init_board(void) {
 static void writeToLCD(uint8_t data) {
 	palWritePort(PORT_DATA, data<<hardware_offset);
 	palSetPad(PORT_CTRL, PIN_EN);
-	gfxSleepMicroseconds(1);
+	gfxSleepMicroseconds(20);
 	palClearPad(PORT_CTRL, PIN_EN);
 	/* wait a little while so that the display can process the data */
 	gfxSleepMicroseconds(5);
