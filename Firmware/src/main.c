@@ -63,7 +63,8 @@ static msg_t blinkerThread(void *arg) {
 /*
  * Application entry point.
  */
-int main(void) {
+int main(void)
+{
 
 	/*
 	 * System initializations.
@@ -73,12 +74,15 @@ int main(void) {
 	 *   RTOS is active.
 	 */
 	halInit();
-	chSysInit();
+
+	//chSysInit();
 
 	/*
 	 * Initialize USB serial console
 	 */
 	usbcdc_init(commands);
+
+	//usbcdc_init2();
 
 	/*
 	 * Shell manager initialization.
@@ -110,6 +114,7 @@ int main(void) {
 	while (TRUE)
 	{
 		usbcdc_process();
+		usbcdc_process2();
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
 		chThdSleep(MS2ST(500));
