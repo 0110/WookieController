@@ -57,20 +57,21 @@ __attribute__((noreturn))
   while (1)
   {
 	  /* SPI slave selection and transmission start.*/
-	      spiSelectI(&SPID2);
-	      spiStartSendI(&SPID2, 1, ledstripe_buffer);
+	  spiSelectI(&SPID2);
+	  spiStartSendI(&SPID2, 1, ledstripe_buffer);
 
   }
 }
 
 void
-LEDSTRIPEInit(void)
+ledstripe_init(void)
 {
 	int i;
 	for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
 	{
 		ledstripe_buffer[i] = 0;
 	}
+	ledstripe_buffer[0] = 1;
 
 	/*
 	   * Initializes the SPI driver 2. The SPI2 signals are routed as follow:

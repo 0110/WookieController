@@ -34,9 +34,9 @@ extern "C"
 #endif
 
   msg_t
-  dmxthread(void *p);
+  ledstripethread(void *p);
 
-  void LEDSTRIPEInit(void);
+  void ledstripe_init(void);
 
 #ifdef __cplusplus
 }
