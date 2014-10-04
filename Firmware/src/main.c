@@ -101,6 +101,8 @@ int main(void) {
 
 	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
+
+
 	/*
 	 * Normal main() thread activity, in this demo it does nothing except
 	 * sleeping in a loop and check the button state, when the button is
