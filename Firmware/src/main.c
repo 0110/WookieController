@@ -18,6 +18,7 @@
 
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
+#include "ledstripe/ledstripe.h"
 
 /******************************************************************************
  * DEFINITIONS
@@ -75,6 +76,8 @@ int main(void) {
 	halInit();
 	chSysInit();
 
+	ledstripe_init();
+
 	/*
 	 * Initialize USB serial console
 	 */
@@ -100,7 +103,6 @@ int main(void) {
 	UPRINT( " Done\r\n");
 
 	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
-
 
 
 	/*

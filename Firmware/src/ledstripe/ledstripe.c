@@ -54,12 +54,16 @@ __attribute__((noreturn))
   (void) arg;
   chRegSetThreadName("ledstripe");
 
+
+
   while (1)
   {
 	  /* SPI slave selection and transmission start.*/
 	  spiSelectI(&SPID2);
-	  spiStartSendI(&SPID2, 1, ledstripe_buffer);
+	  spiStartSendI(&SPID2, 100, ledstripe_buffer);
 
+	  /* Wait some time, to make the scheduler running tasks with lower prio */
+	  chThdSleep(MS2ST(50));
   }
 }
 
@@ -69,9 +73,8 @@ ledstripe_init(void)
 	int i;
 	for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
 	{
-		ledstripe_buffer[i] = 0;
+		ledstripe_buffer[i] = 0xFF;
 	}
-	ledstripe_buffer[0] = 1;
 
 	/*
 	   * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
@@ -89,7 +92,6 @@ ledstripe_init(void)
 	  palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5));              /* MISO.    */
 	  palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
 	                           PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
-
 
       chThdCreateStatic(wa_ledstripe, sizeof(wa_ledstripe), NORMALPRIO - 1, ledstripethread, NULL);
 }
