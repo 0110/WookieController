@@ -107,7 +107,8 @@ int main(void) {
 	 * pressed the test procedure is launched with output on the serial
 	 * driver 2.
 	 */
-	while (TRUE) {
+	while (TRUE)
+	{
 		usbcdc_process();
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
