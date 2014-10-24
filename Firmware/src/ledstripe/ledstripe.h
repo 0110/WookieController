@@ -22,19 +22,12 @@
 #define LEDSTRIPE_THREAD_STACK_SIZE	512
 #define LEDSTRIPE_MAXIMUM			256
 
-#ifndef LEDSTRIPE_THREAD_PRIORITY
-#define LEDSTRIPE_THREAD_PRIORITY     (LOWPRIO + 3)
-#endif
-
 extern WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-  msg_t
-  ledstripethread(void *p);
 
   void ledstripe_init(void);
 
