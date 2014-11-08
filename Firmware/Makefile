@@ -66,8 +66,7 @@ PROJECT = wookiectrl
 # Imported source files and paths
 CHIBIOS = lib/ChibiOS
 BOARD = board
-#include $(BOARD)/board.mk
-include $(CHIBIOS)/boards/ST_STM32F4_DISCOVERY/board.mk
+include $(BOARD)/board.mk
 include $(CHIBIOS)/os/hal/platforms/STM32F4xx/platform.mk
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F4xx/port.mk

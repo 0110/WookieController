@@ -21,7 +21,7 @@ static uint8_t testpattern[TEST_PATTERN_LENGTH] = { BIT_HIGH, BIT_HIGH, BIT_HIGH
 static void gpt_adc_trigger(GPTDriver *gpt_ptr)
 {
 	(void) gpt_ptr;
-    palTogglePad(GPIOB, GPIOD_LED4);
+	palTogglePad(GPIOD, GPIOD_LED5);
 }
 
 static uint8_t* dma_source;
@@ -47,12 +47,12 @@ void ledstripe_init() {
 
 	/* init the required hardware */
 
-	 /*
+	/*
 	  * Start the GPT timer
 	  * Timer is clocked at 1Mhz (1us). Timer triggers at 76us and calls the callback function
 	  */
-	gptStart(&GPTD2, &gpt_adc_config);
-	gptStartContinuous(&GPTD3, 76);
+	gptStart(&GPTD1, &gpt_adc_config);
+	gptStartContinuous(&GPTD1, 76);
 
 }
 

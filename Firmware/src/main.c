@@ -53,7 +53,8 @@ static msg_t blinkerThread(void *arg) {
 	chRegSetThreadName("blinker");
 	while (TRUE) {
 		palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
-		chThdSleepMilliseconds(500); palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
+		chThdSleepMilliseconds(500);
+		palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
 		chThdSleepMilliseconds(500);
 	}
 	return RDY_OK;
