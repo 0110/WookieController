@@ -33,9 +33,6 @@ extern "C"
 {
 #endif
 
-  msg_t
-  ledstripethread(void *p);
-
   void ledstripe_init(void);
 
 #ifdef __cplusplus
