@@ -9,7 +9,7 @@ WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 
 static uint8_t ledstripe_buffer[LEDSTRIPE_MAXIMUM];
 
-#define LENGTH_END_BUFFER	35
+#define LENGTH_END_BUFFER	45
 
 static uint8_t endbuffer[LENGTH_END_BUFFER];
 
@@ -66,16 +66,18 @@ __attribute__((noreturn))
 
   while (1)
   {
-	  /* SPI slave selection and transmission start.*/
-	  spiSelectI(&SPID2);
-	  spiStartSendI(&SPID2, 100, ledstripe_buffer);
+	  /* First a reset */
+	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
+	  chThdSleep(2); /* give the scheduler some time */
 
-	  chThdSleep(MS2ST(1)); /* give the scheduler some time */
+	  spiStartSendI(&SPID2, 48, ledstripe_buffer);
+	  chThdSleep(2); /* give the scheduler some time */
 
+	  /* End with an reset */
 	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
 
 	  /* Wait some time, to make the scheduler running tasks with lower prio */
-	  chThdSleep(MS2ST(10));
+	  chThdSleep(MS2ST(1));
   }
 }
 
@@ -91,7 +93,7 @@ ledstripe_init(void)
 	/* Initialize the end array */
 	for(i=0; i < LENGTH_END_BUFFER; i++)
 	{
-		endbuffer[i] = 0xFF;
+		endbuffer[i] = 0x00;
 	}
 
 	/*
