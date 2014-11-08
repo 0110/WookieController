@@ -53,8 +53,6 @@ static void gpt_adc_trigger(GPTDriver *gpt_ptr)
 
 }
 
-static uint8_t* dma_source;
-
 /*
  * Configure a GPT object
  */
@@ -65,14 +63,6 @@ static GPTConfig gpt_adc_config =
 };
 
 void ledstripe_init() {
-
-	int i;
-	/* alloc some memory and fill it with the test pattern */
-	dma_source = chHeapAlloc(NULL, TEST_PATTERN_LENGTH);
-	for(i=0; i< TEST_PATTERN_LENGTH; i++)
-	{
-		dma_source[i] = testpattern[i];
-	}
 
 	/* init the required hardware */
 
