@@ -39,12 +39,9 @@ static const SPIConfig spi2cfg = {
 /*
  * SPI end transfer callback.
  */
-static void spicb(SPIDriver *spip) {
-
-  /* On transfer end just releases the slave select line.*/
-  chSysLockFromIsr();
-  spiUnselectI(spip);
-  chSysUnlockFromIsr();
+static void spicb(SPIDriver *spip)
+{
+	/*FIXME get new data to display */
 }
 
 /******************************************************************************
@@ -104,11 +101,7 @@ ledstripe_init(void)
 	   * PB15 - MOSI.
 	   */
 	  spiStart(&SPID2, &spi2cfg);
-	  palSetPad(GPIOB, 12);
-	  palSetPadMode(GPIOB, 12, PAL_MODE_OUTPUT_PUSHPULL |
-	                           PAL_STM32_OSPEED_HIGHEST);           /* NSS.     */
-	  palSetPadMode(GPIOB, 13, PAL_MODE_ALTERNATE(5) |
-	                           PAL_STM32_OSPEED_HIGHEST);           /* SCK.     */
+	  spiAcquireBus(&SPID2); /* gains exclusive access to the SPI bus */
 	  palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5));              /* MISO.    */
 	  palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
 	                           PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
