@@ -26,7 +26,6 @@ static void spicb(SPIDriver *spip);
 /*
  * SPI2 configuration structure.
  * Speed 800kHz
- * The slave select line is the pin 12 on the port GPIOA. (Not used)
  */
 static const SPIConfig spi2cfg = {
   spicb,
@@ -42,6 +41,7 @@ static const SPIConfig spi2cfg = {
 static void spicb(SPIDriver *spip)
 {
 	/*FIXME get new data to display */
+	palClearPad(GPIOB, 15);
 }
 
 /******************************************************************************
@@ -60,20 +60,21 @@ __attribute__((noreturn))
   chRegSetThreadName("ledstripe");
 
 
-
   while (1)
   {
 	  /* First a reset */
 	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
-	  chThdSleep(2); /* give the scheduler some time */
+	  //chThdSleep(2); /* give the scheduler some time */
 
-	  spiStartSendI(&SPID2, 48, ledstripe_buffer);
-	  chThdSleep(2); /* give the scheduler some time */
+	  /* No data transmission, only keep the signal down to zero */
+	  //spiStartSendI(&SPID2, 48, ledstripe_buffer);
+	  //chThdSleep(2); /* give the scheduler some time */
 
 	  /* End with an reset */
-	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
+	  //spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
 
 	  /* Wait some time, to make the scheduler running tasks with lower prio */
+	  palClearPad(GPIOB, 15);
 	  chThdSleep(MS2ST(1));
   }
 }
@@ -95,13 +96,9 @@ ledstripe_init(void)
 
 	/*
 	   * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
-	   * PB12 - NSS.
-	   * PB13 - SCK.
-	   * PB14 - MISO.
 	   * PB15 - MOSI.
 	   */
 	  spiStart(&SPID2, &spi2cfg);
-	  spiAcquireBus(&SPID2); /* gains exclusive access to the SPI bus */
 	  palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5));              /* MISO.    */
 	  palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
 	                           PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
