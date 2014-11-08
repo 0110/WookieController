@@ -30,6 +30,14 @@ void
 ledstripe_init(void)
 {
 
+#if 0
+	/* Allocating two DMA2 streams for memory copy operations.*/
+	if (dmaStreamAllocate(STM32_DMA2_STREAM6, 0, (stm32_dmaisr_t) _dma_rotate_callback, NULL))
+		chSysHalt();
+
+	//FIXME dmaStreamSetPeripheral(STM32_DMA2_STREAM6,
+#endif
+
 	/* Enables PWM output (of TIM4, channel 4) on blue LED connected to PD15 */
 	palSetPadMode(GPIOD, GPIOD_LED6, PAL_MODE_ALTERNATE(2));
 
@@ -40,13 +48,6 @@ ledstripe_init(void)
 		chThdSleepMilliseconds(5000);
 	}
 
-#if 0
-	/* Allocating two DMA2 streams for memory copy operations.*/
-	if (dmaStreamAllocate(STM32_DMA2_STREAM6, 0, (stm32_dmaisr_t) _dma_rotate_callback, NULL))
-		chSysHalt();
-
-	//FIXME dmaStreamSetPeripheral(STM32_DMA2_STREAM6,
-#endif
 }
 
 /******************************************************************************
