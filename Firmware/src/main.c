@@ -76,7 +76,14 @@ int main(void) {
 	halInit();
 	chSysInit();
 
-	ledstripe_init();
+
+	uint8_t *o_fb;
+
+	/*
+	* Initialize LedDriver - 150 leds in chain, GPIOA pin 1
+	*/
+	ledDriverInit(150, GPIOA, 0b00000010, &o_fb);
+	testPatternFB(o_fb);
 
 	/*
 	 * Initialize USB serial console
