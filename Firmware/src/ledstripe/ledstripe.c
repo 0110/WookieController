@@ -9,6 +9,14 @@ WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 
 static uint8_t ledstripe_buffer[LEDSTRIPE_MAXIMUM];
 
+#define LENGTH_END_BUFFER	35
+
+static uint8_t endbuffer[LENGTH_END_BUFFER];
+
+
+#define CODE_BIT_0	0x07		/**< Bit representation on the SPI for a Logical ZERO / FALSE */
+#define CODE_BIT_1	0x0F		/**< Bit representation on the SPI for a Logical ONE / TRUE */
+
 /******************************************************************************
  * PROTOTYPE
  ******************************************************************************/
@@ -25,7 +33,7 @@ static const SPIConfig spi2cfg = {
   /* HW dependent part.*/
   0 /* No port for slave select */,
   0 /* no bit on port for slave select */,
-  SPI_CR1_BR_1
+  SPI_CR1_DFF | SPI_CR1_BR_1
 };
 
 /*
@@ -62,13 +70,14 @@ __attribute__((noreturn))
 	  spiSelectI(&SPID2);
 	  spiStartSendI(&SPID2, 100, ledstripe_buffer);
 
+	  chThdSleep(MS2ST(1)); /* give the scheduler some time */
+
+	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
+
 	  /* Wait some time, to make the scheduler running tasks with lower prio */
-	  chThdSleep(MS2ST(50));
+	  chThdSleep(MS2ST(10));
   }
 }
-
-#define CODE_BIT_0	0x07
-#define CODE_BIT_1	0x0F
 
 void
 ledstripe_init(void)
@@ -77,6 +86,12 @@ ledstripe_init(void)
 	for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
 	{
 		ledstripe_buffer[i] = CODE_BIT_1;
+	}
+
+	/* Initialize the end array */
+	for(i=0; i < LENGTH_END_BUFFER; i++)
+	{
+		endbuffer[i] = 0xFF;
 	}
 
 	/*
