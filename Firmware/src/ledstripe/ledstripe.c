@@ -14,12 +14,14 @@ static uint8_t ledstripe_buffer[LEDSTRIPE_MAXIMUM];
 static uint8_t endbuffer[LENGTH_END_BUFFER];
 
 
-#define CODE_BIT_0	0x07		/**< Bit representation on the SPI for a Logical ZERO / FALSE */
+#define CODE_BIT_0	0x03		/**< Bit representation on the SPI for a Logical ZERO / FALSE */
 #define CODE_BIT_1	0x0F		/**< Bit representation on the SPI for a Logical ONE / TRUE */
 
 /******************************************************************************
  * PROTOTYPE
  ******************************************************************************/
+
+static void toogleBufferContent( void );
 
 static void spicb(SPIDriver *spip);
 
@@ -69,7 +71,7 @@ __attribute__((noreturn))
 	  chThdSleep(2); /* give the scheduler some time */
 
 	  /* No data transmission, only keep the signal down to zero */
-	  spiStartSendI(&SPID2, 48, ledstripe_buffer);
+	  spiStartSendI(&SPID2, 200, ledstripe_buffer);
 	  chThdSleep(2); /* give the scheduler some time */
 
 	  /* End with an reset */
@@ -78,7 +80,24 @@ __attribute__((noreturn))
 	  /* Wait some time, to make the scheduler running tasks with lower prio */
 	  palClearPad(GPIOB, 15);
 	  chThdSleep(MS2ST(1));
+
+	  toogleBufferContent();
   }
+}
+
+static void toogleBufferContent()
+{
+	int i;
+	uint8_t updateValue = CODE_BIT_0;
+	if (ledstripe_buffer[i] == CODE_BIT_0)
+	{
+		updateValue = CODE_BIT_1;
+	}
+
+	for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
+	{
+		ledstripe_buffer[i] = updateValue;
+	}
 }
 
 void
