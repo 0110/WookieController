@@ -11,10 +11,10 @@
 
 #include "ledstripe/ledstripe.h"
 
-#define		BIT_LOW 	30	/*FIXME adapt values (in micro seconds) */
-#define		BIT_HIGH 	50	/*FIXME adapt values (in micro seconds) */
+#define		BIT_LOW 	8	/*FIXME adapt values (in micro seconds) */
+#define		BIT_HIGH 	4	/*FIXME adapt values (in micro seconds) */
 
-#define		BIT_LENGTH	100	/* micro seconds */
+#define		BIT_LENGTH	12	/* micro seconds */
 
 #define TEST_PATTERN_LENGTH		24
 
@@ -63,7 +63,7 @@ static void gpt_adc_trigger(GPTDriver *gpt_ptr)
  */
 static GPTConfig gpt_adc_config =
 {
-     1000000,  // timer clock: 1Mhz
+     30000000,  // timer clock: 30Mhz
      gpt_adc_trigger  // Timer callback function
 };
 
