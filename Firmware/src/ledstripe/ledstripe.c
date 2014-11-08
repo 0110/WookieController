@@ -34,7 +34,7 @@ ledstripe_init(void)
 	palSetPadMode(GPIOD, GPIOD_LED6, PAL_MODE_ALTERNATE(2));
 
 	pwmStart(&PWMD4, &pwmcfg);
-	pwmEnableChannel(&PWMD4, 3, 500);
+	pwmEnableChannel(&PWMD4, 3, 500); /* 500 clock pulse number to change the LED (must fit to the 1000 see pwmconfig) */
 
 	while (TRUE) {
 		chThdSleepMilliseconds(5000);
