@@ -7,6 +7,7 @@
  * PROTOTYPE
  ******************************************************************************/
 
+static void _dma_rotate_callback( SPIDriver * driver , u32 flags );
 
 /******************************************************************************
  * GLOBAL FUNCTIONS
@@ -23,20 +24,25 @@ NULL, /* No callback */
 {PWM_OUTPUT_DISABLED, NULL},
 {PWM_OUTPUT_ACTIVE_HIGH, NULL},
 },
+0,
 0
 };
 
-void
-ledstripe_init(void)
+/**
+ * @fn void ledstripe_init(void)
+ * Using GPIOC_SD_D1 als Output-PIN.
+ * This SHOULD be changed, as this one is potential used to access the SD-card!
+ * FIXME another one!
+ */
+void ledstripe_init(void)
 {
 
-#if 0
 	/* Allocating two DMA2 streams for memory copy operations.*/
-	if (dmaStreamAllocate(STM32_DMA2_STREAM6, 0, (stm32_dmaisr_t) _dma_rotate_callback, NULL))
+	if (dmaStreamAllocate(STM32_DMA1_STREAM2, 0, (stm32_dmaisr_t) _dma_rotate_callback, NULL))
 		chSysHalt();
 
 	//FIXME dmaStreamSetPeripheral(STM32_DMA2_STREAM6,
-#endif
+
 
 	/* Enables PWM output (of TIM4, channel 4) on blue LED connected to PD15 */
 	palSetPadMode(GPIOD, GPIOD_LED6, PAL_MODE_ALTERNATE(2));
@@ -54,11 +60,11 @@ ledstripe_init(void)
  * LOCAL Functions
  ******************************************************************************/
 
-#if 0
-
 /* SPI transfer callback, used when buffers need to be rotated */
 static void _dma_rotate_callback( SPIDriver * driver , u32 flags )
 {
-	/*TODO do some magic */
+	/*TODO do some magic: kommt später */
+	(void) driver; /* not using it atm */
+	(void) flags;  /* not using it atm */
 }
-#endif
+
