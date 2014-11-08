@@ -66,10 +66,6 @@ __attribute__((noreturn))
 
   while (1)
   {
-	  /* First a reset */
-	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
-	  chThdSleep(2); /* give the scheduler some time */
-
 	  /* No data transmission, only keep the signal down to zero */
 	  spiStartSendI(&SPID2, 200, ledstripe_buffer);
 	  chThdSleep(2); /* give the scheduler some time */
@@ -79,7 +75,7 @@ __attribute__((noreturn))
 
 	  /* Wait some time, to make the scheduler running tasks with lower prio */
 	  palClearPad(GPIOB, 15);
-	  chThdSleep(MS2ST(1));
+	  chThdSleep(MS2ST(50));
 
 	  toogleBufferContent();
   }
