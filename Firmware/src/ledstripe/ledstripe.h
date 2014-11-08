@@ -17,7 +17,6 @@
 #endif
 
 #include "hal.h"
-#define sign(x) (( x > 0 ) - ( x < 0 ))
 
 typedef struct Color Color;
 	struct Color {
@@ -34,11 +33,7 @@ extern "C"
 {
 #endif
 
-void ledDriverInit(int leds, GPIO_TypeDef *port, uint32_t mask, uint8_t **o_fb);
-void setColorRGB(Color c, uint8_t *buf, uint32_t mask);
-void testPatternFB(uint8_t *fb);
-void ledDriverWaitCycle(void);
-
+void ledstripe_init(void);
 
 #ifdef __cplusplus
 }
