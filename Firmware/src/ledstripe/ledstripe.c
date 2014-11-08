@@ -7,12 +7,11 @@
  */
 WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 
-static uint8_t ledstripe_buffer[LEDSTRIPE_MAXIMUM];
-
+#define LENGTH_LEDBITS		240	/**< Space for 10 LEDs */
 #define LENGTH_END_BUFFER	45
 
+static uint8_t ledstripe_buffer[LENGTH_LEDBITS];
 static uint8_t endbuffer[LENGTH_END_BUFFER];
-
 
 #define CODE_BIT_0	0x03		/**< Bit representation on the SPI for a Logical ZERO / FALSE */
 #define CODE_BIT_1	0x0F		/**< Bit representation on the SPI for a Logical ONE / TRUE */
@@ -67,7 +66,7 @@ __attribute__((noreturn))
   while (1)
   {
 	  /* No data transmission, only keep the signal down to zero */
-	  spiStartSendI(&SPID2, 200, ledstripe_buffer);
+	  spiStartSendI(&SPID2, LENGTH_LEDBITS, ledstripe_buffer);
 	  chThdSleep(2); /* give the scheduler some time */
 
 	  /* End with an reset */
@@ -90,7 +89,7 @@ static void toogleBufferContent()
 		updateValue = CODE_BIT_1;
 	}
 
-	for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
+	for(i=0; i < LENGTH_LEDBITS; i++)
 	{
 		ledstripe_buffer[i] = updateValue;
 	}
@@ -100,7 +99,7 @@ void
 ledstripe_init(void)
 {
 	int i;
-	for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
+	for(i=0; i < LENGTH_LEDBITS; i++)
 	{
 		ledstripe_buffer[i] = CODE_BIT_0;
 	}
