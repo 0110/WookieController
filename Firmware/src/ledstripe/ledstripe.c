@@ -18,10 +18,20 @@
 
 static uint8_t testpattern[TEST_PATTERN_LENGTH] = { BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW };
 
+static int lastCycle=BIT_LOW;
+
 static void gpt_adc_trigger(GPTDriver *gpt_ptr)
 {
-	(void) gpt_ptr;
-	palTogglePad(GPIOD, GPIOD_LED5);
+	palTogglePad(GPIOD, GPIOD_LED5);	/* Red.  */
+
+	// demo simply switch between the two cylce times
+	if (lastCycle == BIT_LOW)
+		lastCycle = BIT_HIGH;
+	else
+		lastCycle = BIT_LOW;
+
+	// restart timer
+	gptStartOneShot(gpt_ptr, lastCycle);
 }
 
 static uint8_t* dma_source;
@@ -52,7 +62,7 @@ void ledstripe_init() {
 	  * Timer is clocked at 1Mhz (1us). Timer triggers at 76us and calls the callback function
 	  */
 	gptStart(&GPTD1, &gpt_adc_config);
-	gptStartContinuous(&GPTD1, 76);
+	gptStartOneShot(&GPTD1, lastCycle);
 
 }
 
