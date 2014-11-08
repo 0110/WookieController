@@ -17,15 +17,15 @@ static void spicb(SPIDriver *spip);
 
 /*
  * SPI2 configuration structure.
- * Speed 21MHz, CPHA=0, CPOL=0, 16bits frames, MSb transmitted first.
- * The slave select line is the pin 12 on the port GPIOA.
+ * Speed 800kHz
+ * The slave select line is the pin 12 on the port GPIOA. (Not used)
  */
 static const SPIConfig spi2cfg = {
   spicb,
   /* HW dependent part.*/
-  GPIOB,
-  12,
-  SPI_CR1_DFF
+  0 /* No port for slave select */,
+  0 /* no bit on port for slave select */,
+  SPI_CR1_BR_1
 };
 
 /*
@@ -67,13 +67,16 @@ __attribute__((noreturn))
   }
 }
 
+#define CODE_BIT_0	0x07
+#define CODE_BIT_1	0x0F
+
 void
 ledstripe_init(void)
 {
 	int i;
 	for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
 	{
-		ledstripe_buffer[i] = 0xE0;
+		ledstripe_buffer[i] = CODE_BIT_1;
 	}
 
 	/*
