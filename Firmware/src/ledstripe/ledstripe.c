@@ -32,7 +32,7 @@ static const SPIConfig spi2cfg = {
   /* HW dependent part.*/
   0 /* No port for slave select */,
   0 /* no bit on port for slave select */,
-  SPI_CR1_DFF | SPI_CR1_BR_1
+  SPI_CR1_BR_1
 };
 
 /*
@@ -42,6 +42,8 @@ static void spicb(SPIDriver *spip)
 {
 	/*FIXME get new data to display */
 	palClearPad(GPIOB, 15);
+
+	palTogglePad(GPIOD, GPIOD_LED5); /* Red */
 }
 
 /******************************************************************************
@@ -64,14 +66,14 @@ __attribute__((noreturn))
   {
 	  /* First a reset */
 	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
-	  //chThdSleep(2); /* give the scheduler some time */
+	  chThdSleep(2); /* give the scheduler some time */
 
 	  /* No data transmission, only keep the signal down to zero */
-	  //spiStartSendI(&SPID2, 48, ledstripe_buffer);
-	  //chThdSleep(2); /* give the scheduler some time */
+	  spiStartSendI(&SPID2, 48, ledstripe_buffer);
+	  chThdSleep(2); /* give the scheduler some time */
 
 	  /* End with an reset */
-	  //spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
+	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
 
 	  /* Wait some time, to make the scheduler running tasks with lower prio */
 	  palClearPad(GPIOB, 15);
@@ -85,7 +87,7 @@ ledstripe_init(void)
 	int i;
 	for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
 	{
-		ledstripe_buffer[i] = CODE_BIT_1;
+		ledstripe_buffer[i] = CODE_BIT_0;
 	}
 
 	/* Initialize the end array */
