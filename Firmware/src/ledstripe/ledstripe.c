@@ -16,12 +16,16 @@
 
 #define		BIT_LENGTH	100	/* micro seconds */
 
-#define TEST_PATTERN_LENGTH		8
+#define TEST_PATTERN_LENGTH		24
 
-#define	 set_pin_high()	palSetPad(GPIOD, GPIOD_LED5) 	/* Red.  */
-#define set_pin_low()	palClearPad(GPIOD, GPIOD_LED5) 	/* Red.  */
+#define	 set_pin_high()	palSetPad(GPIOA, GPIOA_LEDEXT)		/* Pin A8 in our example */
+#define set_pin_low()	palClearPad(GPIOA, GPIOA_LEDEXT)	/* Pin A8 in our example */
 
-static uint8_t testpattern[TEST_PATTERN_LENGTH] = { BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW };
+static uint8_t testpattern[TEST_PATTERN_LENGTH] = {
+		BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH,	/* Red */
+		BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW,	/* Green */
+		BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW,	/* Blue */
+};
 
 static int byteOffset=0;	/* is used with the doulbed size of "testpattern" to simulate the value to fall */
 
@@ -32,13 +36,14 @@ static void gpt_adc_trigger(GPTDriver *gpt_ptr)
 	{
 		/*FIXME normal, the next must be copied, now simply restart */
 		byteOffset = 0;
+		palTogglePad(GPIOD, GPIOD_LED5); 	/* Red.  */
 	}
 	else
 	{
 		byteOffset++;
 	}
 
-	if (byteOffset % 2 != 0)
+	if (byteOffset % 2 != 0 && byteOffset > 0)
 	{
 		set_pin_low();
 
