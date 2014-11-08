@@ -53,9 +53,7 @@ static msg_t blinkerThread(void *arg) {
 	chRegSetThreadName("blinker");
 	while (TRUE) {
 		palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
-		palSetPad(GPIOA, GPIOA_LEDEXT); /* external LED */
 		chThdSleepMilliseconds(500); palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
-		palClearPad(GPIOA, GPIOA_LEDEXT); /* external LED */
 		chThdSleepMilliseconds(500);
 	}
 	return RDY_OK;
@@ -76,15 +74,6 @@ int main(void) {
 	halInit();
 	chSysInit();
 
-
-	uint8_t *o_fb;
-
-	/*
-	* Initialize LedDriver - 150 leds in chain, GPIOA pin 1
-	*/
-	ledDriverInit(150, GPIOA, 0b00000010, &o_fb);
-	testPatternFB(o_fb);
-
 	/*
 	 * Initialize USB serial console
 	 */
@@ -102,6 +91,16 @@ int main(void) {
 	sdStart(&SD6, NULL);
 
 	chThdSleep(MS2ST(100));
+
+
+	uint8_t *o_fb;
+
+	/*
+	* Initialize LedDriver - 150 leds in chain, GPIOA pin 1
+	*/
+	ledDriverInit(150, GPIOA, 0b00000010, &o_fb);
+	testPatternFB(o_fb);
+
 
 	UPRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
 	UPRINT("Start blinker thread ...");
@@ -121,6 +120,9 @@ int main(void) {
 	while (TRUE)
 	{
 		usbcdc_process();
+
+		if (palReadPad(GPIOA, GPIOA_BUTTON))
+			testPatternFB(o_fb);
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
 		chThdSleep(MS2ST(500));
