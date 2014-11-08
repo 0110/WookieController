@@ -73,7 +73,7 @@ ledstripe_init(void)
 	int i;
 	for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
 	{
-		ledstripe_buffer[i] = 0xFF;
+		ledstripe_buffer[i] = 0xE0;
 	}
 
 	/*
