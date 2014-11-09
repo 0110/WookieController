@@ -20,7 +20,8 @@
 /*@{*/
 
 #define LEDSTRIPE_THREAD_STACK_SIZE	        512
-#define LEDSTRIPE_MAXIMUM			256
+#define LEDSTRIPE_MAXIMUM			128     /**< Amount of supported LEDs */
+#define LEDSTRIPE_COLORS_PER_LED                3       /**< Colors (each color uses one byte) per LED -> Memory usage is LEDSTRIPE_MAXIMUM times LEDSTRIPE_COLORS_PER_LED */
 
 #ifndef LEDSTRIPE_THREAD_PRIORITY
 #define LEDSTRIPE_THREAD_PRIORITY     (LOWPRIO + 3)

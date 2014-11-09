@@ -1,4 +1,4 @@
-/** @file ledstripe.c
+ /** @file ledstripe.c
  * @author ollo
  * @date created: 2014-11-08
  *
@@ -15,7 +15,11 @@
 WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 
 #define LENGTH_LEDBITS		240	/**< Space for 10 LEDs */
-#define LENGTH_END_BUFFER	45
+#define LENGTH_LED_SEND         10      /**< Amount of LEDs that are sent at one block via SPI */
+#define LENGTH_END_BUFFER	45      /**< Bits (zeroed), to simulate the end of a communication aka Reset */
+#define BITS_IN_BYTE            8
+
+static uint8_t ledStates[LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED];
 
 static uint8_t  ledstripe_buffer[LENGTH_LEDBITS];       /**< Converted Bits to be sent via SPI */
 static uint8_t  endbuffer[LENGTH_END_BUFFER];           /**< buffer containing zeros to simulate a reset signal */
@@ -27,9 +31,13 @@ static uint8_t  endbuffer[LENGTH_END_BUFFER];           /**< buffer containing z
  * PROTOTYPE
  ******************************************************************************/
 
-static void toogleBufferContent( void );
+static void updateBufferContent( void );
 
 static void spicb(SPIDriver *spip);
+
+/******************************************************************************
+ * LOCAL VARIABLES
+ ******************************************************************************/
 
 /*
  * SPI2 configuration structure.
@@ -43,20 +51,20 @@ static const SPIConfig spi2cfg = {
   SPI_CR1_BR_1
 };
 
+/******************************************************************************
+ * LOCAL FUNCTIONS
+ ******************************************************************************/
+
 /*
  * SPI end transfer callback.
  */
 static void spicb(SPIDriver *spip)
 {
-	/*FIXME get new data to display */
-	palClearPad(GPIOB, 15);
+        /*FIXME get new data to display */
+        palClearPad(GPIOB, 15);
 
-	palTogglePad(GPIOD, GPIOD_LED5); /* Red */
+        palTogglePad(GPIOD, GPIOD_LED5); /* Red */
 }
-
-/******************************************************************************
- * LOCAL FUNCTIONS
- ******************************************************************************/
 
 /**
  * DMX thread.
@@ -82,24 +90,33 @@ __attribute__((noreturn))
 	  palClearPad(GPIOB, 15);
 	  chThdSleep(MS2ST(50));
 
-	  // FIXME: simple hack, that something is changing...
-	  toogleBufferContent();
+	  updateBufferContent();
   }
 }
 
-static void toogleBufferContent()
+static void updateBufferContent()
 {
-	int i;
-	uint8_t updateValue = CODE_BIT_0;
-	if (ledstripe_buffer[i] == CODE_BIT_0)
-	{
-		updateValue = CODE_BIT_1;
-	}
+	int i, bitIndex;
+	uint8_t mask;
 
-	for(i=0; i < LENGTH_LEDBITS; i++)
-	{
-		ledstripe_buffer[i] = updateValue;
-	}
+	/*FIXME normally there is an index needed, where in the big LED array to look */
+
+	/* Update the complete Buffer, that is sent via SPI */
+	for(i=0; i < LENGTH_LED_SEND; i++)
+        {
+	    for(bitIndex = 1; bitIndex <= BITS_IN_BYTE; bitIndex++)
+            {
+	        mask = ~(1 << bitIndex);
+	        if (ledStates[i] & mask)
+                {
+	            ledstripe_buffer[(i * BITS_IN_BYTE) + bitIndex] = CODE_BIT_1;
+                }
+	        else
+                {
+	            ledstripe_buffer[(i * BITS_IN_BYTE) + bitIndex] = CODE_BIT_0;
+                }
+            }
+        }
 }
 
 /******************************************************************************
@@ -119,6 +136,12 @@ ledstripe_init(void)
 	for(i=0; i < LENGTH_END_BUFFER; i++)
 	{
 		endbuffer[i] = 0x00;
+	}
+
+	/* Tiny example with Blue LEDs */
+	for(i=2; i < LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED; i+=3)
+	{
+	    ledStates[i] = ((i / 3) * 10 % 255);
 	}
 
 	/*
