@@ -1,9 +1,16 @@
+/** @file ledstripe.c
+ * @author ollo
+ * @date created: 2014-11-08
+ *
+ * @brief Module (with an own thread) to control the WSxyz?!? LED strips
+ */
+
 #include "ch.h"
 #include "hal.h"
 #include "ledstripe/ledstripe.h"
 
 /**
- * Stack area for the dmx thread.
+ * Stack area for the led thread.
  */
 WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 
@@ -76,6 +83,7 @@ __attribute__((noreturn))
 	  palClearPad(GPIOB, 15);
 	  chThdSleep(MS2ST(50));
 
+	  // FIXME: simple hack, that something is changing...
 	  toogleBufferContent();
   }
 }
