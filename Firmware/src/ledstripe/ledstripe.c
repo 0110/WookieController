@@ -17,8 +17,8 @@ WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 #define LENGTH_LEDBITS		240	/**< Space for 10 LEDs */
 #define LENGTH_END_BUFFER	45
 
-static uint8_t ledstripe_buffer[LENGTH_LEDBITS];
-static uint8_t endbuffer[LENGTH_END_BUFFER];
+static uint8_t  ledstripe_buffer[LENGTH_LEDBITS];       /**< Converted Bits to be sent via SPI */
+static uint8_t  endbuffer[LENGTH_END_BUFFER];           /**< buffer containing zeros to simulate a reset signal */
 
 #define CODE_BIT_0	0x03		/**< Bit representation on the SPI for a Logical ZERO / FALSE */
 #define CODE_BIT_1	0x0F		/**< Bit representation on the SPI for a Logical ONE / TRUE */
@@ -77,7 +77,7 @@ __attribute__((noreturn))
 	  chThdSleep(2); /* give the scheduler some time */
 
 	  /* End with an reset */
-	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer);
+	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer); /*TODO test here a long sleep ?!? */
 
 	  /* Wait some time, to make the scheduler running tasks with lower prio */
 	  palClearPad(GPIOB, 15);
