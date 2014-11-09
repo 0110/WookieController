@@ -20,8 +20,8 @@ WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 static uint8_t  ledstripe_buffer[LENGTH_LEDBITS];       /**< Converted Bits to be sent via SPI */
 static uint8_t  endbuffer[LENGTH_END_BUFFER];           /**< buffer containing zeros to simulate a reset signal */
 
-#define CODE_BIT_0	0x03		/**< Bit representation on the SPI for a Logical ZERO / FALSE */
-#define CODE_BIT_1	0x0F		/**< Bit representation on the SPI for a Logical ONE / TRUE */
+#define CODE_BIT_0	0x03		/**< Bit representation on the SPI for a Logical ZERO */
+#define CODE_BIT_1	0x0F		/**< Bit representation on the SPI for a Logical ONE  */
 
 /******************************************************************************
  * PROTOTYPE
@@ -55,9 +55,8 @@ static void spicb(SPIDriver *spip)
 }
 
 /******************************************************************************
- * GLOBAL FUNCTIONS
+ * LOCAL FUNCTIONS
  ******************************************************************************/
-
 
 /**
  * DMX thread.
@@ -103,6 +102,10 @@ static void toogleBufferContent()
 	}
 }
 
+/******************************************************************************
+ * GLOBAL FUNCTIONS
+ ******************************************************************************/
+
 void
 ledstripe_init(void)
 {
@@ -119,13 +122,13 @@ ledstripe_init(void)
 	}
 
 	/*
-	   * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
-	   * PB15 - MOSI.
-	   */
-	  spiStart(&SPID2, &spi2cfg);
-	  palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5));              /* MISO.    */
-	  palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
-	                           PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
+         * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
+         * PB15 - MOSI.
+         */
+        spiStart(&SPID2, &spi2cfg);
+        palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5));              /* MISO.    */
+        palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
+                                 PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
 
       chThdCreateStatic(wa_ledstripe, sizeof(wa_ledstripe), NORMALPRIO - 1, ledstripethread, NULL);
 }
