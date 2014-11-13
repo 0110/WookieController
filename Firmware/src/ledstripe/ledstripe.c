@@ -14,8 +14,8 @@
  */
 WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 
-#define LENGTH_LEDBITS		240	/**< Space for 10 LEDs */
-#define LENGTH_LED_SEND         10      /**< Amount of LEDs that are sent at one block via SPI */
+#define LENGTH_LEDBITS		216	/**< Space for 10 LEDs */
+#define LENGTH_BYTE_SEND        9       /**< Amount of LEDs that are sent at one block via SPI */
 #define LENGTH_END_BUFFER	45      /**< Bits (zeroed), to simulate the end of a communication aka Reset */
 #define BITS_IN_BYTE            8
 
@@ -24,6 +24,8 @@ static uint8_t ledStates[LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED];
 static uint8_t  ledstripe_buffer[LENGTH_LEDBITS];       /**< Converted Bits to be sent via SPI */
 static uint8_t  endbuffer[LENGTH_END_BUFFER];           /**< buffer containing zeros to simulate a reset signal */
 
+static int mLedstripeIndex = 0;
+
 #define CODE_BIT_0	0x03		/**< Bit representation on the SPI for a Logical ZERO */
 #define CODE_BIT_1	0x0F		/**< Bit representation on the SPI for a Logical ONE  */
 
@@ -31,7 +33,15 @@ static uint8_t  endbuffer[LENGTH_END_BUFFER];           /**< buffer containing z
  * PROTOTYPE
  ******************************************************************************/
 
-static void updateBufferContent( void );
+/**
+ * @fn static int updateBufferContent( void )
+ *
+ * Update the buffer, sent via SPI
+ *
+ * @return      TRUE    if there is still new data
+ *              FALSE   the end was found
+ */
+static int updateBufferContent( void );
 
 static void spicb(SPIDriver *spip);
 
@@ -78,11 +88,13 @@ __attribute__((noreturn))
   chRegSetThreadName("ledstripe");
 
 
-  while (1)
-  {
-	  /* No data transmission, only keep the signal down to zero */
-	  spiStartSendI(&SPID2, LENGTH_LEDBITS, ledstripe_buffer);
-	  chThdSleep(2); /* give the scheduler some time */
+      while (1)
+      {
+	  while (!updateBufferContent())
+          {
+            spiStartSendI(&SPID2, LENGTH_LEDBITS, ledstripe_buffer);
+            chThdSleep(2); /* give the scheduler some time */
+          }
 
 	  /* End with an reset */
 	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer); /*TODO test here a long sleep ?!? */
@@ -92,32 +104,43 @@ __attribute__((noreturn))
 	  chThdSleep(MS2ST(50));
 
 	  updateBufferContent();
-  }
+      }
 }
 
-static void updateBufferContent()
+static int updateBufferContent()
 {
-	int i, bitIndex;
-	uint8_t mask;
+    int i, bitIndex;
+    uint8_t mask;
 
-	/*FIXME normally there is an index needed, where in the big LED array to look */
+    /*FIXME normally there is an index needed, where in the big LED array to look */
 
-	/* Update the complete Buffer, that is sent via SPI */
-	for(i=0; i < LENGTH_LED_SEND; i++)
+    /* Update the complete Buffer, that is sent via SPI */
+    for(i=0; i < LENGTH_BYTE_SEND; i++)
+    {
+        for(bitIndex = 1; bitIndex <= BITS_IN_BYTE; bitIndex++)
         {
-	    for(bitIndex = 1; bitIndex <= BITS_IN_BYTE; bitIndex++)
+            mask = ~(1 << bitIndex);
+            if (ledStates[mLedstripeIndex] & mask)
             {
-	        mask = ~(1 << bitIndex);
-	        if (ledStates[i] & mask)
-                {
-	            ledstripe_buffer[(i * BITS_IN_BYTE) + bitIndex] = CODE_BIT_1;
-                }
-	        else
-                {
-	            ledstripe_buffer[(i * BITS_IN_BYTE) + bitIndex] = CODE_BIT_0;
-                }
+                ledstripe_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] = CODE_BIT_1;
+            }
+            else
+            {
+                ledstripe_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] = CODE_BIT_0;
             }
         }
+
+        mLedstripeIndex++;
+
+        if (mLedstripeIndex >= LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED)
+        {
+            mLedstripeIndex = 0;
+            return TRUE;
+        }
+
+    }
+
+    return FALSE;
 }
 
 /******************************************************************************
