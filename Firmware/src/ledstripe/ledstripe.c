@@ -60,10 +60,11 @@ static const SPIConfig spi2cfg = {
  */
 static void spicb(SPIDriver *spip)
 {
-        /*FIXME get new data to display */
-        palClearPad(GPIOB, 15);
+  (void) spip;
+  /*FIXME get new data to display */
+  palClearPad(GPIOB, 15);
 
-        palTogglePad(GPIOD, GPIOD_LED5); /* Red */
+  palTogglePad(GPIOD, GPIOD_LED5); /* Red */
 }
 
 /**
