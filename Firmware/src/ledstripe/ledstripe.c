@@ -14,14 +14,12 @@
  */
 WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 
-#define LENGTH_LEDBITS		216	/**< Space for 10 LEDs */
-#define LENGTH_BYTE_SEND        9       /**< Amount of LEDs that are sent at one block via SPI */
 #define LENGTH_END_BUFFER	45      /**< Bits (zeroed), to simulate the end of a communication aka Reset */
 #define BITS_IN_BYTE            8
 
 static uint8_t ledStates[LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED];
 
-static uint8_t ledstripe_buffer[LENGTH_LEDBITS]; /**< Converted Bits to be sent via SPI */
+uint8_t ledstripe_fb[LENGTH_LEDBITS]; /**< Converted Bits to be sent via SPI */
 static uint8_t endbuffer[LENGTH_END_BUFFER]; /**< buffer containing zeros to simulate a reset signal */
 
 static int mLedstripeIndex = 0;
@@ -83,7 +81,7 @@ __attribute__((noreturn))
 
 	while (1) {
 		while (!updateBufferContent()) {
-			spiStartSendI(&SPID2, LENGTH_LEDBITS, ledstripe_buffer);
+			spiStartSendI(&SPID2, LENGTH_LEDBITS, ledstripe_fb);
 			chThdSleep(2); /* give the scheduler some time */
 		}
 
@@ -107,10 +105,10 @@ static int updateBufferContent() {
 		for (bitIndex = 1; bitIndex <= BITS_IN_BYTE; bitIndex++) {
 			mask = ~(1 << bitIndex);
 			if (ledStates[mLedstripeIndex] & mask) {
-				ledstripe_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
+				ledstripe_fb[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
 						CODE_BIT_1;
 			} else {
-				ledstripe_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
+				ledstripe_fb[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
 						CODE_BIT_0;
 			}
 		}
@@ -134,7 +132,7 @@ static int updateBufferContent() {
 void ledstripe_init(void) {
 	int i;
 	for (i = 0; i < LENGTH_LEDBITS; i++) {
-		ledstripe_buffer[i] = CODE_BIT_0;
+		ledstripe_fb[i] = CODE_BIT_0;
 	}
 
 	/* Initialize the end array */
@@ -144,7 +142,7 @@ void ledstripe_init(void) {
 
 	/* Tiny example with Blue LEDs */
 	for (i = 2; i < LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED; i += 3) {
-		ledStates[i] = ((i / 3) * 10 % 255);
+		ledstripe_fb[i] = ((i / 3) * 10 % 255);
 	}
 
 	/*

@@ -19,6 +19,7 @@
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
 #include "ledstripe/ledstripe.h"
+#include "ledstripe/ledstripe_cmd.h"
 
 /******************************************************************************
  * DEFINITIONS
@@ -33,6 +34,7 @@
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
+		{ "led", cmd_ledstripe_modify },
 		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
