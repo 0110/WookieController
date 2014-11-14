@@ -148,10 +148,17 @@ void cmd_ledstripe_modify(BaseSequentialStream *chp, int argc, char *argv[]) {
 			}
 		} else if (strcmp(argv[0], "demo") == 0) {
 			int i;
+			int offset = 2;
+			// Set the color to manipulate
+			if (argc >= 2) {
+				offset = atoi(argv[1]);
+			} else {
+				chprintf(chp, "Options are:\r\n0: red\r\n1: green\r\n2: blue\r\n");
+			}
 
 			for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
 			{
-				if (i > 0 && i % 3 == 2)
+				if (i > 0 && i % 3 == offset)
 				{
 					ledstripe_fb[i] = (i * 10) % 255;
 				}

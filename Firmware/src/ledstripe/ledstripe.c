@@ -77,7 +77,7 @@ __attribute__((noreturn))
 	(void) arg;
 	chRegSetThreadName("ledstripe");
 
-	while (1) {
+	while ( TRUE ) {
 		while (!updateBufferContent()) {
 			spiStartSendI(&SPID2, LENGTH_LEDBITS, spi_buffer);
 			chThdSleep(1); /* give the scheduler some time */
