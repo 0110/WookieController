@@ -2,7 +2,7 @@
  * @author ollo
  * @date created: 2014-11-08
  *
- * @brief Module (with an own thread) to control the WSxyz?!? LED strips
+ * @brief Module (with an own thread) to control the WS2812 LED strips
  */
 
 #include "ch.h"

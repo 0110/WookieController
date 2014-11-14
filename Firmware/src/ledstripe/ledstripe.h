@@ -1,5 +1,5 @@
 /* @file ledstripe.h
- * @brief Interface to use ledstripe
+ * @brief Interface to use ledstripe (WS2812)
  * @author Ollo
  *
  * @date 7.11.2014 – Created
