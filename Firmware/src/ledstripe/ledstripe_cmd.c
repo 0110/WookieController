@@ -60,7 +60,7 @@ void cmd_ledstripe_modify(BaseSequentialStream *chp, int argc, char *argv[]) {
 				int length = strLength / 2; /* HEX values -> therefore divided by two) */
 				long value;
 				char* end;
-				if (length <= 0 || (offset + length) >= LEDSTRIPE_MAXIMUM
+				if (length <= 0 || (offset + length) >= (LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED)
 						|| (strLength % 2 != 0)) {
 					chprintf(chp,
 							"Could not extract HEX value, maximum of %d (got %d, %s, must be even)\r\n",
@@ -163,7 +163,13 @@ void cmd_ledstripe_modify(BaseSequentialStream *chp, int argc, char *argv[]) {
 					ledstripe_fb[i] = (i * 10) % 255;
 				}
 			}
+		} else if (strcmp(argv[0], "clear") == 0) {
+			int i;
 
+			for(i=0; i < (LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED); i++)
+			{
+				ledstripe_fb[i] = 0;
+			}
 		} else if (strcmp(argv[0], "help") == 0) {
 			chprintf(chp, "Possible commands are:\r\n"
 			LEDSTRIPE_USAGE_HELP);

@@ -100,7 +100,7 @@ static int updateBufferContent() {
 	/*FIXME normally there is an index needed, where in the big LED array to look */
 
 	/* Update the complete Buffer, that is sent via SPI */
-	for (i = 0; i < LENGTH_BYTE_SEND; i++) {
+	for (i = 0; i < LENGTH_LED_SEND; i++) {
 		for (bitIndex = 1; bitIndex <= BITS_IN_BYTE; bitIndex++) {
 			mask = ~(1 << bitIndex);
 			if (ledstripe_fb[mLedstripeIndex] & mask) {
