@@ -80,9 +80,10 @@ __attribute__((noreturn))
 	while ( TRUE ) {
 		while (!updateBufferContent()) {
 			spiStartSendI(&SPID2, LENGTH_LEDBITS, spi_buffer);
-			chThdSleep(1); /* give the scheduler some time */
+			chThdSleep(US2ST(1)); /* give the scheduler some time */
 		}
 
+		chThdSleep(1); /* give the scheduler some time */
 		/* End with an reset */
 		spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer); /*TODO test here a long sleep ?!? */
 
@@ -100,21 +101,19 @@ static int updateBufferContent() {
 	/*FIXME normally there is an index needed, where in the big LED array to look */
 
 	/* Update the complete Buffer, that is sent via SPI */
-	for (i = 0; i < LENGTH_LED_SEND; i++) {
+	for (i = 0; i < LENGTH_LED_SEND * LEDSTRIPE_COLORS_PER_LED; i++) {
 		for (bitIndex = 1; bitIndex <= BITS_IN_BYTE; bitIndex++) {
 			mask = ~(1 << bitIndex);
 			if (ledstripe_fb[mLedstripeIndex] & mask) {
-				spi_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
-						CODE_BIT_1;
+				spi_buffer[(i * BITS_IN_BYTE) + bitIndex] = CODE_BIT_1;
 			} else {
-				spi_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
-						CODE_BIT_0;
+				spi_buffer[(i * BITS_IN_BYTE) + bitIndex] = CODE_BIT_0;
 			}
 		}
 
 		mLedstripeIndex++;
 
-		if (mLedstripeIndex >= (LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED)) {
+		if (mLedstripeIndex > (LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED)) {
 			mLedstripeIndex = 0;
 			return TRUE;
 		}

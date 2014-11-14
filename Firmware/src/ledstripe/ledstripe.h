@@ -21,7 +21,7 @@
 /** @addtogroup LEDSTRIPE */
 /*@{*/
 
-#define LEDSTRIPE_THREAD_STACK_SIZE	        512
+#define LEDSTRIPE_THREAD_STACK_SIZE	        1024
 #define LEDSTRIPE_MAXIMUM					40      /**< Amount of supported LEDs (best a multiple of LENGTH_LED_SEND) */
 #define LEDSTRIPE_COLORS_PER_LED           3       /**< Colors (each color uses one byte) per LED -> Memory usage is LEDSTRIPE_MAXIMUM times LEDSTRIPE_COLORS_PER_LED */
 #define LENGTH_LEDBITS						480     /**< Space for 20 LEDs */
