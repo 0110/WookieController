@@ -170,6 +170,37 @@ void cmd_ledstripe_modify(BaseSequentialStream *chp, int argc, char *argv[]) {
 			{
 				ledstripe_fb[i] = 0;
 			}
+		} else if (strcmp(argv[0], "fade") == 0) {
+			int i, delay, step;
+
+			if (argc >= 2) {
+				delay = atoi(argv[1]);
+
+				for (step = 0; step < 255 * 3; step++)
+				{
+					for(i=0; i < (LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED); i+=3)
+					{
+						ledstripe_fb[i] = step % 255;
+
+						if (step >= 255) {
+							ledstripe_fb[i+1] = (step - 255) % 255;
+						}
+
+						if (step >= 512)
+						{
+							ledstripe_fb[i+2] = (step - 512) % 255;
+						}
+					}
+					i=0;
+					chprintf(chp, "%.2X%.2X%.2X\r\n",
+												ledstripe_fb[i * LEDSTRIPE_COLORS_PER_LED + 0],
+												ledstripe_fb[i * LEDSTRIPE_COLORS_PER_LED + 1],
+												ledstripe_fb[i * LEDSTRIPE_COLORS_PER_LED + 2]);
+					chThdSleep(MS2ST(delay));
+				}
+			} else {
+				chprintf(chp, "Missing option DELAY (in ms)\r\n");
+			}
 		} else if (strcmp(argv[0], "help") == 0) {
 			chprintf(chp, "Possible commands are:\r\n"
 			LEDSTRIPE_USAGE_HELP);
