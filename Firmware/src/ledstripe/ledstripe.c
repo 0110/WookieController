@@ -27,6 +27,8 @@ static int mLedstripeIndex = 0;
 #define CODE_BIT_0	0x03		/**< Bit representation on the SPI for a Logical ZERO */
 #define CODE_BIT_1	0x0F		/**< Bit representation on the SPI for a Logical ONE  */
 
+#define		SPI_OUTPUT_PIN		15	/**< Output pin, used for the SPI */
+
 /******************************************************************************
  * PROTOTYPE
  ******************************************************************************/
@@ -53,8 +55,10 @@ static void spicb(SPIDriver *spip);
  */
 static const SPIConfig spi2cfg = { spicb,
 /* HW dependent part.*/
-0 /* No port for slave select */, 0 /* no bit on port for slave select */,
-		SPI_CR1_BR_1 };
+0 /* No port for slave select */,
+0 /* no bit on port for slave select */,
+SPI_CR1_BR_1
+};
 
 /******************************************************************************
  * LOCAL FUNCTIONS
@@ -65,8 +69,10 @@ static const SPIConfig spi2cfg = { spicb,
  */
 static void spicb(SPIDriver *spip) {
 	(void) spip;
-	/*FIXME get new data to display */
-	palClearPad(GPIOB, 15);
+	/* On transfer end just releases the slave select line.*/
+	chSysLockFromIsr();
+	spiUnselectI(spip);
+	chSysUnlockFromIsr();
 }
 
 /**
@@ -80,7 +86,9 @@ __attribute__((noreturn))
 	while ( TRUE ) {
 		while (!updateBufferContent()) {
 			spiStartSendI(&SPID2, LENGTH_LEDBITS, spi_buffer);
-			chThdSleep(US2ST(1)); /* give the scheduler some time */
+
+			/* Give the Scheduler of Chibios some time */
+			chThdSleep(US2ST(1));
 		}
 
 		chThdSleep(1); /* give the scheduler some time */
@@ -149,7 +157,7 @@ void ledstripe_init(void) {
 	 */
 	spiStart(&SPID2, &spi2cfg);
 	palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5)); /* MISO.    */
-	palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
+	palSetPadMode(GPIOB, SPI_OUTPUT_PIN, PAL_MODE_ALTERNATE(5) |
 			PAL_STM32_OSPEED_HIGHEST); /* MOSI.    */
 
 	chThdCreateStatic(wa_ledstripe, sizeof(wa_ledstripe), NORMALPRIO - 1,
