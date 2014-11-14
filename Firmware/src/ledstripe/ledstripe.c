@@ -1,4 +1,4 @@
- /** @file ledstripe.c
+/** @file ledstripe.c
  * @author ollo
  * @date created: 2014-11-08
  *
@@ -21,8 +21,8 @@ WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 
 static uint8_t ledStates[LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED];
 
-static uint8_t  ledstripe_buffer[LENGTH_LEDBITS];       /**< Converted Bits to be sent via SPI */
-static uint8_t  endbuffer[LENGTH_END_BUFFER];           /**< buffer containing zeros to simulate a reset signal */
+static uint8_t ledstripe_buffer[LENGTH_LEDBITS]; /**< Converted Bits to be sent via SPI */
+static uint8_t endbuffer[LENGTH_END_BUFFER]; /**< buffer containing zeros to simulate a reset signal */
 
 static int mLedstripeIndex = 0;
 
@@ -41,7 +41,7 @@ static int mLedstripeIndex = 0;
  * @return      TRUE    if there is still new data
  *              FALSE   the end was found
  */
-static int updateBufferContent( void );
+static int updateBufferContent(void);
 
 static void spicb(SPIDriver *spip);
 
@@ -53,13 +53,10 @@ static void spicb(SPIDriver *spip);
  * SPI2 configuration structure.
  * Speed 800kHz
  */
-static const SPIConfig spi2cfg = {
-  spicb,
-  /* HW dependent part.*/
-  0 /* No port for slave select */,
-  0 /* no bit on port for slave select */,
-  SPI_CR1_BR_1
-};
+static const SPIConfig spi2cfg = { spicb,
+/* HW dependent part.*/
+0 /* No port for slave select */, 0 /* no bit on port for slave select */,
+		SPI_CR1_BR_1 };
 
 /******************************************************************************
  * LOCAL FUNCTIONS
@@ -68,115 +65,98 @@ static const SPIConfig spi2cfg = {
 /*
  * SPI end transfer callback.
  */
-static void spicb(SPIDriver *spip)
-{
-  (void) spip;
-  /*FIXME get new data to display */
-  palClearPad(GPIOB, 15);
+static void spicb(SPIDriver *spip) {
+	(void) spip;
+	/*FIXME get new data to display */
+	palClearPad(GPIOB, 15);
 
-  palTogglePad(GPIOD, GPIOD_LED5); /* Red */
+	palTogglePad(GPIOD, GPIOD_LED5); /* Red */
 }
 
 /**
  * DMX thread.
  */
 __attribute__((noreturn))
- msg_t
- ledstripethread(void *arg)
-{
-  (void) arg;
-  chRegSetThreadName("ledstripe");
+  msg_t ledstripethread(void *arg) {
+	(void) arg;
+	chRegSetThreadName("ledstripe");
 
+	while (1) {
+		while (!updateBufferContent()) {
+			spiStartSendI(&SPID2, LENGTH_LEDBITS, ledstripe_buffer);
+			chThdSleep(2); /* give the scheduler some time */
+		}
 
-      while (1)
-      {
-	  while (!updateBufferContent())
-          {
-            spiStartSendI(&SPID2, LENGTH_LEDBITS, ledstripe_buffer);
-            chThdSleep(2); /* give the scheduler some time */
-          }
+		/* End with an reset */
+		spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer); /*TODO test here a long sleep ?!? */
 
-	  /* End with an reset */
-	  spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer); /*TODO test here a long sleep ?!? */
-
-	  /* Wait some time, to make the scheduler running tasks with lower prio */
-	  palClearPad(GPIOB, 15);
-	  chThdSleep(MS2ST(50));
-
-	  updateBufferContent();
-      }
+		/* Wait some time, to make the scheduler running tasks with lower prio */
+		palClearPad(GPIOB, 15);
+		chThdSleep(MS2ST(50));
+	}
 }
 
-static int updateBufferContent()
-{
-    int i, bitIndex;
-    uint8_t mask;
+static int updateBufferContent() {
+	int i, bitIndex;
+	uint8_t mask;
 
-    /*FIXME normally there is an index needed, where in the big LED array to look */
+	/*FIXME normally there is an index needed, where in the big LED array to look */
 
-    /* Update the complete Buffer, that is sent via SPI */
-    for(i=0; i < LENGTH_BYTE_SEND; i++)
-    {
-        for(bitIndex = 1; bitIndex <= BITS_IN_BYTE; bitIndex++)
-        {
-            mask = ~(1 << bitIndex);
-            if (ledStates[mLedstripeIndex] & mask)
-            {
-                ledstripe_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] = CODE_BIT_1;
-            }
-            else
-            {
-                ledstripe_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] = CODE_BIT_0;
-            }
-        }
+	/* Update the complete Buffer, that is sent via SPI */
+	for (i = 0; i < LENGTH_BYTE_SEND; i++) {
+		for (bitIndex = 1; bitIndex <= BITS_IN_BYTE; bitIndex++) {
+			mask = ~(1 << bitIndex);
+			if (ledStates[mLedstripeIndex] & mask) {
+				ledstripe_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
+						CODE_BIT_1;
+			} else {
+				ledstripe_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
+						CODE_BIT_0;
+			}
+		}
 
-        mLedstripeIndex++;
+		mLedstripeIndex++;
 
-        if (mLedstripeIndex >= LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED)
-        {
-            mLedstripeIndex = 0;
-            return TRUE;
-        }
+		if (mLedstripeIndex >= (LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED)) {
+			mLedstripeIndex = 0;
+			return TRUE;
+		}
 
-    }
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 /******************************************************************************
  * GLOBAL FUNCTIONS
  ******************************************************************************/
 
-void
-ledstripe_init(void)
-{
+void ledstripe_init(void) {
 	int i;
-	for(i=0; i < LENGTH_LEDBITS; i++)
-	{
+	for (i = 0; i < LENGTH_LEDBITS; i++) {
 		ledstripe_buffer[i] = CODE_BIT_0;
 	}
 
 	/* Initialize the end array */
-	for(i=0; i < LENGTH_END_BUFFER; i++)
-	{
+	for (i = 0; i < LENGTH_END_BUFFER; i++) {
 		endbuffer[i] = 0x00;
 	}
 
 	/* Tiny example with Blue LEDs */
-	for(i=2; i < LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED; i+=3)
-	{
-	    ledStates[i] = ((i / 3) * 10 % 255);
+	for (i = 2; i < LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED; i += 3) {
+		ledStates[i] = ((i / 3) * 10 % 255);
 	}
 
 	/*
-         * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
-         * PB15 - MOSI.
-         */
-        spiStart(&SPID2, &spi2cfg);
-        palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5));              /* MISO.    */
-        palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
-                                 PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
+	 * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
+	 * PB15 - MOSI.
+	 */
+	spiStart(&SPID2, &spi2cfg);
+	palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5)); /* MISO.    */
+	palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
+			PAL_STM32_OSPEED_HIGHEST); /* MOSI.    */
 
-      chThdCreateStatic(wa_ledstripe, sizeof(wa_ledstripe), NORMALPRIO - 1, ledstripethread, NULL);
+	chThdCreateStatic(wa_ledstripe, sizeof(wa_ledstripe), NORMALPRIO - 1,
+			ledstripethread, NULL);
 }
 
