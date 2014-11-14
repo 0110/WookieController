@@ -146,6 +146,17 @@ void cmd_ledstripe_modify(BaseSequentialStream *chp, int argc, char *argv[]) {
 				}
 				chprintf(chp, "\r\n");
 			}
+		} else if (strcmp(argv[0], "demo") == 0) {
+			int i;
+
+			for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
+			{
+				if (i > 0 && i % 3 == 2)
+				{
+					ledstripe_fb[i] = (i * 10) % 255;
+				}
+			}
+
 		} else if (strcmp(argv[0], "help") == 0) {
 			chprintf(chp, "Possible commands are:\r\n"
 			LEDSTRIPE_USAGE_HELP);
