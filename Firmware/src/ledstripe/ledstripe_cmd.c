@@ -156,7 +156,7 @@ void cmd_ledstripe_modify(BaseSequentialStream *chp, int argc, char *argv[]) {
 				chprintf(chp, "Options are:\r\n0: red\r\n1: green\r\n2: blue\r\n");
 			}
 
-			for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
+			for(i=0; i < (LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED); i++)
 			{
 				if (i % 3 == offset)
 				{

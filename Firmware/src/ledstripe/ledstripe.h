@@ -22,10 +22,10 @@
 /*@{*/
 
 #define LEDSTRIPE_THREAD_STACK_SIZE	        512
-#define LEDSTRIPE_MAXIMUM					18      /**< Amount of supported LEDs */
+#define LEDSTRIPE_MAXIMUM					20      /**< Amount of supported LEDs */
 #define LEDSTRIPE_COLORS_PER_LED           3       /**< Colors (each color uses one byte) per LED -> Memory usage is LEDSTRIPE_MAXIMUM times LEDSTRIPE_COLORS_PER_LED */
-#define LENGTH_LEDBITS						216     /**< Space for 9 LEDs */
-#define LENGTH_BYTE_SEND        			9       /**< Amount of LEDs that are sent at one block via SPI */
+#define LENGTH_LEDBITS						480     /**< Space for 20 LEDs */
+#define LENGTH_BYTE_SEND        			20      /**< Amount of Bytes that are sent at one block via SPI */
 
 #ifndef LEDSTRIPE_THREAD_PRIORITY
 #define LEDSTRIPE_THREAD_PRIORITY     (LOWPRIO + 3)
