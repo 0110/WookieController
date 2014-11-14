@@ -131,7 +131,7 @@ static int updateBufferContent() {
 void ledstripe_init(void) {
 	int i;
 	for (i = 0; i < LENGTH_LEDBITS; i++) {
-		ledstripe_fb[i] = CODE_BIT_0;
+		spi_buffer[i] = CODE_BIT_0;
 	}
 
 	/* Initialize the end array */
@@ -139,9 +139,9 @@ void ledstripe_init(void) {
 		endbuffer[i] = 0x00;
 	}
 
-	/* Tiny example with Blue LEDs */
-	for (i = 2; i < LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED; i += 3) {
-		ledstripe_fb[i] = ((i / 3) * 10 % 255);
+	/* Clear the LEDs */
+	for (i = 0; i < LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED; i ++) {
+		ledstripe_fb[i] = 0;
 	}
 
 	/*
