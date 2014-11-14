@@ -158,7 +158,7 @@ void cmd_ledstripe_modify(BaseSequentialStream *chp, int argc, char *argv[]) {
 
 			for(i=0; i < LEDSTRIPE_MAXIMUM; i++)
 			{
-				if (i > 0 && i % 3 == offset)
+				if (i % 3 == offset)
 				{
 					ledstripe_fb[i] = (i * 10) % 255;
 				}
