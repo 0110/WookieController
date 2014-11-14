@@ -32,7 +32,7 @@
 #endif
 
 
-extern uint8_t ledstripe_fb[LENGTH_LEDBITS]; /**< Converted Bits to be sent via SPI */
+extern uint8_t ledstripe_fb[LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED];
 
 extern WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 

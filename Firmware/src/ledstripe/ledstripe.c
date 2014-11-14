@@ -17,9 +17,9 @@ WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 #define LENGTH_END_BUFFER	45      /**< Bits (zeroed), to simulate the end of a communication aka Reset */
 #define BITS_IN_BYTE            8
 
-static uint8_t ledStates[LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED];
+uint8_t ledstripe_fb[LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED];
 
-uint8_t ledstripe_fb[LENGTH_LEDBITS]; /**< Converted Bits to be sent via SPI */
+static uint8_t spi_buffer[LENGTH_LEDBITS]; /**< Converted Bits to be sent via SPI */
 static uint8_t endbuffer[LENGTH_END_BUFFER]; /**< buffer containing zeros to simulate a reset signal */
 
 static int mLedstripeIndex = 0;
@@ -67,8 +67,6 @@ static void spicb(SPIDriver *spip) {
 	(void) spip;
 	/*FIXME get new data to display */
 	palClearPad(GPIOB, 15);
-
-	palTogglePad(GPIOD, GPIOD_LED5); /* Red */
 }
 
 /**
@@ -81,8 +79,8 @@ __attribute__((noreturn))
 
 	while (1) {
 		while (!updateBufferContent()) {
-			spiStartSendI(&SPID2, LENGTH_LEDBITS, ledstripe_fb);
-			chThdSleep(2); /* give the scheduler some time */
+			spiStartSendI(&SPID2, LENGTH_LEDBITS, spi_buffer);
+			chThdSleep(1); /* give the scheduler some time */
 		}
 
 		/* End with an reset */
@@ -91,6 +89,7 @@ __attribute__((noreturn))
 		/* Wait some time, to make the scheduler running tasks with lower prio */
 		palClearPad(GPIOB, 15);
 		chThdSleep(MS2ST(50));
+		palTogglePad(GPIOD, GPIOD_LED5); /* Red */
 	}
 }
 
@@ -104,11 +103,11 @@ static int updateBufferContent() {
 	for (i = 0; i < LENGTH_BYTE_SEND; i++) {
 		for (bitIndex = 1; bitIndex <= BITS_IN_BYTE; bitIndex++) {
 			mask = ~(1 << bitIndex);
-			if (ledStates[mLedstripeIndex] & mask) {
-				ledstripe_fb[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
+			if (ledstripe_fb[mLedstripeIndex] & mask) {
+				spi_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
 						CODE_BIT_1;
 			} else {
-				ledstripe_fb[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
+				spi_buffer[(mLedstripeIndex * BITS_IN_BYTE) + bitIndex] =
 						CODE_BIT_0;
 			}
 		}
