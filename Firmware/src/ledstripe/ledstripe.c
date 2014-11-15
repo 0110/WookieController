@@ -20,7 +20,6 @@ WORKING_AREA(wa_ledstripe, LEDSTRIPE_THREAD_STACK_SIZE);
 uint8_t ledstripe_fb[LEDSTRIPE_MAXIMUM * LEDSTRIPE_COLORS_PER_LED];
 
 static uint8_t spi_buffer[LENGTH_LEDBITS]; /**< Converted Bits to be sent via SPI */
-static uint8_t endbuffer[LENGTH_END_BUFFER]; /**< buffer containing zeros to simulate a reset signal */
 
 static int mLedstripeIndex = 0;
 
@@ -93,15 +92,16 @@ __attribute__((noreturn))
 			spiStartSendI(&SPID2, LENGTH_LEDBITS, spi_buffer);
 
 			/* Give the Scheduler of Chibios some time */
-			chThdSleep(US2ST(1));
+			chThdSleep(1);
 		}
 
-		chThdSleep(1); /* give the scheduler some time */
-		/* End with an reset */
-		spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer); /*TODO test here a long sleep ?!? */
+		palClearPad(GPIOB, 12);
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
 		chThdSleep(MS2ST(50));
+		palSetPad(GPIOB, 12); /* now the logic is inverted because of PULLUP */
+		chThdSleep(MS2ST(1));
+
 		palTogglePad(GPIOD, GPIOD_LED5); /* Red */
 	}
 }
@@ -143,11 +143,6 @@ void ledstripe_init(void) {
 	int i;
 	for (i = 0; i < LENGTH_LEDBITS; i++) {
 		spi_buffer[i] = CODE_BIT_0;
-	}
-
-	/* Initialize the end array */
-	for (i = 0; i < LENGTH_END_BUFFER; i++) {
-		endbuffer[i] = 0x00;
 	}
 
 	/* Clear the LEDs */
