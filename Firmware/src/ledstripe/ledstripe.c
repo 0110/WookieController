@@ -55,8 +55,8 @@ static void spicb(SPIDriver *spip);
  */
 static const SPIConfig spi2cfg = { spicb,
 /* HW dependent part.*/
-GPIOB,
-12,
+0,
+0,
 SPI_CR1_BR_1
 };
 
@@ -80,10 +80,19 @@ __attribute__((noreturn))
 	(void) arg;
 	chRegSetThreadName("ledstripe");
 
+	palSetPadMode(GPIOB, 12, PAL_STM32_MODE_OUTPUT | PAL_STM32_OTYPE_PUSHPULL |PAL_STM32_PUDR_PULLUP);
+
 	while ( TRUE ) {
 		while (!updateBufferContent()) {
-			palClearPad(GPIOB, 12);
+
+			palSetPad(GPIOB, 12);
+			palSetPadMode(GPIOB, 12, PAL_STM32_MODE_INPUT | PAL_STM32_PUDR_FLOATING);
+
 			spiStartSendI(&SPID2, LENGTH_LEDBITS, spi_buffer);
+
+			/* Send Reset. */
+			palSetPadMode(GPIOB, 12, PAL_STM32_MODE_OUTPUT | PAL_STM32_OTYPE_PUSHPULL |PAL_STM32_PUDR_PULLUP);
+			palClearPad(GPIOB, 12);
 
 			/* Give the Scheduler of Chibios some time */
 			chThdSleep(US2ST(1));
@@ -94,7 +103,6 @@ __attribute__((noreturn))
 		spiStartSendI(&SPID2, LENGTH_END_BUFFER, endbuffer); /*TODO test here a long sleep ?!? */
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
-		palClearPad(GPIOB, 15);
 		chThdSleep(MS2ST(50));
 		palTogglePad(GPIOD, GPIOD_LED5); /* Red */
 	}
@@ -154,9 +162,6 @@ void ledstripe_init(void) {
 	 * PB15 - MOSI.
 	 */
 	spiStart(&SPID2, &spi2cfg);
-	palSetPad(GPIOB, 12);
-	palSetPadMode(GPIOB, 12, PAL_MODE_OUTPUT_PUSHPULL |
-						   PAL_STM32_OSPEED_HIGHEST);           /* NSS.     */
 	palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5)); /* MISO.    */
 	palSetPadMode(GPIOB, SPI_OUTPUT_PIN, PAL_MODE_ALTERNATE(5) |
 			PAL_STM32_OSPEED_HIGHEST); /* MOSI.    */
