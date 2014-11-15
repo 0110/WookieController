@@ -69,7 +69,9 @@ SPI_CR1_BR_1
  */
 static void spicb(SPIDriver *spip) {
 	/* On transfer end just releases the slave select line.*/
-	palSetPad(GPIOB, 12);
+
+	palSetPadMode(GPIOB, 12, PAL_STM32_MODE_OUTPUT | PAL_STM32_OTYPE_PUSHPULL |PAL_STM32_PUDR_PULLUP);
+	palSetPad(GPIOB, 12); /* now the logic is inverted because of PULLUP */
 }
 
 /**
@@ -85,14 +87,10 @@ __attribute__((noreturn))
 	while ( TRUE ) {
 		while (!updateBufferContent()) {
 
-			palSetPad(GPIOB, 12);
+			palClearPad(GPIOB, 12);
 			palSetPadMode(GPIOB, 12, PAL_STM32_MODE_INPUT | PAL_STM32_PUDR_FLOATING);
 
 			spiStartSendI(&SPID2, LENGTH_LEDBITS, spi_buffer);
-
-			/* Send Reset. */
-			palSetPadMode(GPIOB, 12, PAL_STM32_MODE_OUTPUT | PAL_STM32_OTYPE_PUSHPULL |PAL_STM32_PUDR_PULLUP);
-			palClearPad(GPIOB, 12);
 
 			/* Give the Scheduler of Chibios some time */
 			chThdSleep(US2ST(1));
