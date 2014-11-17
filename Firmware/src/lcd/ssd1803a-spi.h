@@ -2,6 +2,10 @@
  * @brief Interface to use LCD with a SSD1803A controller
  * @author Ollo
  *
+ * Datasheets:
+ * - https://cdn-reichelt.de/documents/datenblatt/A500/DS_DOGM204_UK.pdf
+ * - http://www.lcd-module.de/fileadmin/eng/pdf/zubehoer/ssd1803a_2_0.pdf
+ *
  * @defgroup SSD1803A
  */
 
