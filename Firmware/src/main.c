@@ -18,7 +18,7 @@
 
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
-#include "ledstripe/ledstripe.h"
+#include "lcd/ssd1803a-spi.h"
 
 /******************************************************************************
  * DEFINITIONS
@@ -76,7 +76,7 @@ int main(void) {
 	halInit();
 	chSysInit();
 
-	ledstripe_init();
+	ssd1803a_spi_init();
 
 	/*
 	 * Initialize USB serial console
