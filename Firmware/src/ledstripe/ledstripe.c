@@ -11,73 +11,90 @@
 
 #include "ledstripe/ledstripe.h"
 
-#define		BIT_LOW 	8	/*FIXME adapt values (in micro seconds) */
-#define		BIT_HIGH 	4	/*FIXME adapt values (in micro seconds) */
+ledstripe_color ledstripe_framebuffer[LEDSTRIPE_FRAMEBUFFER_SIZE];
+static uint16_t ledstripe_pwm_buffer[LEDSTRIPE_PWM_BUFFER_SIZE];
+static uint16_t frame_pos = 0;
 
-#define		BIT_LENGTH	12	/* micro seconds */
-
-#define TEST_PATTERN_LENGTH		24
-
-#define	 set_pin_high()	palSetPad(GPIOA, GPIOA_LEDEXT)		/* Pin A8 in our example */
-#define set_pin_low()	palClearPad(GPIOA, GPIOA_LEDEXT)	/* Pin A8 in our example */
-
-static uint8_t testpattern[TEST_PATTERN_LENGTH] = {
-		BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH, BIT_HIGH,	/* Red */
-		BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW,	/* Green */
-		BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW, BIT_LOW,	/* Blue */
-};
-
-static int byteOffset=0;	/* is used with the doulbed size of "testpattern" to simulate the value to fall */
-
-static void gpt_adc_trigger(GPTDriver *gpt_ptr)
-{
-	/* Update next value */
-	if ((byteOffset / 2) >= TEST_PATTERN_LENGTH)
-	{
-		/*FIXME normal, the next must be copied, now simply restart */
-		byteOffset = 0;
-		palTogglePad(GPIOD, GPIOD_LED5); 	/* Red.  */
-	}
-	else
-	{
-		byteOffset++;
-	}
-
-	if (byteOffset % 2 != 0 && byteOffset > 0)
-	{
-		set_pin_low();
-
-		// restart timer
-		gptStartOneShot(gpt_ptr, BIT_LENGTH - testpattern[byteOffset / 2] );
-	}
-	else	/* go to the next field in the array */
-	{
-		set_pin_high();
-		gptStartOneShot(gpt_ptr, testpattern[byteOffset / 2] );
-	}
-
+// writes the pwm values of one byte into the array which will be used by the dma
+static inline void color2pwm(uint16_t ** dest, uint8_t color) {
+	uint8_t mask = 0x80;
+	do {
+		if (color & mask) {
+			**dest = 49;
+		} else {
+			**dest = 20;
+		}
+		*dest += 1;
+		mask >>= 1;
+	} while (mask != 0);
 }
 
-/*
- * Configure a GPT object
- */
-static GPTConfig gpt_adc_config =
-{
-     30000000,  // timer clock: 30Mhz
-     gpt_adc_trigger  // Timer callback function
-};
+static void Update_Buffer(uint16_t* buffer) {
+	static int incomplete_return = 0;
+	ledstripe_color *framebufferp;
+	uint32_t i, j;
+	uint16_t * bufp;
 
-void ledstripe_init() {
+	for (i = 0; i < (LEDSTRIPE_PWM_BUFFER_SIZE / 2) / 24; i++) {
+		if (incomplete_return) {
+			incomplete_return = 0;
+			for (j = 0; j < 24; j++) {
+				buffer[i * 24 + j] = 0;
+			}
+		} else {
+			if (frame_pos == LEDSTRIPE_FRAMEBUFFER_SIZE) {
+				incomplete_return = 1;
+				frame_pos = 0;
+				for (j = 0; j < 24; j++) {
+					buffer[i * 24 + j] = 0;
+				}
+			} else {
+				framebufferp = &(ledstripe_framebuffer[frame_pos++]);
+				bufp = buffer + (i * 24);
+// edit here to change order of colors in "ws2812_framebuffer" (0x00RRGGBB, 0x00GGBBRR, etc)
+// the chip needs G R B
+				color2pwm(&bufp, framebufferp->green); // green
+				color2pwm(&bufp, framebufferp->red); // red
+				color2pwm(&bufp, framebufferp->blue); // blue
+			}
+		}
+	}
+}
 
-	/* init the required hardware */
+static void ledstripe_irq_handler(void* data, uint32_t flags) {
+	(void) data;
 
-	/*
-	  * Start the GPT timer
-	  * Timer is clocked at 1Mhz (1us). Timer triggers at 76us and calls the callback function
-	  */
-	gptStart(&GPTD1, &gpt_adc_config);
-	set_pin_high();
-	gptStartOneShot(&GPTD1, testpattern[byteOffset] /* begin with the first time */);
+	// Half-Transfer completed
+	// HTIF2 im DMA_LISR reg
+	if ( flags & (1<<20)) {
+		Update_Buffer(ledstripe_pwm_buffer);
+	}
+
+	// Transfer completed
+	// TCIF2 im DMA_LISR reg
+	if (flags & (1<<21)) {
+		Update_Buffer(ledstripe_pwm_buffer + (LEDSTRIPE_PWM_BUFFER_SIZE / 2));
+	}
+}
+
+void ledstripe_init(void) {
+	int i;
+
+	// Init buffers
+	for (i = 0; i < LEDSTRIPE_PWM_BUFFER_SIZE; i++) {
+		ledstripe_pwm_buffer[i] = 0;
+	}
+	for (i = 0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+		ledstripe_framebuffer[i].red = 0;
+		ledstripe_framebuffer[i].green = 0;
+		ledstripe_framebuffer[i].blue = 0;
+	}
+
+	/*  GPIO config done in board.h
+	 *  AF TIM3; Push
+	 */
+
+	dmaStreamAllocate(STM32_DMA1_STREAM2, 0, ledstripe_irq_handler, NULL);
 
 }
 

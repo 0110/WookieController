@@ -18,12 +18,18 @@
 
 #include "hal.h"
 
-typedef struct Color Color;
-	struct Color {
-	uint8_t R;
-	uint8_t G;
-	uint8_t B;
-};
+
+//enter number of LEDs here!
+#define LEDSTRIPE_FRAMEBUFFER_SIZE 240
+
+//Size of Ring-Buffer
+#define LEDSTRIPE_PWM_BUFFER_SIZE 192
+
+typedef struct {
+	uint8_t red;
+	uint8_t green;
+	uint8_t blue;
+} ledstripe_color;
 
 /** @addtogroup LEDSTRIPE */
 /*@{*/
@@ -32,6 +38,8 @@ typedef struct Color Color;
 extern "C"
 {
 #endif
+
+extern ledstripe_color ledstripe_framebuffer[LEDSTRIPE_FRAMEBUFFER_SIZE];
 
 void ledstripe_init(void);
 
