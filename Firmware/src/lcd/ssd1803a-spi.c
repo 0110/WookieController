@@ -63,6 +63,7 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
   transferStore[2] = 0x00;
   transferStore[2] |= (data & 0xF0) << 4;
 
+  spiStartSendI(&SPID2, SPI_TELEGRAM_LENGTH, transferStore);
 
   {
     int i, bit;
