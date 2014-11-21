@@ -113,6 +113,7 @@ msg_t ssd1803a_spi_thread(void *arg)
 void
 ssd1803a_spi_init(void)
 {
+  usbcdc_print("Starting LCD");
   /*
    * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
    * PB12 - NSS.

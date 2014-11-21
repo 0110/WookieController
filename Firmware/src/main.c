@@ -30,9 +30,16 @@
 /* Command line related.                                                     */
 /*===========================================================================*/
 
+
+void cmd_startLCD(BaseSequentialStream *chp, int argc, char *argv[])
+{
+  ssd1803a_spi_init();
+}
+
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
+		{ "lcd", cmd_startLCD },
 		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
@@ -75,8 +82,6 @@ int main(void) {
 	 */
 	halInit();
 	chSysInit();
-
-	ssd1803a_spi_init();
 
 	/*
 	 * Initialize USB serial console
