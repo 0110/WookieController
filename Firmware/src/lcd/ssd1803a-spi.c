@@ -8,6 +8,7 @@
 #include "ch.h"
 #include "hal.h"
 #include "lcd/ssd1803a-spi.h"
+#include "usbcdc/usbcdc.h"
 
 #define SPI_TELEGRAM_LENGTH     3       /**< Amount of bytes for one package of information to the LCD */
 
@@ -62,6 +63,28 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
   transferStore[2] = 0x00;
   transferStore[2] |= (data & 0xF0) << 4;
 
+
+  {
+    int i, bit;
+    usbcdc_print("Send: ");
+    for(i=0; i < SPI_TELEGRAM_LENGTH; i++)
+    {
+        for(bit=8; bit > 0; bit--)
+        {
+            if (transferStore[i] & (1 << bit))
+            {
+                usbcdc_print("1");
+            }
+            else
+            {
+                usbcdc_print("0");
+            }
+        }
+        usbcdc_print(" ");
+    }
+    usbcdc_print("\r\n");
+  }
+
 }
 
 /*
@@ -113,7 +136,7 @@ msg_t ssd1803a_spi_thread(void *arg)
 void
 ssd1803a_spi_init(void)
 {
-  usbcdc_print("Starting LCD");
+  usbcdc_print("Starting LCD\r\n");
   /*
    * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
    * PB12 - NSS.
