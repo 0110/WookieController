@@ -36,6 +36,13 @@ void usbcdc_init(const ShellCommand * commands);
  */
 void usbcdc_process(void);
 
+/**
+ * @fn void usbcdc_print(const char *s)
+ * @brief print a string via USB
+ * @param s
+ */
+void usbcdc_print(const char *s);
+
 #ifdef __cplusplus
 }
 #endif
