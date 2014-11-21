@@ -116,20 +116,23 @@ msg_t ssd1803a_spi_thread(void *arg)
  sendViaSPI(0,0,0x38);
  /* Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
  sendViaSPI(0,0,0x0F);
- chThdSleep(MS2ST(1));
 
  /* Set Character table */
- //sendViaSPI(0,1, 0x04);
-#if 0
- sendViaSPI(0,0, 'H');
- sendViaSPI(0,0, 'e');
- sendViaSPI(0,0, 'l');
- sendViaSPI(0,0, 'l');
- sendViaSPI(0,0, 'o');
+ sendViaSPI(0, 0, 0x3A);
+ sendViaSPI(0, 1, 0x72);
+ sendViaSPI(0, 1, 0x00);
+ sendViaSPI(0, 0, 0x38);
+
+ sendViaSPI(0, 0, 'H');
+ sendViaSPI(0, 0, 'e');
+ sendViaSPI(0, 0, 'l');
+ sendViaSPI(0, 0, 'l');
+ sendViaSPI(0, 0, 'o');
+ sendViaSPI(0, 0, '\0');
  /* A tiny test */
  sendViaSPI(0,0, '\r');
  sendViaSPI(0,0, '\n');
-#endif
+
 
  while ( TRUE )
  {
