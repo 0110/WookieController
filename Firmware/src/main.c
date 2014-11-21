@@ -86,6 +86,8 @@ int main(void) {
 	 */
 	shellInit();
 
+	ssd1803a_spi_init();
+
 	/*
 	 * Activates the serial driver 6 and SDC driver 1 using default
 	 * configuration.
@@ -102,8 +104,6 @@ int main(void) {
 
 	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
-	ssd1803a_spi_init();
-
 	/*
 	 * Normal main() thread activity, in this demo it does nothing except
 	 * sleeping in a loop and check the button state, when the button is
@@ -116,7 +116,7 @@ int main(void) {
 
 		if (palReadPad(GPIOA, GPIOA_BUTTON))
 		{
-			palSetPad(GPIOD, GPIOD_LED5);	/* Red On*/
+			palTogglePad(GPIOD, GPIOD_LED5);	/* Red On*/
 			usbcdc_print("Button pressed\r\n");
 		}
 

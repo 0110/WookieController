@@ -8,7 +8,6 @@
 #include "ch.h"
 #include "hal.h"
 #include "lcd/ssd1803a-spi.h"
-#include "usbcdc/usbcdc.h"
 
 #define SPI_TELEGRAM_LENGTH     3       /**< Amount of bytes for one package of information to the LCD */
 
@@ -74,35 +73,7 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
   SWAP_NIPPLE(tmp, 7, 4, transferStore[2])
 
   spiStartSendI(&SPID2, SPI_TELEGRAM_LENGTH, transferStore);
-
-  {
-    int i;
-    usbcdc_print("Send: ");
-    for(i=0; i < SPI_TELEGRAM_LENGTH; i++)
-    {
-        for(bit=7; bit >= 0; bit--)
-        {
-            if (transferStore[i] & (1 << bit))
-            {
-                usbcdc_print("1");
-            }
-            else
-            {
-                usbcdc_print("0");
-            }
-        }
-        usbcdc_print(" ");
-    }
-    /* Raw: numbers*/
-    usbcdc_print(" ");
-    for(i=0; i < SPI_TELEGRAM_LENGTH; i++)
-	{
-    	usbcdc_print("0x%X ", transferStore[i]);
-	}
-
-    usbcdc_print("\r\n");
-  }
-
+  chThdSleep(MS2ST(1)); /* give the scheduler some time */
 }
 
 /*
@@ -145,22 +116,26 @@ msg_t ssd1803a_spi_thread(void *arg)
  sendViaSPI(0,0,0x38);
  /* Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
  sendViaSPI(0,0,0x0F);
+ chThdSleep(MS2ST(1));
 
  /* Set Character table */
- sendViaSPI(0,0, 0x04);
-
+ //sendViaSPI(0,1, 0x04);
+#if 0
+ sendViaSPI(0,0, 'H');
+ sendViaSPI(0,0, 'e');
+ sendViaSPI(0,0, 'l');
+ sendViaSPI(0,0, 'l');
+ sendViaSPI(0,0, 'o');
  /* A tiny test */
  sendViaSPI(0,0, '\r');
  sendViaSPI(0,0, '\n');
- sendViaSPI(0,0, 0x41);
+#endif
 
- sendViaSPI(0,0, '\r');
- sendViaSPI(0,0, '\n');
- /*FIXME while (1) */
+ while ( TRUE )
  {
 
    /*FIXME SPI usage example: spiStartSendI(&SPID2, LENGTH_LEDBITS, SSD1803A_buffer); */
-   chThdSleep(2); /* give the scheduler some time */
+	 chThdSleep(MS2ST(100)); /* give the scheduler some time */
  }
  return RDY_OK;
 }
@@ -172,7 +147,6 @@ msg_t ssd1803a_spi_thread(void *arg)
 void
 ssd1803a_spi_init(void)
 {
-  usbcdc_print("Starting LCD PCLK %d\r\n", STM32_PCLK1);
   /*
    * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
    * PB12 - NSS.
@@ -190,6 +164,5 @@ ssd1803a_spi_init(void)
   palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
                            PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
   chThdCreateStatic(wa_ssd1803a, sizeof(wa_ssd1803a), NORMALPRIO - 1, ssd1803a_spi_thread, NULL);
-  chThdSleepMilliseconds(50); /* Give the thread some time on its own */
 }
 
