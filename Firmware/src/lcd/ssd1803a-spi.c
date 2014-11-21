@@ -73,7 +73,7 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
   SWAP_NIPPLE(tmp, 7, 4, transferStore[2])
 
   spiStartSendI(&SPID2, SPI_TELEGRAM_LENGTH, transferStore);
-  chThdSleep(MS2ST(1)); /* give the scheduler some time */
+  chThdSleep(MS2ST(50)); /* give the scheduler some time */
 }
 
 /*
@@ -117,6 +117,7 @@ msg_t ssd1803a_spi_thread(void *arg)
  /* Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
  sendViaSPI(0,0,0x0F);
 
+#if 0
  /* Set Character table */
  sendViaSPI(0, 0, 0x3A);
  sendViaSPI(0, 1, 0x72);
@@ -132,7 +133,7 @@ msg_t ssd1803a_spi_thread(void *arg)
  /* A tiny test */
  sendViaSPI(0,0, '\r');
  sendViaSPI(0,0, '\n');
-
+#endif
 
  while ( TRUE )
  {
