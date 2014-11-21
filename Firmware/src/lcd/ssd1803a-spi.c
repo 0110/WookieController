@@ -94,7 +94,8 @@ msg_t ssd1803a_spi_thread(void *arg)
  * Function Set          0       0       0       0       1        1      1       0       1       0       $38     8-Bit data length extension Bit RE=0; IS=0
  * Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
 
-
+      sendViaSPI(0,0,0x3A);
+      sendViaSPI(0,0,0x09);
 
       /*FIXME while (1) */
       {
