@@ -34,6 +34,8 @@ static void spicb(SPIDriver *spip);
  * LOCAL VARIABLES
  ******************************************************************************/
 
+static char buffer[LCD_COLUMNS * LCD_ROWS];
+
 /*
  * SPI configuration structure.
  * The slave select line is the pin GPIOA_SPI1NSS on the port GPIOA.
@@ -73,7 +75,7 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
   SWAP_NIPPLE(tmp, 7, 4, transferStore[2])
 
   spiStartSendI(&SPID2, SPI_TELEGRAM_LENGTH, transferStore);
-  chThdSleep(MS2ST(50)); /* give the scheduler some time */
+  chThdSleep(MS2ST(2)); /* give the scheduler some time */
 }
 
 /*
@@ -89,6 +91,7 @@ static void spicb(SPIDriver *spip)
  */
 msg_t ssd1803a_spi_thread(void *arg)
 {
+  int i;
   (void) arg;
   chRegSetThreadName("lcd-ssd1803a");
 
@@ -117,41 +120,18 @@ msg_t ssd1803a_spi_thread(void *arg)
  /* Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
  sendViaSPI(0,0,0x0F);
 
- chThdSleep(MS2ST(50));
- sendViaSPI(0,0,0x01); /* Clear Display */
- sendViaSPI(0,0,0x02); /* Return home */
- sendViaSPI(0,1,'C');
- sendViaSPI(0,1,'3');
- sendViaSPI(0,1,'M');
- sendViaSPI(0,1,'A');
- sendViaSPI(0,1,'\r');
- sendViaSPI(0,1,'\n');
- sendViaSPI(0,1,'H');
- sendViaSPI(0,1,'e');
-
-#if 0
- /* Set Character table */
- sendViaSPI(0, 0, 0x3A);
- sendViaSPI(0, 1, 0x72);
- sendViaSPI(0, 1, 0x00);
- sendViaSPI(0, 0, 0x38);
-
- sendViaSPI(0, 0, 'H');
- sendViaSPI(0, 0, 'e');
- sendViaSPI(0, 0, 'l');
- sendViaSPI(0, 0, 'l');
- sendViaSPI(0, 0, 'o');
- sendViaSPI(0, 0, '\0');
- /* A tiny test */
- sendViaSPI(0,0, '\r');
- sendViaSPI(0,0, '\n');
-#endif
 
  while ( TRUE )
  {
 
-   /*FIXME SPI usage example: spiStartSendI(&SPID2, LENGTH_LEDBITS, SSD1803A_buffer); */
-	 chThdSleep(MS2ST(100)); /* give the scheduler some time */
+	 chThdSleep(MS2ST(50));
+	  sendViaSPI(0,0,0x01); /* Clear Display */
+	  sendViaSPI(0,0,0x02); /* Return home */
+	  for(i=0; i < LCD_COLUMNS * LCD_ROWS; i++)
+	  {
+		sendViaSPI(0,1,buffer[i]);
+	  }
+
  }
  return RDY_OK;
 }
@@ -163,6 +143,20 @@ msg_t ssd1803a_spi_thread(void *arg)
 void
 ssd1803a_spi_init(void)
 {
+	int i;
+	for(i=0; i < LCD_COLUMNS * LCD_ROWS; i++)
+	{
+		buffer[i] = ' ';
+	}
+
+	/*Demo */
+	i=0;
+	buffer[i++] = 'C';
+	buffer[i++] = '3';
+	buffer[i++] = 'M';
+	buffer[i++] = 'A';
+
+
   /*
    * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
    * PB12 - NSS.

@@ -29,6 +29,9 @@
 #define SSD1803A_THREAD_PRIORITY     (LOWPRIO + 3)
 #endif
 
+#define LCD_COLUMNS			20
+#define LCD_ROWS			4
+
 extern WORKING_AREA(wa_ssd1803a, SSD1803A_THREAD_STACK_SIZE);
 
 #ifdef __cplusplus
