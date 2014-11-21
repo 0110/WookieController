@@ -12,6 +12,13 @@
 
 #define SPI_TELEGRAM_LENGTH     3       /**< Amount of bytes for one package of information to the LCD */
 
+#define SWAP_NIPPLE(TMP,START, STOP, DATA)		TMP = 0; \
+  for(bit=START; bit >= STOP; bit--) \
+  { \
+    if (DATA & (1 << bit)) { TMP |= (1 << (START - bit + STOP)); } \
+  } \
+  DATA = TMP;
+
 /**
  * Stack area for the led thread.
  */
@@ -30,7 +37,6 @@ static void spicb(SPIDriver *spip);
 
 /*
  * SPI configuration structure.
- * Maximum speed (12MHz), CPHA=0, CPOL=0, 16bits frames, MSb transmitted first.
  * The slave select line is the pin GPIOA_SPI1NSS on the port GPIOA.
  */
 static const SPIConfig spicfg = {
@@ -38,7 +44,7 @@ static const SPIConfig spicfg = {
   /* HW dependent part.*/
   GPIOB,
   12,
-  SPI_CR1_DFF
+  SPI_CR1_BR_2
 };
 
 /******************************************************************************
@@ -48,6 +54,8 @@ static const SPIConfig spicfg = {
 static void sendViaSPI(int RW, int RS, uint8_t data)
 {
   uint8_t transferStore[SPI_TELEGRAM_LENGTH];
+  int bit;
+  uint8_t tmp;
 
   /* Fill the start byte */
   transferStore[0] = 0xF8; /* Set the first 5 bits */
@@ -58,15 +66,17 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
   /*Set the first byte (lower data) */
   transferStore[1] = 0x00;
   transferStore[1] |= (data & 0x0F) << 4;
+  SWAP_NIPPLE(tmp, 7, 4, transferStore[1])
 
   /* Set the second byte (upper data) */
   transferStore[2] = 0x00;
-  transferStore[2] |= (data & 0xF0) << 4;
+  transferStore[2] |= (data & 0xF0);
+  SWAP_NIPPLE(tmp, 7, 4, transferStore[2])
 
   spiStartSendI(&SPID2, SPI_TELEGRAM_LENGTH, transferStore);
 
   {
-    int i, bit;
+    int i;
     usbcdc_print("Send: ");
     for(i=0; i < SPI_TELEGRAM_LENGTH; i++)
     {
@@ -113,20 +123,28 @@ msg_t ssd1803a_spi_thread(void *arg)
 
   /** The init procedure */
 /* Command               RS      R/W     DB7     DB6     DB5     DB4     DB3     DB2     DB1     DB0     Hex     Remark
- * Function Set          0       0       0       0       1        1      1       0       1       0       $3A     8-Bit data length extension Bit RE=1; REV=0
- * Extended funcion set  0       0       0       0       0        0      1       0       0       1       $09     4 line display
- * Entry mode set        0       0       0       0       0        0      0       1       1       0       $06     bottom view
- * Bias setting          0       0       0       0       0        1      1       1       1       0       $1E     BS1=1
- * Function Set          0       0       0       0       1        1      1       0       0       1       $39     8-Bit data length extension Bit RE=0; IS=1
- * Internal OSC          0       0       0       0       0        1      1       0       1       1       $1B     BS0=1 -> Bias=1/6
- * Follower control      0       0       0       1       1        0      1       1       1       0       $6E     Devider on and set value
- * Power control         0       0       0       1       0        1      0       1       1       1       $57     Booster on and set contrast (DB1=C5, DB0=C4)
- * Contrast Set          0       0       0       1       1        1      0       0       1       0       $72     Set contrast (DB3-DB0=C3-C0)
- * Function Set          0       0       0       0       1        1      1       0       1       0       $38     8-Bit data length extension Bit RE=0; IS=0
- * Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
-
-      sendViaSPI(0,0,0x3A);
-      sendViaSPI(0,0,0x09);
+ * Function Set          0       0       0       0       1        1      1       0       1       0       $3A     8-Bit data length extension Bit RE=1; REV=0*/
+ sendViaSPI(0,0,0x3A);
+ /* Extended funcion set  0       0       0       0       0        0      1       0       0       1       $09     4 line display*/
+ sendViaSPI(0,0,0x09);
+ /* Entry mode set        0       0       0       0       0        0      0       1       1       0       $06     bottom view*/
+ sendViaSPI(0,0,0x06);
+ /* Bias setting          0       0       0       0       0        1      1       1       1       0       $1E     BS1=1*/
+ sendViaSPI(0,0,0x1E);
+ /* Function Set          0       0       0       0       1        1      1       0       0       1       $39     8-Bit data length extension Bit RE=0; IS=1*/
+ sendViaSPI(0,0,0x39);
+ /* Internal OSC          0       0       0       0       0        1      1       0       1       1       $1B     BS0=1 -> Bias=1/6*/
+ sendViaSPI(0,0,0x1B);
+ /* Follower control      0       0       0       1       1        0      1       1       1       0       $6E     Devider on and set value*/
+ sendViaSPI(0,0,0x6E);
+ /* Power control         0       0       0       1       0        1      0       1       1       1       $57     Booster on and set contrast (DB1=C5, DB0=C4)*/
+ sendViaSPI(0,0,0x57);
+ /* Contrast Set          0       0       0       1       1        1      0       0       1       0       $72     Set contrast (DB3-DB0=C3-C0)*/
+ sendViaSPI(0,0,0x72);
+ /* Function Set          0       0       0       0       1        1      1       0       1       0       $38     8-Bit data length extension Bit RE=0; IS=0*/
+ sendViaSPI(0,0,0x38);
+ /* Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
+ sendViaSPI(0,0,0x0F);
 
       /*FIXME while (1) */
       {
@@ -144,7 +162,7 @@ msg_t ssd1803a_spi_thread(void *arg)
 void
 ssd1803a_spi_init(void)
 {
-  usbcdc_print("Starting LCD\r\n");
+  usbcdc_print("Starting LCD PCLK %d\r\n", STM32_PCLK1);
   /*
    * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
    * PB12 - NSS.
