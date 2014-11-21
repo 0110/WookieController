@@ -117,6 +117,18 @@ msg_t ssd1803a_spi_thread(void *arg)
  /* Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
  sendViaSPI(0,0,0x0F);
 
+ chThdSleep(MS2ST(50));
+ sendViaSPI(0,0,0x01); /* Clear Display */
+ sendViaSPI(0,0,0x02); /* Return home */
+ sendViaSPI(0,1,'C');
+ sendViaSPI(0,1,'3');
+ sendViaSPI(0,1,'M');
+ sendViaSPI(0,1,'A');
+ sendViaSPI(0,1,'\r');
+ sendViaSPI(0,1,'\n');
+ sendViaSPI(0,1,'H');
+ sendViaSPI(0,1,'e');
+
 #if 0
  /* Set Character table */
  sendViaSPI(0, 0, 0x3A);
