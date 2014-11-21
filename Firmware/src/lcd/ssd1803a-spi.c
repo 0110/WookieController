@@ -18,6 +18,8 @@
   } \
   DATA = TMP;
 
+char lcd_buffer[LCD_COLUMNS * LCD_ROWS];
+
 /**
  * Stack area for the led thread.
  */
@@ -33,8 +35,6 @@ static void spicb(SPIDriver *spip);
 /******************************************************************************
  * LOCAL VARIABLES
  ******************************************************************************/
-
-static char buffer[LCD_COLUMNS * LCD_ROWS];
 
 /*
  * SPI configuration structure.
@@ -129,7 +129,7 @@ msg_t ssd1803a_spi_thread(void *arg)
 	  sendViaSPI(0,0,0x02); /* Return home */
 	  for(i=0; i < LCD_COLUMNS * LCD_ROWS; i++)
 	  {
-		sendViaSPI(0,1,buffer[i]);
+		sendViaSPI(0,1,lcd_buffer[i]);
 	  }
 
  }
@@ -146,15 +146,8 @@ ssd1803a_spi_init(void)
 	int i;
 	for(i=0; i < LCD_COLUMNS * LCD_ROWS; i++)
 	{
-		buffer[i] = ' ';
+		lcd_buffer[i] = ' ';
 	}
-
-	/*Demo */
-	i=0;
-	buffer[i++] = 'C';
-	buffer[i++] = '3';
-	buffer[i++] = 'M';
-	buffer[i++] = 'A';
 
 
   /*

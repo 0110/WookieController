@@ -32,6 +32,8 @@
 #define LCD_COLUMNS			20
 #define LCD_ROWS			4
 
+extern char lcd_buffer[LCD_COLUMNS * LCD_ROWS];
+
 extern WORKING_AREA(wa_ssd1803a, SSD1803A_THREAD_STACK_SIZE);
 
 #ifdef __cplusplus

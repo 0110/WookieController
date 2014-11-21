@@ -30,9 +30,31 @@
 /* Command line related.                                                     */
 /*===========================================================================*/
 
+void cmd_lcd(BaseSequentialStream *chp, int argc, char *argv[])
+{
+  int index, strLength, j;
+  int i=0;
+  if (argc < 1)
+  {
+    chprintf(chp, "Usage <input>\r\n");
+    return;
+  }
+
+  for(index=0; index < argc; index++)
+  {
+	  strLength = strlen(argv[index]);
+	  for(j=0; j< strLength; j++)
+	  {
+		  lcd_buffer[i++] = argv[index][j];
+	  }
+	  lcd_buffer[i++] = ' ';
+  }
+}
+
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
+		{ "lcd", cmd_lcd },
 		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
