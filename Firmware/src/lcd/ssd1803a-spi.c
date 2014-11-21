@@ -9,6 +9,8 @@
 #include "hal.h"
 #include "lcd/ssd1803a-spi.h"
 
+#define SPI_TELEGRAM_LENGTH     3       /**< Amount of bytes for one package of information to the LCD */
+
 /**
  * Stack area for the led thread.
  */
@@ -42,6 +44,26 @@ static const SPIConfig spicfg = {
  * LOCAL FUNCTIONS
  ******************************************************************************/
 
+static void sendViaSPI(int RW, int RS, uint8_t data)
+{
+  uint8_t transferStore[SPI_TELEGRAM_LENGTH];
+
+  /* Fill the start byte */
+  transferStore[0] = 0xF8; /* Set the first 5 bits */
+  transferStore[0] |= RW ? 0x04 : 0x00; /* the 6th bit defines R/W */
+  transferStore[0] |= RS ? 0x02 : 0x00; /* the 7th bit defines RS */
+  /* The 8th bit is always zero */
+
+  /*Set the first byte (lower data) */
+  transferStore[1] = 0x00;
+  transferStore[1] |= (data & 0x0F) << 4;
+
+  /* Set the second byte (upper data) */
+  transferStore[2] = 0x00;
+  transferStore[2] |= (data & 0xF0) << 4;
+
+}
+
 /*
  * SPI end transfer callback.
  */
@@ -50,12 +72,10 @@ static void spicb(SPIDriver *spip)
   (void) spip;
 }
 
-/**
- * DMX thread.
+/** @fn msg_t ssd1803a_spi_thread(void *arg)
+ * SPI update thread.
  */
-__attribute__((noreturn))
- msg_t
- ssd1803a_spi_thread(void *arg)
+msg_t ssd1803a_spi_thread(void *arg)
 {
   (void) arg;
   chRegSetThreadName("lcd-ssd1803a");
@@ -74,12 +94,15 @@ __attribute__((noreturn))
  * Function Set          0       0       0       0       1        1      1       0       1       0       $38     8-Bit data length extension Bit RE=0; IS=0
  * Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
 
+
+
       /*FIXME while (1) */
       {
 
             /*FIXME SPI usage example: spiStartSendI(&SPID2, LENGTH_LEDBITS, SSD1803A_buffer); */
             chThdSleep(2); /* give the scheduler some time */
       }
+      return RDY_OK;
 }
 
 /******************************************************************************
