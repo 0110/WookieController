@@ -41,7 +41,7 @@ void usbcdc_process(void);
  * @brief print a string via USB
  * @param s
  */
-void usbcdc_print(const char *s);
+void usbcdc_print(const char *s, ...);
 
 #ifdef __cplusplus
 }
