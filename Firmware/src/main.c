@@ -33,6 +33,12 @@
 
 void cmd_startLCD(BaseSequentialStream *chp, int argc, char *argv[])
 {
+  /* Fix compiler warnings */
+  (void) chp;
+  (void) argc;
+  (void) argv;
+
+  usbcdc_print("Starting LCD...\r\n");
   ssd1803a_spi_init();
 }
 
