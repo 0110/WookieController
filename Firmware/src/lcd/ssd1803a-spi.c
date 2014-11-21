@@ -69,7 +69,7 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
     usbcdc_print("Send: ");
     for(i=0; i < SPI_TELEGRAM_LENGTH; i++)
     {
-        for(bit=8; bit > 0; bit--)
+        for(bit=7; bit >= 0; bit--)
         {
             if (transferStore[i] & (1 << bit))
             {
@@ -82,6 +82,13 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
         }
         usbcdc_print(" ");
     }
+    /* Raw: numbers*/
+    usbcdc_print(" ");
+    for(i=0; i < SPI_TELEGRAM_LENGTH; i++)
+	{
+    	usbcdc_print("0x%X ", transferStore[i]);
+	}
+
     usbcdc_print("\r\n");
   }
 
