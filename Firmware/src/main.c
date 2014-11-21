@@ -30,22 +30,9 @@
 /* Command line related.                                                     */
 /*===========================================================================*/
 
-
-void cmd_startLCD(BaseSequentialStream *chp, int argc, char *argv[])
-{
-  /* Fix compiler warnings */
-  (void) chp;
-  (void) argc;
-  (void) argv;
-
-  usbcdc_print("Starting LCD...\r\n");
-  ssd1803a_spi_init();
-}
-
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
-		{ "lcd", cmd_startLCD },
 		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
@@ -115,6 +102,7 @@ int main(void) {
 
 	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
+	ssd1803a_spi_init();
 
 	/*
 	 * Normal main() thread activity, in this demo it does nothing except

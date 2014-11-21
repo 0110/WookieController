@@ -146,13 +146,23 @@ msg_t ssd1803a_spi_thread(void *arg)
  /* Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
  sendViaSPI(0,0,0x0F);
 
-      /*FIXME while (1) */
-      {
+ /* Set Character table */
+ sendViaSPI(0,0, 0x04);
 
-            /*FIXME SPI usage example: spiStartSendI(&SPID2, LENGTH_LEDBITS, SSD1803A_buffer); */
-            chThdSleep(2); /* give the scheduler some time */
-      }
-      return RDY_OK;
+ /* A tiny test */
+ sendViaSPI(0,0, '\r');
+ sendViaSPI(0,0, '\n');
+ sendViaSPI(0,0, 0x41);
+
+ sendViaSPI(0,0, '\r');
+ sendViaSPI(0,0, '\n');
+ /*FIXME while (1) */
+ {
+
+   /*FIXME SPI usage example: spiStartSendI(&SPID2, LENGTH_LEDBITS, SSD1803A_buffer); */
+   chThdSleep(2); /* give the scheduler some time */
+ }
+ return RDY_OK;
 }
 
 /******************************************************************************
