@@ -20,12 +20,14 @@
 /** @addtogroup LCD */
 
 typedef enum {
-	RET_OK,
-	RET_ERROR
+	SPI_IMPL_RET_OK,
+	SPI_IMPL_RET_ERROR
 } spi_implement_ret_t;
 
 
 spi_implement_ret_t     spi_implement_init(void);
+
+spi_implement_ret_t     spi_implement_send(int n, const void *txbuf);
 
 /*@}*/
 

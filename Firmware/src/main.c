@@ -46,7 +46,7 @@ void cmd_lcd(BaseSequentialStream *chp, int argc, char *argv[])
   {
 	  strLength += strlen(argv[index]);
   }
-  if (ssd1803a_spi_sendText(argv[0], strLength) != RET_OK)
+  if (ssd1803a_spi_sendText(argv[0], strLength) != SSD1803A_RET_OK)
   {
       chprintf(chp, "Could not update LCD\r\n");
   }

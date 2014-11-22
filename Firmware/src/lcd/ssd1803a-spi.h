@@ -23,9 +23,9 @@
 /** @addtogroup SSD1803A */
 /*@{*/
 
-typedef enum {  RET_OK,
-                RET_NOTINITIALIZED,
-                RET_IO_ERROR
+typedef enum {  SSD1803A_RET_OK,
+  SSD1803A_RET_NOTINITIALIZED,
+  SSD1803A_RET_IO_ERROR
 } SSD1803A_RET;
 
 #ifdef __cplusplus

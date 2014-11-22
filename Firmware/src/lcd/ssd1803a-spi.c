@@ -5,9 +5,10 @@
  * @brief Module LCD with a SSD1803A controller
  */
 
-#include "ch.h"
-#include "hal.h"
 #include "lcd/ssd1803a-spi.h"
+#include "lcd/spi-implement.h"
+
+#include "ch.h"
 
 #define SPI_TELEGRAM_LENGTH     3       /**< Amount of bytes for one package of information to the LCD */
 
@@ -23,24 +24,12 @@
  * PROTOTYPE
  ******************************************************************************/
 
-static void spicb(SPIDriver *spip);
+
 
 /******************************************************************************
  * LOCAL VARIABLES
  ******************************************************************************/
 static int gRunning = FALSE;
-
-/*
- * SPI configuration structure.
- * The slave select line is the pin GPIOA_SPI1NSS on the port GPIOA.
- */
-static const SPIConfig spicfg = {
-  spicb,
-  /* HW dependent part.*/
-  GPIOB,
-  12,
-  SPI_CR1_BR_2
-};
 
 /******************************************************************************
  * LOCAL FUNCTIONS
@@ -68,16 +57,8 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
   transferStore[2] |= (data & 0xF0);
   SWAP_NIPPLE(tmp, 7, 4, transferStore[2])
 
-  spiStartSendI(&SPID2, SPI_TELEGRAM_LENGTH, transferStore);
+  spi_implement_send(SPI_TELEGRAM_LENGTH, transferStore);
   chThdSleep(MS2ST(2)); /* give the scheduler some time */
-}
-
-/*
- * SPI end transfer callback.
- */
-static void spicb(SPIDriver *spip)
-{
-  (void) spip;
 }
 
 /******************************************************************************
@@ -88,23 +69,11 @@ void
 ssd1803a_spi_init(void)
 {
 
-  /*
-   * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
-   * PB12 - NSS.
-   * PB13 - SCK.
-   * PB14 - MISO.
-   * PB15 - MOSI.
-   */
-  spiStart(&SPID2, &spicfg);
-  palSetPad(GPIOB, 12);
-  palSetPadMode(GPIOB, 12, PAL_MODE_OUTPUT_PUSHPULL |
-                           PAL_STM32_OSPEED_HIGHES);           /* NSS.     */
-  palSetPadMode(GPIOB, 13, PAL_MODE_ALTERNATE(5) |
-                           PAL_STM32_OSPEED_HIGHEST);           /* SCK.     */
-  palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5));              /* MISO.    */
-  palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
-                           PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
-
+  if (spi_implement_init() != SPI_IMPL_RET_OK)
+  {
+      gRunning = FALSE;
+      return;
+  }
 
   /** The init procedure */
 /* Command               RS      R/W     DB7     DB6     DB5     DB4     DB3     DB2     DB1     DB0     Hex     Remark
@@ -141,7 +110,7 @@ SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength)
 
   if (gRunning != TRUE)
   {
-    return RET_NOTINITIALIZED;
+    return SSD1803A_RET_NOTINITIALIZED;
   }
 
   sendViaSPI(0,0,0x01); /* Clear Display */
@@ -150,5 +119,5 @@ SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength)
   {
        sendViaSPI(0,1,s[i]);
   }
-  return RET_OK;
+  return SSD1803A_RET_OK;
 }
