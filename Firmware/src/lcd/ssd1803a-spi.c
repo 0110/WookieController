@@ -107,17 +107,41 @@ ssd1803a_spi_init(void)
 SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength)
 {
   int i;
+  char tempBuffer[textLength];
 
   if (gRunning != TRUE)
   {
     return SSD1803A_RET_NOTINITIALIZED;
   }
 
+  /* Converting the data according to ROM A */
+  for(i=0; i < textLength; i++)
+  {
+      if (s[i] >= 'A' && s[i] <= 'Z')
+      {
+        tempBuffer[i] = 65 + (s[i] - 'A');
+      }
+      else if (s[i] >= 'a' && s[i] <= 'z')
+      {
+        tempBuffer[i] = 97 + (s[i] - 'a');
+      }
+      else if (s[i] >= '%' && s[i] <= '?')
+      {
+        /* % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? */
+        tempBuffer[i] = 37 + (s[i] - '%');
+      }
+      else
+      {
+        /*FIXME simple copy the value, as we have no idea how to convert it (or currently not implemented) */
+        tempBuffer[i] = s[i];
+      }
+  }
+
   sendViaSPI(0,0,0x01); /* Clear Display */
   sendViaSPI(0,0,0x02); /* Return home */
   for(i=0; i < textLength; i++)
   {
-       sendViaSPI(0,1,s[i]);
+       sendViaSPI(0,1,tempBuffer[i]);
   }
   return SSD1803A_RET_OK;
 }
