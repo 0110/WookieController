@@ -18,13 +18,6 @@
   } \
   DATA = TMP;
 
-char lcd_buffer[LCD_COLUMNS * LCD_ROWS];
-
-/**
- * Stack area for the led thread.
- */
-WORKING_AREA(wa_ssd1803a, SSD1803A_THREAD_STACK_SIZE);
-
 
 /******************************************************************************
  * PROTOTYPE
@@ -35,6 +28,7 @@ static void spicb(SPIDriver *spip);
 /******************************************************************************
  * LOCAL VARIABLES
  ******************************************************************************/
+static int gRunning = FALSE;
 
 /*
  * SPI configuration structure.
@@ -86,14 +80,31 @@ static void spicb(SPIDriver *spip)
   (void) spip;
 }
 
-/** @fn msg_t ssd1803a_spi_thread(void *arg)
- * SPI update thread.
- */
-msg_t ssd1803a_spi_thread(void *arg)
+/******************************************************************************
+ * GLOBAL FUNCTIONS
+ ******************************************************************************/
+
+void
+ssd1803a_spi_init(void)
 {
-  int i;
-  (void) arg;
-  chRegSetThreadName("lcd-ssd1803a");
+
+  /*
+   * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
+   * PB12 - NSS.
+   * PB13 - SCK.
+   * PB14 - MISO.
+   * PB15 - MOSI.
+   */
+  spiStart(&SPID2, &spicfg);
+  palSetPad(GPIOB, 12);
+  palSetPadMode(GPIOB, 12, PAL_MODE_OUTPUT_PUSHPULL |
+                           PAL_STM32_OSPEED_HIGHEST);           /* NSS.     */
+  palSetPadMode(GPIOB, 13, PAL_MODE_ALTERNATE(5) |
+                           PAL_STM32_OSPEED_HIGHEST);           /* SCK.     */
+  palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5));              /* MISO.    */
+  palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
+                           PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
+
 
   /** The init procedure */
 /* Command               RS      R/W     DB7     DB6     DB5     DB4     DB3     DB2     DB1     DB0     Hex     Remark
@@ -121,51 +132,23 @@ msg_t ssd1803a_spi_thread(void *arg)
  sendViaSPI(0,0,0x0F);
 
 
- while ( TRUE )
- {
-
-	 chThdSleep(MS2ST(50));
-	  sendViaSPI(0,0,0x01); /* Clear Display */
-	  sendViaSPI(0,0,0x02); /* Return home */
-	  for(i=0; i < LCD_COLUMNS * LCD_ROWS; i++)
-	  {
-		sendViaSPI(0,1,lcd_buffer[i]);
-	  }
-
- }
- return RDY_OK;
+  gRunning = TRUE;
 }
 
-/******************************************************************************
- * GLOBAL FUNCTIONS
- ******************************************************************************/
-
-void
-ssd1803a_spi_init(void)
+SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength)
 {
-	int i;
-	for(i=0; i < LCD_COLUMNS * LCD_ROWS; i++)
-	{
-		lcd_buffer[i] = ' ';
-	}
+  int i;
 
+  if (gRunning != TRUE)
+  {
+    return RET_NOTINITIALIZED;
+  }
 
-  /*
-   * Initializes the SPI driver 2. The SPI2 signals are routed as follow:
-   * PB12 - NSS.
-   * PB13 - SCK.
-   * PB14 - MISO.
-   * PB15 - MOSI.
-   */
-  spiStart(&SPID2, &spicfg);
-  palSetPad(GPIOB, 12);
-  palSetPadMode(GPIOB, 12, PAL_MODE_OUTPUT_PUSHPULL |
-                           PAL_STM32_OSPEED_HIGHEST);           /* NSS.     */
-  palSetPadMode(GPIOB, 13, PAL_MODE_ALTERNATE(5) |
-                           PAL_STM32_OSPEED_HIGHEST);           /* SCK.     */
-  palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5));              /* MISO.    */
-  palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
-                           PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
-  chThdCreateStatic(wa_ssd1803a, sizeof(wa_ssd1803a), NORMALPRIO - 1, ssd1803a_spi_thread, NULL);
+  sendViaSPI(0,0,0x01); /* Clear Display */
+  sendViaSPI(0,0,0x02); /* Return home */
+  for(i=0; i < textLength; i++)
+  {
+       sendViaSPI(0,1,s[i]);
+  }
+  return RET_OK;
 }
-

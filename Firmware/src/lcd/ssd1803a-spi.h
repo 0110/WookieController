@@ -23,18 +23,10 @@
 /** @addtogroup SSD1803A */
 /*@{*/
 
-#define SSD1803A_THREAD_STACK_SIZE	        512
-
-#ifndef SSD1803A_THREAD_PRIORITY
-#define SSD1803A_THREAD_PRIORITY     (LOWPRIO + 3)
-#endif
-
-#define LCD_COLUMNS			20
-#define LCD_ROWS			4
-
-extern char lcd_buffer[LCD_COLUMNS * LCD_ROWS];
-
-extern WORKING_AREA(wa_ssd1803a, SSD1803A_THREAD_STACK_SIZE);
+typedef enum {  RET_OK,
+                RET_NOTINITIALIZED,
+                RET_IO_ERROR
+} SSD1803A_RET;
 
 #ifdef __cplusplus
 extern "C"
@@ -42,6 +34,8 @@ extern "C"
 #endif
 
   void ssd1803a_spi_init(void);
+
+  SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength);
 
 #ifdef __cplusplus
 }

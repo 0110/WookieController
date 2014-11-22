@@ -40,15 +40,21 @@ void cmd_lcd(BaseSequentialStream *chp, int argc, char *argv[])
     return;
   }
 
+  strLength = 0;
+  /* Count length of all parameter */
   for(index=0; index < argc; index++)
   {
-	  strLength = strlen(argv[index]);
-	  for(j=0; j< strLength; j++)
-	  {
-		  lcd_buffer[i++] = argv[index][j];
-	  }
-	  lcd_buffer[i++] = ' ';
+	  strLength += strlen(argv[index]);
   }
+  if (ssd1803a_spi_sendText(argv[0], strLength) != RET_OK)
+  {
+      chprintf(chp, "Could not update LCD\r\n");
+  }
+  else
+  {
+    chprintf(chp, "Wrote %d characters on the screen\r\n", strLength);
+  }
+
 }
 
 static const ShellCommand commands[] = {
