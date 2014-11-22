@@ -94,7 +94,28 @@ void ledstripe_init(void) {
 	 *  AF TIM3; Push
 	 */
 
+	// Timer/PWM init
+
+	STM32_TIM3->CR1 = 0;
+	STM32_TIM3->PSC = 0; // timer prescaler 0
+	STM32_TIM3->ARR = 104; // timer period 104
+	STM32_TIM3->CR1 = STM32_TIM_CR1_CKD(0) | // set clock CKD 1
+			STM32_TIM_CR1_DIR | // up counting
+			STM32_TIM_CR1_ARPE; // ARRPreloadConfig enable
+	STM32_TIM3->CCMR2 = STM32_TIM_CCMR2_OC4M(6) | // set PWM mode 1 for channel 4
+			STM32_TIM_CCMR2_OC4PE; // OCPreload_Enable
+	STM32_TIM3->CCER = STM32_TIM_CCER_CC4E; /* Not set: STM32_TIM_CCER_CC4P */
+
+	STM32_TIM3->CR1 |= STM32_TIM_CR1_CEN; // TIM3 enable; CR1 is now locked
+
+	// DMA init
+	STM32_TIM3->DIER = STM32_TIM_DIER_CC4DE; // enable DMA for channel 4
+
 	dmaStreamAllocate(STM32_DMA1_STREAM2, 0, ledstripe_irq_handler, NULL);
+
+
+
+
 
 }
 
