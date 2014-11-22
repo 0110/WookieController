@@ -98,7 +98,7 @@ ssd1803a_spi_init(void)
   spiStart(&SPID2, &spicfg);
   palSetPad(GPIOB, 12);
   palSetPadMode(GPIOB, 12, PAL_MODE_OUTPUT_PUSHPULL |
-                           PAL_STM32_OSPEED_HIGHEST);           /* NSS.     */
+                           PAL_STM32_OSPEED_HIGHES);           /* NSS.     */
   palSetPadMode(GPIOB, 13, PAL_MODE_ALTERNATE(5) |
                            PAL_STM32_OSPEED_HIGHEST);           /* SCK.     */
   palSetPadMode(GPIOB, 14, PAL_MODE_ALTERNATE(5));              /* MISO.    */

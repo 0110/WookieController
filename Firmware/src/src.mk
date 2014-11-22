@@ -2,6 +2,7 @@
 APPSRC = src/main.c \
 		src/usbcdc/usbcdc.c \
 		src/lcd/ssd1803a-spi.c \
+		src/lcd/spi-implement.c \
 		src/cmd/cmd_threads.c \
 		src/cmd/cmd_mem.c 
 
