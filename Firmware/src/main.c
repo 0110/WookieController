@@ -94,7 +94,7 @@ int main(void) {
 	chThdSleep(MS2ST(100));
 
 	/*
-	* Initialize LedDriver - 150 leds in chain, GPIOA pin 1
+	* Initialize LedDriver
 	*/
 	ledstripe_init();
 

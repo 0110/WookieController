@@ -87,7 +87,7 @@ void ledstripe_init(void) {
 	for (i = 0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
 		ledstripe_framebuffer[i].red = 0;
 		ledstripe_framebuffer[i].green = 0;
-		ledstripe_framebuffer[i].blue = 0;
+		ledstripe_framebuffer[i].blue = 1;
 	}
 
 	/*  GPIO config done in board.h
@@ -113,9 +113,26 @@ void ledstripe_init(void) {
 
 	dmaStreamAllocate(STM32_DMA1_STREAM2, 0, ledstripe_irq_handler, NULL);
 
+	uint32_t mode = STM32_DMA_CR_CHSEL(5) |
+			STM32_DMA_CR_PL(1) |  //DMA priority (0..3|lowest..highest)
+			STM32_DMA_CR_DIR_M2P |
+			STM32_DMA_CR_TCIE |
+			STM32_DMA_CR_HTIE |
+			STM32_DMA_CR_MBURST_SINGLE |
+			STM32_DMA_CR_MINC |
+			STM32_DMA_CR_MSIZE_HWORD |
+			STM32_DMA_CR_CIRC |
+			STM32_DMA_CR_PBURST_SINGLE |
+			STM32_DMA_CR_PSIZE_HWORD ;
 
 
+	/* DMA setup.*/
+	dmaStreamSetPeripheral(STM32_DMA1_STREAM2, STM32_TIM3->CCR[3]);
 
-
+	dmaStreamSetMemory0(STM32_DMA1_STREAM2, ledstripe_pwm_buffer);
+	dmaStreamSetTransactionSize(STM32_DMA1_STREAM2, LEDSTRIPE_PWM_BUFFER_SIZE);
+	dmaStreamSetMode(STM32_DMA1_STREAM2, mode);
+	dmaStreamSetFIFO(STM32_DMA1_STREAM2, STM32_DMA_FCR_FTH_HALF );
+	dmaStreamEnable(STM32_DMA1_STREAM2);
 }
 
