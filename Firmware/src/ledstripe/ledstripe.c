@@ -2,6 +2,7 @@
  * @file ledstrip.c
  * @author Manu
  * @author Ollo
+ * @author tobi
  *
  * creation date 2014-11-08
  *
@@ -107,6 +108,11 @@ void ledstripe_init(void) {
 	STM32_TIM3->CCER = STM32_TIM_CCER_CC4E; /* Not set: STM32_TIM_CCER_CC4P */
 
 	STM32_TIM3->CCR[3] = 49;
+	
+	// enable clock for timer
+	rccEnableTIM3(FALSE);
+	rccResetTIM3();
+	
 	STM32_TIM3->CR1 |= STM32_TIM_CR1_CEN; // TIM3 enable; CR1 is now locked
 
 	// DMA init
