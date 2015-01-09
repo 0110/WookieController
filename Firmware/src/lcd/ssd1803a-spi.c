@@ -97,8 +97,8 @@ ssd1803a_spi_init(void)
  sendViaSPI(0,0,0x72);
  /* Function Set          0       0       0       0       1        1      1       0       1       0       $38     8-Bit data length extension Bit RE=0; IS=0*/
  sendViaSPI(0,0,0x38);
- /* Display On            0       0       0       0       0        0      1       1       1       1       $0F     Display on, cursor on, blink on */
- sendViaSPI(0,0,0x0F);
+ /* Display On            0       0       0       0       0        0      1       1       0       0       $0F     Display on, cursor off, blink off */
+ sendViaSPI(0,0,0x0C);
 
 
   gRunning = TRUE;
