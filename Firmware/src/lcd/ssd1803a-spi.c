@@ -116,43 +116,64 @@ ssd1803a_spi_init(void)
 SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength)
 {
   int i;
-  char tempBuffer[textLength];
 
   if (gRunning != TRUE)
   {
     return SSD1803A_RET_NOTINITIALIZED;
   }
 
+  sendViaSPI(0,0,0x01); /* Clear Display */
+  sendViaSPI(0,0,0x02); /* Return home */
+
   /* Converting the data according to ROM A */
   for(i=0; i < textLength; i++)
   {
       if (s[i] >= 'A' && s[i] <= 'Z')
       {
-        tempBuffer[i] = 65 + (s[i] - 'A');
+        sendViaSPI(0,1, 65 + (s[i] - 'A'));
       }
       else if (s[i] >= 'a' && s[i] <= 'z')
       {
-        tempBuffer[i] = 97 + (s[i] - 'a');
+        sendViaSPI(0,1, 97 + (s[i] - 'a'));
       }
       else if (s[i] >= '%' && s[i] <= '?')
       {
         /* % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? */
-        tempBuffer[i] = 37 + (s[i] - '%');
+        sendViaSPI(0,1, 37 + (s[i] - '%'));
+      }
+      else if (s[i] == 0xC3)
+      {
+    	switch (s[i+1]) {
+			case 0xA4: // ä
+				sendViaSPI(0,1, 0xe4);
+				break;
+			case 0xB6: // ö
+				sendViaSPI(0,1, 0xf6);
+				break;
+			case 0xBC: // ü
+				sendViaSPI(0,1, 0xfc);
+				break;
+			case 0x84: // Ä
+				sendViaSPI(0,1, 0xc4);
+				break;
+			case 0x96:  // Ö
+				sendViaSPI(0,1, 0xd6);
+				break;
+			case 0x9C:  // Ü
+				sendViaSPI(0,1, 0xdc);
+				break;
+			default:
+				sendViaSPI(0,1,s[i]);
+				break;
+		}
+    	i++;
       }
       else
       {
         /*FIXME simple copy the value, as we have no idea how to convert it (or currently not implemented) */
-        tempBuffer[i] = s[i];
+        sendViaSPI(0,1,s[i]);
       }
   }
 
-  sendViaSPI(0,0,0x01); /* Clear Display */
-  sendViaSPI(0,0,0x02); /* Return home */
-
-
-  for(i=0; i < textLength; i++)
-  {
-       sendViaSPI(0,1,tempBuffer[i]);
-  }
   return SSD1803A_RET_OK;
 }
