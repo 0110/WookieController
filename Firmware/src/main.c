@@ -32,7 +32,7 @@
 
 void cmd_lcd(BaseSequentialStream *chp, int argc, char *argv[])
 {
-  int index, strLength, j;
+  int index, strLength;
   int i=0;
   if (argc < 1)
   {
@@ -44,8 +44,20 @@ void cmd_lcd(BaseSequentialStream *chp, int argc, char *argv[])
   /* Count length of all parameter */
   for(index=0; index < argc; index++)
   {
-	  strLength += strlen(argv[index]);
+	  strLength += strlen(argv[index]) + 1 /* for the space between*/;
   }
+
+  strLength --;
+
+  for(i=0;i<strLength;i++)
+  {
+	  /* Kaepten mag die Loop nicht */
+	  if (argv[0][i] == '\0')
+	  {
+		  argv[0][i] = ' ';
+	  } /* But it is necessary! */
+  }
+
   if (ssd1803a_spi_sendText(argv[0], strLength) != SSD1803A_RET_OK)
   {
       chprintf(chp, "Could not update LCD\r\n");
