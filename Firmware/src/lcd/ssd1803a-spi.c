@@ -58,7 +58,7 @@ static void sendViaSPI(int RW, int RS, uint8_t data)
   SWAP_NIPPLE(tmp, 7, 4, transferStore[2])
 
   spi_implement_send(SPI_TELEGRAM_LENGTH, transferStore);
-  chThdSleep(MS2ST(5)); /* give the scheduler some time */
+  chThdSleep(MS2ST(2)); /* give the scheduler some time */
 }
 
 /******************************************************************************
@@ -162,11 +162,24 @@ SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength)
 			case 0x9C:  // Ü
 				sendViaSPI(0,1, 0xdc);
 				break;
+			case 0x9F:  // ß
+				sendViaSPI(0,1, 0xdf);
+				break;
 			default:
-				sendViaSPI(0,1,s[i]);
+				sendViaSPI(0,1, 0x15); // Error Char
 				break;
 		}
     	i++;
+
+      }
+      else if (s[i] == 0xC2)
+            {
+          	switch (s[i+1]) {
+      			default:
+      				sendViaSPI(0,1, 0x15); // Error Char
+      				break;
+      		}
+          	i++;
       }
       else
       {

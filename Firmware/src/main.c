@@ -58,6 +58,13 @@ void cmd_lcd(BaseSequentialStream *chp, int argc, char *argv[])
 	  } /* But it is necessary! */
   }
 
+  /* Debug output */
+ for(i=0; i < strLength; i++)
+ {
+   chprintf(chp, "%2X (%c)\r\n", (int) argv[0][i], argv[0][i]);
+ }
+
+
   if (ssd1803a_spi_sendText(argv[0], strLength) != SSD1803A_RET_OK)
   {
       chprintf(chp, "Could not update LCD\r\n");
