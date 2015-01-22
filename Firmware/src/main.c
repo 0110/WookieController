@@ -89,7 +89,9 @@ static msg_t blinkerThread(void *arg) {
 /*
  * Application entry point.
  */
-int main(void) {
+int main(void)
+{
+        uint32_t value;
 
 	/*
 	 * System initializations.
@@ -125,8 +127,16 @@ int main(void) {
 			blinkerThread, NULL);
 	UPRINT( " Done\r\n");
 
-	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
+	UPRINT("Initialize ADC ...");
+	/*
+         * Initializes the ADC driver 1 and enable the thermal sensor.
+         * The pin PC0 on the port GPIOC is programmed as analog input.
+         */
+        adcSTM32EnableTSVREFE();
+        palSetPadMode(GPIOC, 1, PAL_MODE_INPUT_ANALOG);
+        UPRINT( " Done\r\n");
 
+	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 	/*
 	 * Normal main() thread activity, in this demo it does nothing except
 	 * sleeping in a loop and check the button state, when the button is
@@ -140,6 +150,11 @@ int main(void) {
 		{
 			palSetPad(GPIOD, GPIOD_LED5);	/* Red On*/
 			usbcdc_print("Button pressed (Branch is " BRANCH_NAME " )\r\n");
+
+			chSysLock();
+			value = palReadPad(GPIOC, 1);
+                        chSysUnlock();
+			usbcdc_print("Temperature is %d Volt\r\n", value);
 		}
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
