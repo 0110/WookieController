@@ -129,11 +129,9 @@ int main(void)
 
 	UPRINT("Initialize ADC ...");
 	/*
-         * Initializes the ADC driver 1 and enable the thermal sensor.
-         * The pin PC0 on the port GPIOC is programmed as analog input.
+         * The pin PC15 on the port GPIOC is programmed as analog input.
          */
-        adcSTM32EnableTSVREFE();
-        palSetPadMode(GPIOC, 1, PAL_MODE_INPUT_ANALOG);
+        palSetPadMode(GPIOC, GPIOC_TEMP_ANALOG_VOLT, PAL_MODE_INPUT_ANALOG);
         UPRINT( " Done\r\n");
 
 	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
@@ -152,7 +150,7 @@ int main(void)
 			usbcdc_print("Button pressed (Branch is " BRANCH_NAME " )\r\n");
 
 			chSysLock();
-			value = palReadPad(GPIOC, 1);
+			value = palReadPad(GPIOC, GPIOC_TEMP_ANALOG_VOLT);
                         chSysUnlock();
 			usbcdc_print("Temperature is %d Volt\r\n", value);
 		}
