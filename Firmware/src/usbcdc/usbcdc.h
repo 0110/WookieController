@@ -40,7 +40,7 @@ void usbcdc_process(void);
  * @brief prints the given string on the USB CDC
  * @param[in]	s	string to print
  */
-void usbcdc_print(const char *s);
+void usbcdc_print(const char *s, ...);
 
 #ifdef __cplusplus
 }
