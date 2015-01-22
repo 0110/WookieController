@@ -23,6 +23,8 @@
  * DEFINITIONS
  ******************************************************************************/
 
+#define BRANCH_NAME  "KTY81"
+
 #define UPRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
 
 /*===========================================================================*/
@@ -137,7 +139,7 @@ int main(void) {
 		if (palReadPad(GPIOA, GPIOA_BUTTON))
 		{
 			palSetPad(GPIOD, GPIOD_LED5);	/* Red On*/
-			usbcdc_print("Button pressed\r\n");
+			usbcdc_print("Button pressed (Branch is " BRANCH_NAME " )\r\n");
 		}
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
