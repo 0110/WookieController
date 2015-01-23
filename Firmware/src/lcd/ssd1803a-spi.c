@@ -101,7 +101,7 @@ ssd1803a_spi_init(void)
  sendViaSPI(0,0,0x0C);
 
  /* Custom initialization */
- chThdSleep(MS2ST(50)); /* give the scheduler some time */
+ //chThdSleep(MS2ST(50)); /* give the scheduler some time */
  sendViaSPI(0,0,0x01); /* Clear Display */
  sendViaSPI(0,0,0x02); /* Return home */
 
@@ -109,6 +109,11 @@ ssd1803a_spi_init(void)
  sendViaSPI(0,0,0x72); /* Rom Selection Command 1/2 */
  sendViaSPI(0,1,0x04); /* Rom Selection Command 2/2 (Selected ROMC) */
  sendViaSPI(0,0,0x3A); /* Function Set */
+
+ //sendViaSPI(0,0,0x3A); /* Function Set */
+ /* DEMO gigantic characters */
+ //sendViaSPI(0,0,0x38); /* two big lines  0 0 1 1 | 1 0 0 0  */
+ //sendViaSPI(0,0,0x3A); /* Function Set */
 
   gRunning = TRUE;
 }
