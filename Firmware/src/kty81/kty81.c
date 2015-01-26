@@ -121,15 +121,10 @@ kty81_ret_t kty81_init(void)
 
 kty81_ret_t kty81_read(volatile uint32_t *temperature)
 {
-  int i;
-
-  /* Print out the old sampeled values */
-  for (i=0; i < ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH; i++)
-  {
-      usbcdc_print("Sample%d is %d \r\n", i + 1, samples[i]);
-  }
-
   gTemperature = temperature;
+
+  if (temperature == NULL)
+    return RET_ERROR;
 
   /* Starts an asynchronous ADC conversion operation, the conversion
          will be executed in parallel to the current PWM cycle and will
