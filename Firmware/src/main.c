@@ -27,7 +27,7 @@ static void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n);
 #define ADC_GRP1_NUM_CHANNELS   2
 
 /* Depth of the conversion buffer, channels are sampled four times each.*/
-#define ADC_GRP1_BUF_DEPTH      4
+#define ADC_GRP1_BUF_DEPTH      8
 
 /*
  * ADC samples buffer.
@@ -55,8 +55,6 @@ static const ADCConversionGroup adcgrpcfg = {
   ADC_SQR3_SQ2_N(ADC_CHANNEL_IN11) | ADC_SQR3_SQ1_N(ADC_CHANNEL_SENSOR)
 };
 
-volatile uint32_t value1;
-
 /*
  * ADC end conversion callback.
  * The PWM channels are reprogrammed using the latest ADC samples.
@@ -70,8 +68,6 @@ void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
   if (adcp->state == ADC_COMPLETE) {
 
     palTogglePad(GPIOD, GPIOD_LED5);	/* Red On*/
-
-    value1 = (uint32_t) samples;
 
   }
 }
@@ -148,8 +144,7 @@ static msg_t blinkerThread(void *arg) {
  */
 int main(void)
 {
-        uint32_t value;
-
+      int i;
 	/*
 	 * System initializations.
 	 * - HAL initialization, this also initializes the configured device drivers
@@ -215,15 +210,11 @@ int main(void)
 			  adcStartConversionI(&ADCD1, &adcgrpcfg, samples, ADC_GRP1_BUF_DEPTH);
 			  chSysUnlockFromIsr();
 
-			usbcdc_print("Temperature is %d %X Volt\r\n", value1, value1);
-			usbcdc_print("Sample1 is %d \r\n", samples[0]);
-			usbcdc_print("Sample2 is %d \r\n", samples[1]);
-			usbcdc_print("Sample3 is %d \r\n", samples[2]);
-			usbcdc_print("Sample4 is %d \r\n", samples[3]);
-			usbcdc_print("Sample5 is %d \r\n", samples[4]);
-			usbcdc_print("Sample6 is %d \r\n", samples[5]);
-			usbcdc_print("Sample7 is %d \r\n", samples[6]);
-			usbcdc_print("Sample8 is %d \r\n", samples[7]);
+
+			for (i=0; i < ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH; i++)
+                        {
+			    usbcdc_print("Sample%d is %d \r\n", i + 1, samples[i]);
+                        }
 		}
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
