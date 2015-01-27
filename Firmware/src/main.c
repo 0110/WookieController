@@ -87,7 +87,7 @@ static msg_t blinkerThread(void *arg) {
 	return RDY_OK;
 }
 
-volatile uint32_t temp=0;
+volatile int32_t temp=0;
 
 /*
  * Application entry point.

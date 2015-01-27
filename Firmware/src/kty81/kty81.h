@@ -1,10 +1,12 @@
-/*
+/**
  * @file kty81.h
  *
  *  @date Jan 26, 2015
  *  @author ollo
  *
  *  @brief Module to read temperature from a kty81 plugged to PC1 on the STM32 Discovery board.
+ *
+ *  @defgroup kty81
  */
 
 #ifndef KTY81_H_
@@ -21,7 +23,7 @@
 #endif
 
 /**
- * @mainpage KTY81 KTY81 Documentation
+ * @mainpage KTY81 Documentation
  *
  * @section SWsetup Software Setup
  *
@@ -45,9 +47,16 @@
  * CON -> VCC [ label="2.5 kOhm" arrowhead=none ];
  * }
  * @enddot
+ *
+ * The datasheet can be found at http://www.nxp.com/documents/data_sheet/KTY81_SER.pdf
+ *
+ * The KTY81-100 will have a resistance between 733 (-10 °C) and 1136 (40 °C) ohm.
+ *
+ * 20 °C is 961 ohm, so 1.37V will be measured at the PIN.
+ *
  */
 
-/** @addtogroup kty81
+/** @addtogroup kty81 Temperature measurement based on KTY81
  * @{ */
 
 /** @enum kty81_ret_t

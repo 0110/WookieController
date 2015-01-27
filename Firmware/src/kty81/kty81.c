@@ -39,7 +39,7 @@ static void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n);
  */
 static adcsample_t samples[ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH];
 
-static volatile uint32_t *gTemperature = NULL;
+static volatile int32_t *gTemperature = NULL;
 
 /******************************************************************************
  * LOCAL FUNCTIONS
@@ -119,7 +119,7 @@ kty81_ret_t kty81_init(void)
    return RET_OK;
 }
 
-kty81_ret_t kty81_read(volatile uint32_t *temperature)
+kty81_ret_t kty81_read(volatile int32_t *temperature)
 {
   gTemperature = temperature;
 
