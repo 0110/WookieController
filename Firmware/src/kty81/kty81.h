@@ -4,7 +4,6 @@
  *  @date Jan 26, 2015
  *  @author ollo
  *
- *
  *  @brief Module to read temperature from a kty81 plugged to PC1 on the STM32 Discovery board.
  */
 
@@ -21,12 +20,18 @@
 #define FALSE	0
 #endif
 
-
-/*
- * @mainpage KTY81
- * @section Hardware setup
+/**
+ * @mainpage KTY81 KTY81 Documentation
+ *
+ * @section SWsetup Software Setup
+ *
+ * The Temperature measurement needs an configured ADC.
+ * The one configured in the Module reads PC0 and PC1.
+ *
+ * @section HWsetup Hardware setup
  *
  * The following connection was used:
+ *
  * @dot
  * digraph HardwareSetup {
  * rankdir=LR;
@@ -35,9 +40,9 @@
  * VCC [ label="5V" ];
  * PIN [ label="PC1" ];
  * CON;
- * GND -> CON [ label="kty81" ];
- * CON -> PIN [ label="9.8 kOhm" ];
- * CON -> VCC [ label="2.5 kOhm" ];
+ * GND -> CON [ label="kty81" arrowhead=none ];
+ * CON -> PIN [ label="9.8 kOhm" arrowhead=none ];
+ * CON -> VCC [ label="2.5 kOhm" arrowhead=none ];
  * }
  * @enddot
  */
