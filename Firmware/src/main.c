@@ -41,11 +41,11 @@ void cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
 	}
 	else if (argc >= 1 && strcmp(argv[0], "on") == 0)
 	{
-		palSetPad(GPIOD, GPIOD_LED5);	/* Red ON*/
+		palSetPad(GPIOA, GPIOA_LEDEXT);	/* External LED on: PA8 ON*/
 	}
 	else if (argc >= 1 && strcmp(argv[0], "off") == 0)
 	{
-		palClearPad(GPIOD, GPIOD_LED5);	/* Red OFF */
+		palClearPad(GPIOA, GPIOA_LEDEXT); /* External LED on: PA8 OFF */
 	}
 	else	/* Usage */
 	{
@@ -80,9 +80,8 @@ static msg_t blinkerThread(void *arg) {
 	chRegSetThreadName("blinker");
 	while (TRUE) {
 		palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
-		palSetPad(GPIOA, GPIOA_LEDEXT); /* external LED */
-		chThdSleepMilliseconds(500); palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
-		palClearPad(GPIOA, GPIOA_LEDEXT); /* external LED */
+		chThdSleepMilliseconds(500);
+		palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
 		chThdSleepMilliseconds(500);
 	}
 	return RDY_OK;

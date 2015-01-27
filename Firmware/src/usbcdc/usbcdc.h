@@ -3,8 +3,9 @@
  * @author Ollo
  *
  * @date 28.06.2014
- * @defgroup USB
  *
+ * @defgroup USB Output library (USB UART)
+ * @{
  */
 
 #ifndef _USBCDC_H_
@@ -16,7 +17,7 @@
 #include "chprintf.h"
 #include "shell.h"
 
-#define SHELL_WA_SIZE   THD_WA_SIZE(2048)
+#define SHELL_WA_SIZE   THD_WA_SIZE(2048)       /**< Memory for the SHELL connected via USB */
 
 #ifdef __cplusplus
 extern "C"
@@ -36,14 +37,17 @@ void usbcdc_init(const ShellCommand * commands);
  */
 void usbcdc_process(void);
 
-/** @fn void usbcdc_print(const char *s)
+/** @fn void usbcdc_print(const char *s, ...)
  * @brief prints the given string on the USB CDC
- * @param[in]	s	string to print
+ * @param[in]	s	string to print including formating definition
+ * @param[in]   ...     All values for the formating options
  */
 void usbcdc_print(const char *s, ...);
 
 #ifdef __cplusplus
 }
 #endif
+
+/*@}*/
 
 #endif

@@ -246,3 +246,7 @@ flash:	build/$(PROJECT).elf
 debug:	build/$(PROJECT).elf
 	$(OPENOCD) -f interface/stlink-v2.cfg -c "set WORKAREASIZE 0x2000" -f target/stm32f4x_stlink.cfg 	
 
+doc:
+	@echo Run doxygen
+	cd $(APP); doxygen Doxyfile; cd -
+	@echo Generated the Documentation
