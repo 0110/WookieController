@@ -76,6 +76,7 @@ void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
   (void) buffer; (void) n;
   int i;
   uint32_t tempValue = 0;
+  uint32_t tempResistorValue = 0;
 
   /* Note, only in the ADC_COMPLETE state because the ADC driver fires an
      intermediate callback when the buffer is half full.*/
@@ -92,7 +93,8 @@ void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
           tempValue += samples[i];
     }
 
-    (*gTemperature) = (uint32_t) (tempValue / ADC_GRP1_BUF_DEPTH);
+
+    (*gTemperature) = (int32_t) (tempValue / ADC_GRP1_BUF_DEPTH);
   }
 }
 

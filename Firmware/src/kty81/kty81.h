@@ -54,10 +54,47 @@
  *
  * 20 °C is 961 ohm, so 1.37V will be measured at the PIN.
  *
+ *
+ * Conversion of resistance values:
+ * Ohm  °C
+ * 567  -40
+ * 624     -30
+ * 684     -20
+ * 747     -10
+ * 815     0
+ * 886     10
+ * 961     20
+ * 1000    25
+ * 1040    30
+ * 1122    40
+ * 1209    50
+ * 1299    60
+ * 1392    70
+ * 1490    80
+ * 1591    90
+ * 1696    100
+ * 1805    110
+ * results in the following polynom (according to http://www.xuru.org/rt/PR.asp#Manually)
+ * y = 1.77136749·10^-8 x^3 - 9.521069433·10^-5 x^2 + 2.654177488·10^-1 x - 162.8266092
+ *
  */
 
 /** @addtogroup kty81 Temperature measurement based on KTY81
  * @{ */
+
+/******************************************************************************
+ * DEFINITIONS
+ ******************************************************************************/
+#define FACTOR_X3       0.000000018
+#define BASE_X3         1
+#define FACTOR_X2       0.000095211
+#define BASE_X2         -1
+#define FACTOR_X1       0.265417749
+#define BASE_X1         1
+#define BASR_X0         -162.8266092
+/******************************************************************************
+ * TYPE DEFINITIONS
+ ******************************************************************************/
 
 /** @enum kty81_ret_t
  * @brief Status
@@ -67,6 +104,10 @@ typedef enum {
 	RET_OK, /**< OK, no Error occurred */
 	RET_ERROR /**< Global not further specified error! */
 } kty81_ret_t;
+
+/******************************************************************************
+ * GLOBAL FUNCTIONS
+ ******************************************************************************/
 
 /** @fn kty81_ret_t kty81_init(void)
  * @brief Initialization of the module.
