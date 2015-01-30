@@ -10,14 +10,12 @@
 #include "ch.h"
 #include "hal.h"
 
-#include "usbcdc/usbcdc.h"
-
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
 
 /* Total number of channels to be sampled by a single ADC operation.*/
-#define ADC_GRP1_NUM_CHANNELS   2
+#define ADC_GRP1_NUM_CHANNELS   1
 
 /* Depth of the conversion buffer, channels are sampled four times each.*/
 #define ADC_GRP1_BUF_DEPTH      4
@@ -89,12 +87,11 @@ void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
     /* Print out the old sampeled values */
     for (i=0; i < ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH; i++)
     {
-        if (ADC_GRP1_VALUE_OFFSET == (i % ADC_GRP1_NUM_CHANNELS))
           tempValue += samples[i];
     }
 
-
-    (*gTemperature) = (int32_t) (tempValue / ADC_GRP1_BUF_DEPTH);
+    if (gTemperature != NULL)
+      (*gTemperature) = (int32_t) (tempValue / (ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH));
   }
 }
 
@@ -125,7 +122,7 @@ kty81_ret_t kty81_read(volatile int32_t *temperature)
 {
   gTemperature = temperature;
 
-  if (temperature == NULL)
+  if (gTemperature == NULL)
     return RET_ERROR;
 
   /* Starts an asynchronous ADC conversion operation, the conversion

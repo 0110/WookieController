@@ -28,7 +28,7 @@
  * @section SWsetup Software Setup
  *
  * The Temperature measurement needs an configured ADC.
- * The one configured in the Module reads PC0 and PC1.
+ * The one configured in the Module reads PC1.
  *
  * @section HWsetup Hardware setup
  *
@@ -86,12 +86,12 @@
  * DEFINITIONS
  ******************************************************************************/
 #define FACTOR_X3       0.000000018
-#define BASE_X3         1
+#define OFFSET_X3       1
 #define FACTOR_X2       0.000095211
-#define BASE_X2         -1
+#define OFFSET_X2       -1
 #define FACTOR_X1       0.265417749
-#define BASE_X1         1
-#define BASR_X0         -162.8266092
+#define OFFSET_X1       1
+#define OFFSET_X0       -162.8266092
 /******************************************************************************
  * TYPE DEFINITIONS
  ******************************************************************************/

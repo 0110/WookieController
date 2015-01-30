@@ -145,7 +145,7 @@ int main(void)
 			usbcdc_print("Button pressed (Branch is " BRANCH_NAME " )\r\n");
 			kty81_read(&temp);
 			chThdSleep(MS2ST(10));
-			usbcdc_print("Value is %d\r\n", temp);
+			usbcdc_print("Value are %5d\r\n", temp);
 		}
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
