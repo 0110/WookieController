@@ -77,6 +77,11 @@
  * results in the following polynom (according to http://www.xuru.org/rt/PR.asp#Manually)
  * y = 1.77136749·10^-8 x^3 - 9.521069433·10^-5 x^2 + 2.654177488·10^-1 x - 162.8266092
  *
+ *
+ * In order to calculate the resistance of the KTY81, the following formula should be used:
+ * R_KTY81 = V_PC1 * 2500 / (5.0 - V_PC1 )
+ *
+ * The voltage (V_PC1) is calculated based on the ADC values.
  */
 
 /** @addtogroup kty81 Temperature measurement based on KTY81

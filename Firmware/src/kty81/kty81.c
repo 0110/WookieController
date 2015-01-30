@@ -45,7 +45,7 @@ static volatile int32_t *gTemperature = NULL;
 
 /*
  * ADC conversion group.
- * Mode:        Linear buffer, 4 samples of 2 channels, SW triggered.
+ * Mode:        Linear buffer, 4 samples of 1 channels, SW triggered.
  * Channels:    IN11   (48 cycles sample time)
  *              Sensor (192 cycles sample time)
  */
