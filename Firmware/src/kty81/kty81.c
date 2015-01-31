@@ -137,7 +137,7 @@ kty81_ret_t kty81_read(int32_t *temperature)
   chSysUnlockFromIsr();
   chThdSleep(MS2ST(10));
 
-  tempResistorValue = (gADCval + ADC_TO_VOLT_OFFSET) * 2500 / (5.0 - (gADCval - ADC_TO_VOLT_OFFSET) );
+  tempResistorValue = (gADCval + ADC_TO_VOLT_OFFSET) * 2500.0 / (5.0 - (gADCval + ADC_TO_VOLT_OFFSET) );
 
   tempValue = FACTOR_X3 * (tempResistorValue * tempResistorValue * tempResistorValue) + FACTOR_X2 * (tempResistorValue * tempResistorValue) + FACTOR_X1 * tempResistorValue + OFFSET_X0;
 
@@ -145,6 +145,7 @@ kty81_ret_t kty81_read(int32_t *temperature)
 
 
   /*FIXME remove debug printf */
+#if 0
   {
       int i;
       usbcdc_print("Last values were: \r\n");
@@ -154,7 +155,8 @@ kty81_ret_t kty81_read(int32_t *temperature)
       }
       usbcdc_print("\r\n");
   }
-  usbcdc_print("Calculated: %5d %5d %5d\r\n", gADCval, tempResistorValue, tempValue);
+#endif
+  usbcdc_print("Calculated: %5d\t%5d\t%5d\r\n", (gADCval + ADC_TO_VOLT_OFFSET), tempResistorValue, tempValue);
 
   return RET_OK;
 }
