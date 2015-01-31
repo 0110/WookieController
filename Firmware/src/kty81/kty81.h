@@ -91,11 +91,8 @@
  * DEFINITIONS
  ******************************************************************************/
 #define FACTOR_X3       0.000000018
-#define OFFSET_X3       1
-#define FACTOR_X2       0.000095211
-#define OFFSET_X2       -1
+#define FACTOR_X2       -0.000095211
 #define FACTOR_X1       0.265417749
-#define OFFSET_X1       1
 #define OFFSET_X0       -162.8266092
 /******************************************************************************
  * TYPE DEFINITIONS
@@ -126,7 +123,7 @@ kty81_ret_t kty81_init(void);
  * @param[out] temperature      the read temperature in degree celsius
  * @return status
  */
-kty81_ret_t kty81_read(volatile int32_t *temperature);
+kty81_ret_t kty81_read(int32_t *temperature);
 
 /*@}*/
 

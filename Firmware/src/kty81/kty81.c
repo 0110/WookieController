@@ -10,17 +10,21 @@
 #include "ch.h"
 #include "hal.h"
 
+#include "usbcdc/usbcdc.h"
+
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
 
 /* Total number of channels to be sampled by a single ADC operation.*/
-#define ADC_GRP1_NUM_CHANNELS   1
+#define ADC_GRP1_NUM_CHANNELS   2
 
 /* Depth of the conversion buffer, channels are sampled four times each.*/
 #define ADC_GRP1_BUF_DEPTH      4
 
 #define ADC_GRP1_VALUE_OFFSET   1
+
+#define ADC_TO_VOLT_OFFSET      (-100)    /**< Offset between ADC and the shown volt value */
 
 /******************************************************************************
  * PROTOTYPE
@@ -37,7 +41,7 @@ static void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n);
  */
 static adcsample_t samples[ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH];
 
-static volatile int32_t *gTemperature = NULL;
+static volatile int32_t gADCval = 0;
 
 /******************************************************************************
  * LOCAL FUNCTIONS
@@ -73,8 +77,7 @@ void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
 
   (void) buffer; (void) n;
   int i;
-  uint32_t tempValue = 0;
-  uint32_t tempResistorValue = 0;
+  uint32_t adcValue = 0;
 
   /* Note, only in the ADC_COMPLETE state because the ADC driver fires an
      intermediate callback when the buffer is half full.*/
@@ -87,11 +90,11 @@ void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
     /* Print out the old sampeled values */
     for (i=0; i < ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH; i++)
     {
-          tempValue += samples[i];
+        if (i % ADC_GRP1_NUM_CHANNELS == ADC_GRP1_NUM_CHANNELS - 1)
+          adcValue += samples[i];
     }
+    gADCval = (uint32_t) (adcValue / (ADC_GRP1_BUF_DEPTH));
 
-    if (gTemperature != NULL)
-      (*gTemperature) = (int32_t) (tempValue / (ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH));
   }
 }
 
@@ -118,11 +121,12 @@ kty81_ret_t kty81_init(void)
    return RET_OK;
 }
 
-kty81_ret_t kty81_read(volatile int32_t *temperature)
+kty81_ret_t kty81_read(int32_t *temperature)
 {
-  gTemperature = temperature;
+  double tempResistorValue = 0.0;
+  double tempValue = 0.0;
 
-  if (gTemperature == NULL)
+  if (temperature == NULL)
     return RET_ERROR;
 
   /* Starts an asynchronous ADC conversion operation, the conversion
@@ -131,5 +135,26 @@ kty81_ret_t kty81_read(volatile int32_t *temperature)
   chSysLockFromIsr();
   adcStartConversionI(&ADCD1, &adcgrpcfg, samples, ADC_GRP1_BUF_DEPTH);
   chSysUnlockFromIsr();
+  chThdSleep(MS2ST(10));
+
+  tempResistorValue = (gADCval + ADC_TO_VOLT_OFFSET) * 2500 / (5.0 - (gADCval - ADC_TO_VOLT_OFFSET) );
+
+  tempValue = FACTOR_X3 * (tempResistorValue * tempResistorValue * tempResistorValue) + FACTOR_X2 * (tempResistorValue * tempResistorValue) + FACTOR_X1 * tempResistorValue + OFFSET_X0;
+
+  (*temperature) = (int32_t) tempValue;
+
+
+  /*FIXME remove debug printf */
+  {
+      int i;
+      usbcdc_print("Last values were: \r\n");
+      for (i=0; i < ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH; i++)
+      {
+          usbcdc_print(" %5d", samples[i]);
+      }
+      usbcdc_print("\r\n");
+  }
+  usbcdc_print("Calculated: %5d %5d %5d\r\n", gADCval, tempResistorValue, tempValue);
+
   return RET_OK;
 }

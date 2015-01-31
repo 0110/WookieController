@@ -87,69 +87,67 @@ static msg_t blinkerThread(void *arg) {
 	return RDY_OK;
 }
 
-volatile int32_t temp=0;
-
 /*
  * Application entry point.
  */
 int main(void)
 {
-	/*
-	 * System initializations.
-	 * - HAL initialization, this also initializes the configured device drivers
-	 *   and performs the board-specific initializations.
-	 * - Kernel initialization, the main() function becomes a thread and the
-	 *   RTOS is active.
-	 */
-	halInit();
-	chSysInit();
+    int32_t temp=0;
+    /*
+     * System initializations.
+     * - HAL initialization, this also initializes the configured device drivers
+     *   and performs the board-specific initializations.
+     * - Kernel initialization, the main() function becomes a thread and the
+     *   RTOS is active.
+     */
+    halInit();
+    chSysInit();
 
-	/*
-	 * Initialize USB serial console
-	 */
-	usbcdc_init(commands);
+    /*
+     * Initialize USB serial console
+     */
+    usbcdc_init(commands);
 
-	/*
-	 * Shell manager initialization.
-	 */
-	shellInit();
+    /*
+     * Shell manager initialization.
+     */
+    shellInit();
 
-	/*
-	 * Activates the serial driver 6 and SDC driver 1 using default
-	 * configuration.
-	 */
-	sdStart(&SD6, NULL);
+    /*
+     * Activates the serial driver 6 and SDC driver 1 using default
+     * configuration.
+     */
+    sdStart(&SD6, NULL);
 
-	chThdSleep(MS2ST(100));
+    chThdSleep(MS2ST(100));
 
-	UPRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
-	UPRINT("Start blinker thread ...");
-	chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
-			blinkerThread, NULL);
-	UPRINT( " Done\r\n");
+    UPRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
+    UPRINT("Start blinker thread ...");
+    chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
+                    blinkerThread, NULL);
+    UPRINT( " Done\r\n");
 
-	kty81_init();
+    kty81_init();
 
-	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
-	/*
-	 * Normal main() thread activity, in this demo it does nothing except
-	 * sleeping in a loop and check the button state, when the button is
-	 * pressed the test procedure is launched with output on the serial
-	 * driver 2.
-	 */
-	while (TRUE) {
-		usbcdc_process();
+    shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
+    /*
+     * Normal main() thread activity, in this demo it does nothing except
+     * sleeping in a loop and check the button state, when the button is
+     * pressed the test procedure is launched with output on the serial
+     * driver 2.
+     */
+    while (TRUE) {
+            usbcdc_process();
 
-		if (palReadPad(GPIOA, GPIOA_BUTTON))
-		{
-			usbcdc_print("Button pressed (Branch is " BRANCH_NAME " )\r\n");
-			kty81_read(&temp);
-			chThdSleep(MS2ST(10));
-			usbcdc_print("Value are %5d\r\n", temp);
-		}
+            if (palReadPad(GPIOA, GPIOA_BUTTON))
+            {
+                    usbcdc_print("Button pressed (Branch is " BRANCH_NAME " )\r\n");
+                    kty81_read(&temp);
+                    usbcdc_print("Value is %5d\r\n", temp);
+            }
 
-		/* Wait some time, to make the scheduler running tasks with lower prio */
-		chThdSleep(MS2ST(200));
-	}
+            /* Wait some time, to make the scheduler running tasks with lower prio */
+            chThdSleep(MS2ST(200));
+    }
 }
 
