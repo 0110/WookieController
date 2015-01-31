@@ -6,7 +6,7 @@
  *
  *  @brief Module to read temperature from a kty81 plugged to PC1 on the STM32 Discovery board.
  *
- *  @defgroup kty81
+ *  @defgroup kty81      Temperature measurement based on KTY81
  */
 
 #ifndef KTY81_H_
@@ -15,11 +15,11 @@
 #include "ch.h"
 
 #ifndef TRUE
-#define TRUE	1
+#define TRUE	1       /**< define TRUE as one (if not already present) */
 #endif
 
 #ifndef FALSE
-#define FALSE	0
+#define FALSE	0       /**< define FALSE as zero (if not already present) */
 #endif
 
 /**
@@ -84,16 +84,18 @@
  * The voltage (V_PC1) is calculated based on the ADC values.
  */
 
-/** @addtogroup kty81 Temperature measurement based on KTY81
+/** @addtogroup kty81
  * @{ */
 
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
-#define FACTOR_X3       0.000000018
-#define FACTOR_X2       -0.000095211
-#define FACTOR_X1       0.265417749
-#define OFFSET_X0       -162.8266092
+
+#define FACTOR_X3       0.000000018     /**< Factor in front of for x³ in the formula x³ + x² + x + offset, necessary for the temperature calculation */
+#define FACTOR_X2       -0.000095211    /**< Factor in front of for x² in the formula x³ + x² + x + offset, necessary for the temperature calculation */
+#define FACTOR_X1       0.265417749     /**< Factor in front of for x in the formula x³ + x² + x + offset, necessary for the temperature calculation */
+#define OFFSET_X0       -162.8266092    /**< Offset at the end of the formula x³ + x² + x + offset*/
+
 /******************************************************************************
  * TYPE DEFINITIONS
  ******************************************************************************/
@@ -118,10 +120,10 @@ typedef enum {
  */
 kty81_ret_t kty81_init(void);
 
-/** @fn kty81_ret_t kty81_read(volatile int32_t *temperature)
+/** @fn kty81_ret_t kty81_read(int32_t *temperature)
  * Reads a temperature value.
  * @param[out] temperature      the read temperature in degree celsius
- * @return status
+ * @return status               RET_OK  on success
  */
 kty81_ret_t kty81_read(int32_t *temperature);
 
