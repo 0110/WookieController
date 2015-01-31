@@ -56,31 +56,36 @@
  *
  *
  * Conversion of resistance values:
- * Ohm  °C
- * 567  -40
- * 624     -30
- * 684     -20
- * 747     -10
- * 815     0
- * 886     10
- * 961     20
- * 1000    25
- * 1040    30
- * 1122    40
- * 1209    50
- * 1299    60
- * 1392    70
- * 1490    80
- * 1591    90
- * 1696    100
- * 1805    110
- * results in the following polynom (according to http://www.xuru.org/rt/PR.asp#Manually)
+ * <table>
+ * <TR><TH>Ohm</TH><TH>°C</TH></TR>
+ * <TR><TD>567</TD><TD>-40</TD>
+ * <TR><TD>624</TD><TD>-30</TD>
+ * <TR><TD>684</TD><TD>-20</TD>
+ * <TR><TD>747</TD><TD>-10</TD>
+ * <TR><TD>815</TD><TD>0</TD>
+ * <TR><TD>886</TD><TD>10</TD>
+ * <TR><TD>961</TD><TD>20</TD>
+ * <TR><TD>1000</TD><TD>25</TD>
+ * <TR><TD>1040</TD><TD>30</TD>
+ * <TR><TD>1122</TD><TD>40</TD>
+ * <TR><TD>1209</TD><TD>50</TD>
+ * <TR><TD>1299</TD><TD>60</TD>
+ * <TR><TD>1392</TD><TD>70</TD>
+ * <TR><TD>1490</TD><TD>80</TD>
+ * <TR><TD>1591</TD><TD>90</TD>
+ * <TR><TD>1696</TD><TD>100</TD>
+ * <TR><TD>1805</TD><TD>110</TD>
+ * </table>
+ * This values results in the following polynom (according to http://www.xuru.org/rt/PR.asp#Manually):<br/>
+ * <code>
  * y = 1.77136749·10^-8 x^3 - 9.521069433·10^-5 x^2 + 2.654177488·10^-1 x - 162.8266092
+ * </code>
+ * <br/>
  *
- *
- * In order to calculate the resistance of the KTY81, the following formula should be used:
+ * In order to calculate the resistance of the KTY81, the following formula should be used:<br/>
+ * <code>
  * R_KTY81 = V_PC1 * 2500 / (5.0 - V_PC1 )
- *
+ * </code>
  * The voltage (V_PC1) is calculated based on the ADC values.
  */
 
