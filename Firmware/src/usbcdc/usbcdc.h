@@ -1,11 +1,58 @@
 /** @file usbcdc.h
  * @brief Module to provide an USB CDC (USB serial interface)
+ *
+ * @page USBusage USB CDC module - usage
+ *
+ * This module can be used to access all Chibios-commands via a USB-UART. <br/>
+ *
+ * <code>
+ * static const ShellCommand commands[] = {<br/>
+ *              { "mem", cmd_mem },<br/>
+ *              { "threads", cmd_threads },<br/>
+ *              { NULL, NULL } };<br/>
+ * </code><br/>
+ * This shown example above are some basic Chbios commands.<br/>
+ *
+ * A mini version of a <code>main.c</code> contains the following additional header:
+ * <code>
+ * \#include "usbcdc/usbcdc.h"
+ * </code>
+ *
+ * A minimal main routine content would be:<br/>
+ * <code>
+ * halInit();<br/>
+ * chSysInit();<br/>
+ * <br/>
+ * usbcdc_init(commands);<br/>
+ * shellInit();<br/>
+ * while (TRUE) {<br/>
+ *      usbcdc_process();<br/>
+ *      if (palReadPad(GPIOA, GPIOA_BUTTON))
+ *      {<br/>
+ *                  usbcdc_print("Button pressed\r\n");<br/>
+ *      }<br/>
+ *      //Wait some time, to give the scheduler a chance to run tasks with lower prio<br/>
+ *      chThdSleep(MS2ST(200));<br/>
+ *   }<br/>
+ * </code>
+ * <br/>
+ * Don't forget to add the source <code>usbcdc.c</code> to your projects Makefile.
+ * e.g.:<br/>
+ * <code>
+ * APPSRC = src/main.c \ <br/>
+ *          src/usbcdc/usbcdc.c
+ * </code>
+ *
  * @author Ollo
  *
  * @date 28.06.2014
  *
  * @defgroup USB Output library (USB UART)
  * @{
+ *
+ * <br/>
+ *
+ *
  */
 
 #ifndef _USBCDC_H_

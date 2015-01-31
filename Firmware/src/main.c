@@ -146,7 +146,7 @@ int main(void)
                     usbcdc_print("Value is %5d\r\n", temp);
             }
 
-            /* Wait some time, to make the scheduler running tasks with lower prio */
+            /* Wait some time, to give the scheduler a chance to run tasks with lower prio */
             chThdSleep(MS2ST(200));
     }
 }
