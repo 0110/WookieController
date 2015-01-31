@@ -24,7 +24,8 @@
 
 #define ADC_GRP1_VALUE_OFFSET   1
 
-#define ADC_TO_VOLT_OFFSET      (-100)    /**< Offset between ADC and the shown volt value */
+#define ADC_TO_VOLT_OFFSET      500               /**< Offset between ADC and the shown volt value */
+#define MV2V(v)                 ((v) /1000.0)     /**< Milli Volt to Volt correction */
 
 /******************************************************************************
  * PROTOTYPE
@@ -41,7 +42,7 @@ static void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n);
  */
 static adcsample_t samples[ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH];
 
-static volatile int32_t gADCval = 0;
+static uint32_t gADCval = 0;
 
 /******************************************************************************
  * LOCAL FUNCTIONS
@@ -93,7 +94,7 @@ void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
         if (i % ADC_GRP1_NUM_CHANNELS == ADC_GRP1_NUM_CHANNELS - 1)
           adcValue += samples[i];
     }
-    gADCval = (uint32_t) (adcValue / (ADC_GRP1_BUF_DEPTH));
+    gADCval = (adcValue / (ADC_GRP1_BUF_DEPTH));
 
   }
 }
@@ -123,8 +124,8 @@ kty81_ret_t kty81_init(void)
 
 kty81_ret_t kty81_read(int32_t *temperature)
 {
-  double tempResistorValue = 0.0;
-  double tempValue = 0.0;
+  uint32_t tempResistorValue = 0;
+  int32_t tempValue = 0;
 
   if (temperature == NULL)
     return RET_ERROR;
@@ -137,15 +138,17 @@ kty81_ret_t kty81_read(int32_t *temperature)
   chSysUnlockFromIsr();
   chThdSleep(MS2ST(10));
 
-  tempResistorValue = (gADCval + ADC_TO_VOLT_OFFSET) * 2500.0 / (5.0 - (gADCval + ADC_TO_VOLT_OFFSET) );
+  /* Calculate the actual resistor value */
+  tempResistorValue = MV2V(gADCval - ADC_TO_VOLT_OFFSET) * 2500 / (5 - MV2V(gADCval - ADC_TO_VOLT_OFFSET));
 
+  /** Use the polynom to get the temperature */
   tempValue = FACTOR_X3 * (tempResistorValue * tempResistorValue * tempResistorValue) + FACTOR_X2 * (tempResistorValue * tempResistorValue) + FACTOR_X1 * tempResistorValue + OFFSET_X0;
 
   (*temperature) = (int32_t) tempValue;
 
 
   /*FIXME remove debug printf */
-#if 0
+
   {
       int i;
       usbcdc_print("Last values were: \r\n");
@@ -155,8 +158,8 @@ kty81_ret_t kty81_read(int32_t *temperature)
       }
       usbcdc_print("\r\n");
   }
-#endif
-  usbcdc_print("Calculated: %5d\t%5d\t%5d\r\n", (gADCval + ADC_TO_VOLT_OFFSET), tempResistorValue, tempValue);
+
+  usbcdc_print("Calculated: %5d\t%5d\t%5d\r\n", (gADCval - ADC_TO_VOLT_OFFSET), tempResistorValue, tempValue);
 
   return RET_OK;
 }
