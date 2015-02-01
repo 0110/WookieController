@@ -41,11 +41,11 @@ void cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
 	}
 	else if (argc >= 1 && strcmp(argv[0], "on") == 0)
 	{
-		palSetPad(GPIOA, GPIOA_LEDEXT);	/* External LED on: PA8 ON*/
+		palSetPad(GPIOA, TEMP_CONTROL);	/* PA8 ON*/
 	}
 	else if (argc >= 1 && strcmp(argv[0], "off") == 0)
 	{
-		palClearPad(GPIOA, GPIOA_LEDEXT); /* External LED on: PA8 OFF */
+		palClearPad(GPIOA, TEMP_CONTROL); /* PA8 OFF */
 	}
 	else	/* Usage */
 	{

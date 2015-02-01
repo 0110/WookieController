@@ -10,6 +10,8 @@
 #include "ch.h"
 #include "hal.h"
 
+#include "usbcdc/usbcdc.h"
+
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
@@ -128,7 +130,7 @@ kty81_ret_t kty81_read(int32_t *temperature)
   chThdSleep(MS2ST(10));
 
   /* Use the volatage value to convert the ADC value to a floating point number */
-  volatage = (double) (gADCval * 1.0);
+  volatage = (float) (gADCval * 1.0);
   volatage = (KTY81_ADC2V_FACTOR * (volatage - KTY81_ADC2V_OFFSET) + KTY81_ADC2V_OFFSET);
 
   /* Calculate the actual resistor value */
@@ -140,6 +142,12 @@ kty81_ret_t kty81_read(int32_t *temperature)
                   + KTY81_TEMP_FACTOR_X1 * tempResistorValue
                   + KTY81_TEMP_OFFSET_X0;
 
+#if 0
   (*temperature) = (int32_t) tempValue;
+#else
+  (*temperature) = (int32_t) gADCval;
+  usbcdc_print("Details adc %5d\t %3dV\t%3d°C\r\n", gADCval, (int) (volatage * 1000), tempValue);
+#endif
+
   return RET_OK;
 }

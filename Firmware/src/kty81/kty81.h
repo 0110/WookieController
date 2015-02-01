@@ -12,6 +12,12 @@
 #ifndef KTY81_H_
 #define KTY81_H_
 
+/* Check hardware dependency */
+#include "board.h"
+#ifndef TEMP_CONTROL
+#error "Need TEMP_CONTROL in the board configuration to control the power of the temperature measurement"
+#endif
+
 #include "ch.h"
 
 #ifndef TRUE
@@ -39,12 +45,12 @@
  * rankdir=LR;
  * node [shape=record];
  * GND [ label="GND" ];
- * VCC [ label="5V" ];
+ * PA8 [ label="PA8 (3.12V)" ];
  * PIN [ label="PC1" ];
  * CON;
  * GND -> CON [ label="kty81" arrowhead=none ];
  * CON -> PIN [ label="9.8 kOhm" arrowhead=none ];
- * CON -> VCC [ label="2.5 kOhm" arrowhead=none ];
+ * CON -> PA8 [ label="1.0 kOhm" arrowhead=none ];
  * }
  * @enddot
  *
@@ -98,11 +104,11 @@
 #define KTY81_TEMP_FACTOR_X1       0.265417749     /**< Factor in front of for x in the formula x³ + x² + x + offset, necessary for the temperature calculation */
 #define KTY81_TEMP_OFFSET_X0       -162.8266092    /**< Offset at the end of the formula x³ + x² + x + offset*/
 
-#define KTY81_ADC2V_FACTOR            0.00075f           /**< Factor to calculate between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET */
+#define KTY81_ADC2V_FACTOR            0.00077f           /**< Factor to calculate between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET */
 #define KTY81_ADC2V_OFFSET            0.0f               /**< Offset between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET  */
 
-#define KTY81_VCC                     5                  /**< Used VCC for the temperature measurement circuit */
-#define KTY81_PULLUP_RESISTOR         2500               /**< Pull Up resistor between VCC and the measure point */
+#define KTY81_VCC                     3.10f              /**< Used VCC for the temperature measurement circuit */
+#define KTY81_PULLUP_RESISTOR         1000.0f            /**< Pull Up resistor between VCC and the measure point */
 
 /******************************************************************************
  * TYPE DEFINITIONS
