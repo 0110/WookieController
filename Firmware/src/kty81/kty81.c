@@ -151,7 +151,7 @@ kty81_ret_t kty81_read(int32_t *temperature)
 #endif
 
   /*FIXME remove debug printf */
-
+#if 0
   {
       int i;
       usbcdc_print("Last values were: \r\n");
@@ -162,6 +162,6 @@ kty81_ret_t kty81_read(int32_t *temperature)
       usbcdc_print("\r\n");
   }
   usbcdc_print("Calculated: %5d\t%5d\t%5d\r\n", (gADCval - ADC_TO_VOLT_OFFSET), tempResistorValue, tempValue);
-
+#endif
   return RET_OK;
 }
