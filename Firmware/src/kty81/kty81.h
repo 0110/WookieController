@@ -95,10 +95,16 @@
  * DEFINITIONS
  ******************************************************************************/
 
-#define FACTOR_X3       0.000000018     /**< Factor in front of for x³ in the formula x³ + x² + x + offset, necessary for the temperature calculation */
-#define FACTOR_X2       -0.000095211    /**< Factor in front of for x² in the formula x³ + x² + x + offset, necessary for the temperature calculation */
-#define FACTOR_X1       0.265417749     /**< Factor in front of for x in the formula x³ + x² + x + offset, necessary for the temperature calculation */
-#define OFFSET_X0       -162.8266092    /**< Offset at the end of the formula x³ + x² + x + offset*/
+#define KTY81_TEMP_FACTOR_X3       0.000000018     /**< Factor in front of for x³ in the formula x³ + x² + x + offset, necessary for the temperature calculation */
+#define KTY81_TEMP_FACTOR_X2       -0.000095211    /**< Factor in front of for x² in the formula x³ + x² + x + offset, necessary for the temperature calculation */
+#define KTY81_TEMP_FACTOR_X1       0.265417749     /**< Factor in front of for x in the formula x³ + x² + x + offset, necessary for the temperature calculation */
+#define KTY81_TEMP_OFFSET_X0       -162.8266092    /**< Offset at the end of the formula x³ + x² + x + offset*/
+
+#define KTY81_ADC2V_FACTOR            0.00075f           /**< Factor to calculate between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET */
+#define KTY81_ADC2V_OFFSET            0.0f               /**< Offset between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET  */
+
+#define KTY81_VCC                     5                  /**< Used VCC for the temperature measurement circuit */
+#define KTY81_PULLUP_RESISTOR         2500               /**< Pull Up resistor between VCC and the measure point */
 
 /******************************************************************************
  * TYPE DEFINITIONS
