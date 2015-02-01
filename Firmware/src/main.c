@@ -55,6 +55,7 @@ void cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
 				"- off\r\n");
 	}
 }
+
 void cmd_temploop(BaseSequentialStream *chp, int argc, char *argv[])
 {
   int32_t temp=0;
@@ -68,11 +69,32 @@ void cmd_temploop(BaseSequentialStream *chp, int argc, char *argv[])
   }
 }
 
+void cmd_temploopavg(BaseSequentialStream *chp, int argc, char *argv[])
+{
+  int32_t temp=0;
+  int32_t tempAvg=0;
+  int i;
+  (void) argc;
+  (void) argv;
+  chprintf(chp, "Endless loop printing the AVERAGE temperature values:\r\n");
+  while (TRUE) {
+    tempAvg=0;
+    for(i=0;i<10;i++)
+    {
+      kty81_read(&temp);
+      tempAvg+=temp;
+      chThdSleep(MS2ST(100));
+    }
+    chprintf(chp, "%5d\r\n", (tempAvg / 10));
+  }
+}
+
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
 		{ "led" , cmd_led },
 		{ "temploop" , cmd_temploop },
+		{ "temploopavg" ,cmd_temploopavg},
 		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
