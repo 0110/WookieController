@@ -10,8 +10,6 @@
 #include "ch.h"
 #include "hal.h"
 
-#include "usbcdc/usbcdc.h"
-
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
@@ -24,8 +22,8 @@
 
 #define ADC_GRP1_VALUE_OFFSET   1
 
-#define ADC_TO_VOLT_OFFSET      500               /**< Offset between ADC and the shown volt value */
-#define MV2V(v)                 ((v) /1000.0)     /**< Milli Volt to Volt correction */
+#define ADC2V_FACTOR            0.00075f           /**< Factor to calculate between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET */
+#define ADC2V_OFFSET            0.0f               /**< Offset between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET  */
 
 /******************************************************************************
  * PROTOTYPE
@@ -84,10 +82,6 @@ void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
      intermediate callback when the buffer is half full.*/
   if (adcp->state == ADC_COMPLETE) {
 
-    /*FIXME Remove the toggle LED */
-    palTogglePad(GPIOD, GPIOD_LED5);    /* Red On*/
-
-
     /* Generate average */
     for (i=0; i < ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH; i++)
     {
@@ -125,6 +119,7 @@ kty81_ret_t kty81_read(int32_t *temperature)
 {
   uint32_t tempResistorValue = 0;
   int32_t tempValue = 0;
+  float volatage=0.0f;
 
   if (temperature == NULL)
     return RET_ERROR;
@@ -137,31 +132,16 @@ kty81_ret_t kty81_read(int32_t *temperature)
   chSysUnlockFromIsr();
   chThdSleep(MS2ST(10));
 
+  /* Use the volatage value to convert the ADC value to a floating point number */
+  volatage = (double) (gADCval * 1.0);
+  volatage = (ADC2V_FACTOR * (volatage - ADC2V_OFFSET) + ADC2V_OFFSET);
+
   /* Calculate the actual resistor value */
-  tempResistorValue = MV2V(gADCval - ADC_TO_VOLT_OFFSET) * 2500 / (5 - MV2V(gADCval - ADC_TO_VOLT_OFFSET));
+  tempResistorValue = (uint32_t) ((2500 * volatage) / (5 - volatage));
 
   /** Use the polynom to get the temperature */
   tempValue = FACTOR_X3 * (tempResistorValue * tempResistorValue * tempResistorValue) + FACTOR_X2 * (tempResistorValue * tempResistorValue) + FACTOR_X1 * tempResistorValue + OFFSET_X0;
 
-#if 0
   (*temperature) = (int32_t) tempValue;
-#else
-  /* Return the ADV value */
-  (*temperature) = (int32_t) gADCval;
-#endif
-
-  /*FIXME remove debug printf */
-#if 0
-  {
-      int i;
-      usbcdc_print("Last values were: \r\n");
-      for (i=0; i < ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH; i++)
-      {
-          usbcdc_print(" %5d", samples[i]);
-      }
-      usbcdc_print("\r\n");
-  }
-  usbcdc_print("Calculated: %5d\t%5d\t%5d\r\n", (gADCval - ADC_TO_VOLT_OFFSET), tempResistorValue, tempValue);
-#endif
   return RET_OK;
 }
