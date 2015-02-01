@@ -55,11 +55,24 @@ void cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
 				"- off\r\n");
 	}
 }
+void cmd_temploop(BaseSequentialStream *chp, int argc, char *argv[])
+{
+  int32_t temp=0;
+  (void) argc;
+  (void) argv;
+  chprintf(chp, "Endless loop printing the temperature values:\r\n");
+  while (TRUE) {
+    kty81_read(&temp);
+    chprintf(chp, "%5d\r\n", temp);
+    chThdSleep(MS2ST(500));
+  }
+}
 
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
 		{ "led" , cmd_led },
+		{ "temploop" , cmd_temploop },
 		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
