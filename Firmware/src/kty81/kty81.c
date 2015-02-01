@@ -20,10 +20,11 @@
 /* Depth of the conversion buffer, channels are sampled four times each.*/
 #define ADC_GRP1_BUF_DEPTH      4
 
-#define ADC_GRP1_VALUE_OFFSET   1
-
 #define ADC2V_FACTOR            0.00075f           /**< Factor to calculate between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET */
 #define ADC2V_OFFSET            0.0f               /**< Offset between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET  */
+
+#define VCC                     5                  /**< Used VCC for the temperature measurement circuit */
+#define PULLUP_RESISTOR         2500               /**< Pull Up resistor between VCC and the measure point */
 
 /******************************************************************************
  * PROTOTYPE
@@ -137,10 +138,13 @@ kty81_ret_t kty81_read(int32_t *temperature)
   volatage = (ADC2V_FACTOR * (volatage - ADC2V_OFFSET) + ADC2V_OFFSET);
 
   /* Calculate the actual resistor value */
-  tempResistorValue = (uint32_t) ((2500 * volatage) / (5 - volatage));
+  tempResistorValue = (uint32_t) ((PULLUP_RESISTOR * volatage) / (VCC - volatage));
 
   /** Use the polynom to get the temperature */
-  tempValue = FACTOR_X3 * (tempResistorValue * tempResistorValue * tempResistorValue) + FACTOR_X2 * (tempResistorValue * tempResistorValue) + FACTOR_X1 * tempResistorValue + OFFSET_X0;
+  tempValue = FACTOR_X3 * (tempResistorValue * tempResistorValue * tempResistorValue)
+                  + FACTOR_X2 * (tempResistorValue * tempResistorValue)
+                  + FACTOR_X1 * tempResistorValue
+                  + OFFSET_X0;
 
   (*temperature) = (int32_t) tempValue;
   return RET_OK;
