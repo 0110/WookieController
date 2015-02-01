@@ -57,24 +57,24 @@
  *
  * Conversion of resistance values:
  * <table>
- * <TR><TH>Ohm</TH><TH>°C</TH></TR>
- * <TR><TD>567</TD><TD>-40</TD></TR>
- * <TR><TD>624</TD><TD>-30</TD></TR>
- * <TR><TD>684</TD><TD>-20</TD></TR>
- * <TR><TD>747</TD><TD>-10</TD></TR>
- * <TR><TD>815</TD><TD>0</TD></TR>
- * <TR><TD>886</TD><TD>10</TD></TR>
- * <TR><TD>961</TD><TD>20</TD></TR>
- * <TR><TD>1000</TD><TD>25</TD></TR>
- * <TR><TD>1040</TD><TD>30</TD></TR>
- * <TR><TD>1122</TD><TD>40</TD></TR>
- * <TR><TD>1209</TD><TD>50</TD></TR>
- * <TR><TD>1299</TD><TD>60</TD></TR>
- * <TR><TD>1392</TD><TD>70</TD></TR>
- * <TR><TD>1490</TD><TD>80</TD></TR>
- * <TR><TD>1591</TD><TD>90</TD></TR>
- * <TR><TD>1696</TD><TD>100</TD></TR>
- * <TR><TD>1805</TD><TD>110</TD></TR>
+ * <TR><TH>ADC</TH><TH>Volt</TH><TH>Ohm</TH><TH>°C</TH></TR>
+ * <TR><TD>567</TD><TD>0.92</TD><TD>567</TD><TD>-40</TD></TR>
+ * <TR><TD>624</TD><TD>1.00</TD><TD>624</TD><TD>-30</TD></TR>
+ * <TR><TD>684</TD><TD>1.07</TD><TD>684</TD><TD>-20</TD></TR>
+ * <TR><TD>747</TD><TD>1.15</TD><TD>747</TD><TD>-10</TD></TR>
+ * <TR><TD>815</TD><TD>1.23</TD><TD>815</TD><TD>0</TD></TR>
+ * <TR><TD>886</TD><TD>1.31</TD><TD>886</TD><TD>10</TD></TR>
+ * <TR><TD>961</TD><TD>1.39</TD><TD>961</TD><TD>20</TD></TR>
+ * <TR><TD>1000</TD><TD>1.43</TD><TD>1000</TD><TD>25</TD></TR>
+ * <TR><TD>1040</TD><TD>1.47</TD><TD>1040</TD><TD>30</TD></TR>
+ * <TR><TD>1122</TD><TD>1.55</TD><TD>1122</TD><TD>40</TD></TR>
+ * <TR><TD>1209</TD><TD>1.63</TD><TD>1209</TD><TD>50</TD></TR>
+ * <TR><TD>1299</TD><TD>1.71</TD><TD>1299</TD><TD>60</TD></TR>
+ * <TR><TD>1392</TD><TD>1.79</TD><TD>1392</TD><TD>70</TD></TR>
+ * <TR><TD>1490</TD><TD>1.87</TD><TD>1490</TD><TD>80</TD></TR>
+ * <TR><TD>1591</TD><TD>1.94</TD><TD>1591</TD><TD>90</TD></TR>
+ * <TR><TD>1696</TD><TD>2.02</TD><TD>1696</TD><TD>100</TD></TR>
+ * <TR><TD>1805</TD><TD>2.10</TD><TD>1805</TD><TD>110</TD></TR>
  * </table>
  * This values results in the following polynom (according to http://www.xuru.org/rt/PR.asp#Manually):<br/>
  * <code>
