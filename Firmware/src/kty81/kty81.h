@@ -50,9 +50,7 @@
  *
  * The datasheet can be found at http://www.nxp.com/documents/data_sheet/KTY81_SER.pdf
  *
- * The KTY81-100 will have a resistance between 733 (-10 °C) and 1136 (40 °C) ohm.
- *
- * 20 °C is 961 ohm, so 1.37V will be measured at the PIN.
+ * 20 °C is 961 ohm, so 1.39V will be measured at the PIN.
  *
  *
  * Conversion of resistance values:
