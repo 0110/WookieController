@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 /* Total number of channels to be sampled by a single ADC operation.*/
-#define ADC_GRP1_NUM_CHANNELS   2
+#define ADC_GRP1_NUM_CHANNELS   1
 
 /* Depth of the conversion buffer, channels are sampled four times each.*/
 #define ADC_GRP1_BUF_DEPTH      4
@@ -48,11 +48,11 @@ static uint32_t gADCval = 0;
  * LOCAL FUNCTIONS
  ******************************************************************************/
 
-/*
+/** @var adcgrpcfg
+ * @brief Configuration for the ADC module
  * ADC conversion group.
  * Mode:        Linear buffer, 4 samples of 1 channels, SW triggered.
- * Channels:    IN11   (48 cycles sample time)
- *              Sensor (192 cycles sample time)
+ * Channels:    IN11   (192 cycles sample time)
  */
 static const ADCConversionGroup adcgrpcfg = {
   FALSE,
@@ -62,11 +62,11 @@ static const ADCConversionGroup adcgrpcfg = {
   /* HW dependent part.*/
   0,
   ADC_CR2_SWSTART,
-  ADC_SMPR1_SMP_AN11(ADC_SAMPLE_56) | ADC_SMPR1_SMP_SENSOR(ADC_SAMPLE_144),
+  ADC_SMPR1_SMP_AN11(ADC_SAMPLE_56),
   0,
   ADC_SQR1_NUM_CH(ADC_GRP1_NUM_CHANNELS),
   0,
-  ADC_SQR3_SQ2_N(ADC_CHANNEL_IN11) | ADC_SQR3_SQ1_N(ADC_CHANNEL_SENSOR)
+  ADC_SQR3_SQ1_N(ADC_CHANNEL_IN11)
 };
 
 /*
@@ -88,10 +88,9 @@ void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
     palTogglePad(GPIOD, GPIOD_LED5);    /* Red On*/
 
 
-    /* Print out the old sampeled values */
+    /* Generate average */
     for (i=0; i < ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH; i++)
     {
-        if (i % ADC_GRP1_NUM_CHANNELS == ADC_GRP1_NUM_CHANNELS - 1)
           adcValue += samples[i];
     }
     gADCval = (adcValue / (ADC_GRP1_BUF_DEPTH));
@@ -152,7 +151,7 @@ kty81_ret_t kty81_read(int32_t *temperature)
 #endif
 
   /*FIXME remove debug printf */
-#if 0
+
   {
       int i;
       usbcdc_print("Last values were: \r\n");
@@ -163,7 +162,6 @@ kty81_ret_t kty81_read(int32_t *temperature)
       usbcdc_print("\r\n");
   }
   usbcdc_print("Calculated: %5d\t%5d\t%5d\r\n", (gADCval - ADC_TO_VOLT_OFFSET), tempResistorValue, tempValue);
-#endif
 
   return RET_OK;
 }
