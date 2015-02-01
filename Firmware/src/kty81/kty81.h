@@ -58,23 +58,23 @@
  * Conversion of resistance values:
  * <table>
  * <TR><TH>Ohm</TH><TH>°C</TH></TR>
- * <TR><TD>567</TD><TD>-40</TD>
- * <TR><TD>624</TD><TD>-30</TD>
- * <TR><TD>684</TD><TD>-20</TD>
- * <TR><TD>747</TD><TD>-10</TD>
- * <TR><TD>815</TD><TD>0</TD>
- * <TR><TD>886</TD><TD>10</TD>
- * <TR><TD>961</TD><TD>20</TD>
- * <TR><TD>1000</TD><TD>25</TD>
- * <TR><TD>1040</TD><TD>30</TD>
- * <TR><TD>1122</TD><TD>40</TD>
- * <TR><TD>1209</TD><TD>50</TD>
- * <TR><TD>1299</TD><TD>60</TD>
- * <TR><TD>1392</TD><TD>70</TD>
- * <TR><TD>1490</TD><TD>80</TD>
- * <TR><TD>1591</TD><TD>90</TD>
- * <TR><TD>1696</TD><TD>100</TD>
- * <TR><TD>1805</TD><TD>110</TD>
+ * <TR><TD>567</TD><TD>-40</TD></TR>
+ * <TR><TD>624</TD><TD>-30</TD></TR>
+ * <TR><TD>684</TD><TD>-20</TD></TR>
+ * <TR><TD>747</TD><TD>-10</TD></TR>
+ * <TR><TD>815</TD><TD>0</TD></TR>
+ * <TR><TD>886</TD><TD>10</TD></TR>
+ * <TR><TD>961</TD><TD>20</TD></TR>
+ * <TR><TD>1000</TD><TD>25</TD></TR>
+ * <TR><TD>1040</TD><TD>30</TD></TR>
+ * <TR><TD>1122</TD><TD>40</TD></TR>
+ * <TR><TD>1209</TD><TD>50</TD></TR>
+ * <TR><TD>1299</TD><TD>60</TD></TR>
+ * <TR><TD>1392</TD><TD>70</TD></TR>
+ * <TR><TD>1490</TD><TD>80</TD></TR>
+ * <TR><TD>1591</TD><TD>90</TD></TR>
+ * <TR><TD>1696</TD><TD>100</TD></TR>
+ * <TR><TD>1805</TD><TD>110</TD></TR>
  * </table>
  * This values results in the following polynom (according to http://www.xuru.org/rt/PR.asp#Manually):<br/>
  * <code>
