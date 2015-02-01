@@ -45,7 +45,7 @@
  * rankdir=LR;
  * node [shape=record];
  * GND [ label="GND" ];
- * PA8 [ label="PA8 (3.12V)" ];
+ * PA8 [ label="PA8 (3.15V)" ];
  * PIN [ label="PC1" ];
  * CON;
  * GND -> CON [ label="kty81" arrowhead=none ];
@@ -107,8 +107,8 @@
 #define KTY81_ADC2V_FACTOR            0.00077f           /**< Factor to calculate between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET */
 #define KTY81_ADC2V_OFFSET            0.0f               /**< Offset between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET  */
 
-#define KTY81_VCC                     3.10f              /**< Used VCC for the temperature measurement circuit */
-#define KTY81_PULLUP_RESISTOR         1000.0f            /**< Pull Up resistor between VCC and the measure point */
+#define KTY81_VCC                     3.15f              /**< Used VCC for the temperature measurement circuit */
+#define KTY81_PULLUP_RESISTOR         996.0f            /**< Pull Up resistor between VCC and the measure point */
 
 /******************************************************************************
  * TYPE DEFINITIONS

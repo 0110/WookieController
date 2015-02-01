@@ -33,29 +33,6 @@
 /* Command line related.                                                     */
 /*===========================================================================*/
 
-void cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
-{
-	if (argc >= 1 && strcmp(argv[0], "test") == 0)
-	{
-		chprintf(chp, "LED test\r\n");
-	}
-	else if (argc >= 1 && strcmp(argv[0], "on") == 0)
-	{
-		palSetPad(GPIOA, TEMP_CONTROL);	/* PA8 ON*/
-	}
-	else if (argc >= 1 && strcmp(argv[0], "off") == 0)
-	{
-		palClearPad(GPIOA, TEMP_CONTROL); /* PA8 OFF */
-	}
-	else	/* Usage */
-	{
-		chprintf(chp, "possible arguments are:\r\n"
-				"- test\r\n"
-				"- on\r\n"
-				"- off\r\n");
-	}
-}
-
 void cmd_temploop(BaseSequentialStream *chp, int argc, char *argv[])
 {
   int32_t temp=0;
@@ -79,7 +56,6 @@ void cmd_temploop(BaseSequentialStream *chp, int argc, char *argv[])
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
-		{ "led" , cmd_led },
 		{ "temploop" , cmd_temploop },
 		{ NULL, NULL } };
 

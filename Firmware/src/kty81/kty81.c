@@ -10,8 +10,6 @@
 #include "ch.h"
 #include "hal.h"
 
-#include "usbcdc/usbcdc.h"
-
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
@@ -121,6 +119,9 @@ kty81_ret_t kty81_read(int32_t *temperature)
   if (temperature == NULL)
     return RET_ERROR;
 
+  /* Activate the circuit */
+  palSetPad(GPIOA, TEMP_CONTROL); /* PA8 ON*/
+
   /* Starts an asynchronous ADC conversion operation, the conversion
          will be executed in parallel to the current PWM cycle and will
          terminate before the next PWM cycle.*/
@@ -142,12 +143,10 @@ kty81_ret_t kty81_read(int32_t *temperature)
                   + KTY81_TEMP_FACTOR_X1 * tempResistorValue
                   + KTY81_TEMP_OFFSET_X0;
 
-#if 0
   (*temperature) = (int32_t) tempValue;
-#else
-  (*temperature) = (int32_t) gADCval;
-  usbcdc_print("Details adc %5d\t %3dV\t%3d°C\r\n", gADCval, (int) (volatage * 1000), tempValue);
-#endif
+
+  /* Deactivate the circuit (don't mess with our power) */
+  palClearPad(GPIOA, TEMP_CONTROL); /* PA8 OFF */
 
   return RET_OK;
 }
