@@ -62,10 +62,17 @@ void cmd_temploop(BaseSequentialStream *chp, int argc, char *argv[])
   (void) argc;
   (void) argv;
   chprintf(chp, "Endless loop printing the temperature values:\r\n");
+  chprintf(chp, "Pressing the Button will stop it.\r\n");
+  chprintf(chp, "=============================================\r\n");
   while (TRUE) {
     kty81_read(&temp);
-    chprintf(chp, "%5d\r\n", temp);
+    chprintf(chp, "%3d\r\n", temp);
     chThdSleep(MS2ST(500));
+    if (palReadPad(GPIOA, GPIOA_BUTTON))
+    {
+        chprintf(chp, "Endless loop found an end: the user\r\n");
+        break;
+    }
   }
 }
 
@@ -157,7 +164,7 @@ int main(void)
             {
                     usbcdc_print("Button pressed (Branch is " BRANCH_NAME " )\r\n");
                     kty81_read(&temp);
-                    usbcdc_print("Value is %5d°C\r\n", temp);
+                    usbcdc_print("Temperature is %3d°C\r\n", temp);
             }
 
             /* Wait some time, to give the scheduler a chance to run tasks with lower prio */
