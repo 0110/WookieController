@@ -11,7 +11,7 @@
  *              { "threads", cmd_threads },<br/>
  *              { NULL, NULL } };<br/>
  * </code><br/>
- * This shown example above are some basic Chbios commands.<br/>
+ * This example shown above are some basic Chibios commands.<br/>
  *
  * A mini version of a <code>main.c</code> contains the following additional header:
  * <code>
