@@ -131,7 +131,8 @@ int main(void) {
 	 * pressed the test procedure is launched with output on the serial
 	 * driver 2.
 	 */
-	while (TRUE) {
+	while (TRUE)
+	{
 		usbcdc_process();
 
 		if (palReadPad(GPIOA, GPIOA_BUTTON))
