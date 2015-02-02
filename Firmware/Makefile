@@ -248,5 +248,12 @@ debug:	build/$(PROJECT).elf
 
 doc:
 	@echo Run doxygen
-	cd $(APP); doxygen Doxyfile; cd -
-	@echo Generated the Documentation
+	cd $(APP); doxygen Doxyfile-html; cd - >> /dev/null
+	@echo Generated the Documentation in $(APP)/html/
+
+docpdf:
+	@echo Generate doxygen PDF
+	cd $(APP); doxygen Doxyfile-pdf; cd - >> /dev/null
+	cd $(APP)/latex; make; mv refman.pdf ../;cd - >> /dev/null
+	rm -rf $(APP)/latex/
+	@echo PDF generated
