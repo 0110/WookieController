@@ -19,6 +19,8 @@
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
 
+#include "rpm/rpm.h"
+
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
@@ -52,10 +54,25 @@ void cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
 	}
 }
 
+void cmd_rpm(BaseSequentialStream *chp, int argc, char *argv[])
+{
+        if (argc >= 1 && strcmp(argv[0], "test") == 0)
+        {
+                chprintf(chp, "Button test\r\n");
+                rpm_init();
+        }
+        else    /* Usage */
+        {
+                chprintf(chp, "possible arguments are:\r\n"
+                                "- test\r\n");
+        }
+}
+
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
 		{ "led" , cmd_led },
+		{ "rpm" , cmd_rpm },
 		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
