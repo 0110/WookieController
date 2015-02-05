@@ -62,10 +62,17 @@ void cmd_rpm(BaseSequentialStream *chp, int argc, char *argv[])
                 rpm_init();
                 UPRINT( " Done\r\n");
         }
+        else if (argc >= 1 && strcmp(argv[0], "speed") == 0)
+        {
+            uint32_t speed=0;
+            rpm_getKMperHour(&speed);
+            chprintf(chp, "%d km/h\r\n", speed);
+        }
         else    /* Usage */
         {
                 chprintf(chp, "possible arguments are:\r\n"
-                                "- test\r\n");
+                                "- test\r\n"
+                                "- speed\r\n");
         }
 }
 

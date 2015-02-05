@@ -8,6 +8,7 @@
 #ifndef RPM_H_
 #define RPM_H_
 
+#include "stdint.h"
 
 /** @addtogroup rpm     Speed based on Rounds per Minute
  * @{
@@ -51,6 +52,14 @@ typedef enum {
  * @return status RET_OK on success
  */
 rpm_ret_t rpm_init(void);
+
+/** @fn rpm_ret_t rpm_getKMperHour(uint32_t*    kmPerH)
+ * @brief Get actual speed
+ * @param[out]  kmPerH  Actual speed in kilometer per hour
+ *
+ * @return status RET_OK on success
+ */
+rpm_ret_t rpm_getKMperHour(uint32_t*    kmPerH);
 
 /*@}*/
 
