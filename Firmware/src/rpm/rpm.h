@@ -25,6 +25,8 @@
 #define FALSE	0	/**< define FALSE as zero (if not already present) */
 #endif
 
+#define RPM_THREAD_WORKING_AREA_SIZE    64      /**< Amount of bytes for the RPM thread */
+
 /******************************************************************************
 * TYPE DEFINITIONS
 ******************************************************************************/

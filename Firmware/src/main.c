@@ -58,8 +58,9 @@ void cmd_rpm(BaseSequentialStream *chp, int argc, char *argv[])
 {
         if (argc >= 1 && strcmp(argv[0], "test") == 0)
         {
-                chprintf(chp, "Button test\r\n");
+                UPRINT("Start RPM thread ...");
                 rpm_init();
+                UPRINT( " Done\r\n");
         }
         else    /* Usage */
         {
