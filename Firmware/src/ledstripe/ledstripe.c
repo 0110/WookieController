@@ -13,11 +13,11 @@
 #include "ledstripe/ledstripe.h"
 
 ledstripe_color ledstripe_framebuffer[LEDSTRIPE_FRAMEBUFFER_SIZE];
-static uint16_t ledstripe_pwm_buffer[LEDSTRIPE_PWM_BUFFER_SIZE];
+static uint8_t ledstripe_pwm_buffer[LEDSTRIPE_PWM_BUFFER_SIZE];
 static uint16_t frame_pos = 0;
 
 // writes the pwm values of one byte into the array which will be used by the dma
-static inline void color2pwm(uint16_t ** dest, uint8_t color) {
+static inline void color2pwm(uint8_t ** dest, uint8_t color) {
 	uint8_t mask = 0x80;
 	do {
 		if (color & mask) {
@@ -30,11 +30,11 @@ static inline void color2pwm(uint16_t ** dest, uint8_t color) {
 	} while (mask != 0);
 }
 
-static void Update_Buffer(uint16_t* buffer) {
+static void Update_Buffer(uint8_t* buffer) {
 	static int incomplete_return = 0;
 	ledstripe_color *framebufferp;
 	uint32_t i, j;
-	uint16_t * bufp;
+	uint8_t * bufp;
 
 	for (i = 0; i < (LEDSTRIPE_PWM_BUFFER_SIZE / 2) / 24; i++) {
 		if (incomplete_return) {
@@ -127,7 +127,7 @@ void ledstripe_init(void) {
 			STM32_DMA_CR_HTIE |
 			STM32_DMA_CR_MBURST_SINGLE |
 			STM32_DMA_CR_MINC |
-			STM32_DMA_CR_MSIZE_HWORD |
+			STM32_DMA_CR_MSIZE_BYTE |
 			STM32_DMA_CR_CIRC |
 			STM32_DMA_CR_PBURST_SINGLE |
 			STM32_DMA_CR_PSIZE_HWORD ;
