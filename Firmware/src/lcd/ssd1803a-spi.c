@@ -76,7 +76,7 @@ ssd1803a_spi_init(void)
   }
 
   /** The init procedure */
-/* Command               RS      R/W     DB7     DB6     DB5     DB4     DB3     DB2     DB1     DB0     Hex     Remark
+ /* Command               RS      R/W     DB7     DB6     DB5     DB4     DB3     DB2     DB1     DB0     Hex     Remark
  * Function Set          0       0       0       0       1        1      1       0       1       0       $3A     8-Bit data length extension Bit RE=1; REV=0*/
  sendViaSPI(0,0,0x3A);
  /* Extended funcion set  0       0       0       0       0        0      1       0       0       1       $09     4 line display*/
@@ -101,7 +101,7 @@ ssd1803a_spi_init(void)
  sendViaSPI(0,0,0x0C);
 
  /* Custom initialization */
- //chThdSleep(MS2ST(50)); /* give the scheduler some time */
+ chThdSleep(MS2ST(50)); /* give the scheduler some time */
  sendViaSPI(0,0,0x01); /* Clear Display */
  sendViaSPI(0,0,0x02); /* Return home */
 
@@ -149,42 +149,42 @@ SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength)
       else if (s[i] == 0xC3)
       {
     	switch (s[i+1]) {
-			case 0xA4: // ä
-				sendViaSPI(0,1, 0xe4);
-				break;
-			case 0xB6: // ö
-				sendViaSPI(0,1, 0xf6);
-				break;
-			case 0xBC: // ü
-				sendViaSPI(0,1, 0xfc);
-				break;
-			case 0x84: // Ä
-				sendViaSPI(0,1, 0xc4);
-				break;
-			case 0x96:  // Ö
-				sendViaSPI(0,1, 0xd6);
-				break;
-			case 0x9C:  // Ü
-				sendViaSPI(0,1, 0xdc);
-				break;
-			case 0x9F:  // ß
-				sendViaSPI(0,1, 0xdf);
-				break;
-			default:
-				sendViaSPI(0,1, 0x15); // Error Char
-				break;
-		}
+                case 0xA4: // ä
+                        sendViaSPI(0,1, 0xe4);
+                        break;
+                case 0xB6: // ö
+                        sendViaSPI(0,1, 0xf6);
+                        break;
+                case 0xBC: // ü
+                        sendViaSPI(0,1, 0xfc);
+                        break;
+                case 0x84: // Ä
+                        sendViaSPI(0,1, 0xc4);
+                        break;
+                case 0x96:  // Ö
+                        sendViaSPI(0,1, 0xd6);
+                        break;
+                case 0x9C:  // Ü
+                        sendViaSPI(0,1, 0xdc);
+                        break;
+                case 0x9F:  // ß
+                        sendViaSPI(0,1, 0xdf);
+                        break;
+                default:
+                        sendViaSPI(0,1, 0x15); // Error Char
+                        break;
+        }
     	i++;
 
       }
       else if (s[i] == 0xC2)
-            {
-          	switch (s[i+1]) {
-      			default:
-      				sendViaSPI(0,1, 0x15); // Error Char
-      				break;
-      		}
-          	i++;
+      {
+          switch (s[i+1]) {
+                  default:
+                          sendViaSPI(0,1, 0x15); // Error Char
+                          break;
+          }
+          i++;
       }
       else
       {
