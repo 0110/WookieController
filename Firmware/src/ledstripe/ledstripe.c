@@ -113,8 +113,9 @@ void ledstripe_init(void) {
 	STM32_TIM3->CCR[2] = 49;
 	
 
-	/******************** DMA *****************************/// DMA init
-
+	/******************** DMA *****************************/
+	dmaInit();
+	// DMA init
 	uint32_t mode = STM32_DMA_CR_CHSEL(2) | /* Select Channel 2 */
 			STM32_DMA_CR_PL(1) |  //DMA priority (0..3|lowest..highest)
 			STM32_DMA_CR_DIR_M2P |
