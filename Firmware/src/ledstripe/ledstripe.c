@@ -44,6 +44,7 @@ static void Update_Buffer(uint8_t* buffer) {
 			}
 		} else {
 			if (frame_pos == LEDSTRIPE_FRAMEBUFFER_SIZE) {
+				/* Fill the reset by setting everything to zero */
 				incomplete_return = 1;
 				frame_pos = 0;
 				for (j = 0; j < 24; j++) {
@@ -91,6 +92,9 @@ void ledstripe_init(void) {
 		ledstripe_framebuffer[i].blue = 0xff;
 	}
 
+	// Fill the buffer with values:
+	Update_Buffer(ledstripe_pwm_buffer);
+
 	/*  GPIO config done in board.h
 	 *  AF TIM3; Push
 	 */
@@ -131,7 +135,7 @@ void ledstripe_init(void) {
 
 	/* DMA setup.*/
 	dmaStreamAllocate(STM32_DMA1_STREAM7, 10, ledstripe_irq_handler, NULL);
-	dmaStreamSetPeripheral(STM32_DMA1_STREAM7, STM32_TIM3->CCR[2]);
+	dmaStreamSetPeripheral(STM32_DMA1_STREAM7, &(STM32_TIM3->CCR[2]) );
 
 	dmaStreamSetMemory0(STM32_DMA1_STREAM7, ledstripe_pwm_buffer);
 	dmaStreamSetTransactionSize(STM32_DMA1_STREAM7, LEDSTRIPE_PWM_BUFFER_SIZE);
