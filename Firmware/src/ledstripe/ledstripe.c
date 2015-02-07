@@ -13,7 +13,7 @@
 #include "ledstripe/ledstripe.h"
 
 ledstripe_color ledstripe_framebuffer[LEDSTRIPE_FRAMEBUFFER_SIZE];
-static uint8_t ledstripe_pwm_buffer[LEDSTRIPE_PWM_BUFFER_SIZE];
+volatile uint8_t ledstripe_pwm_buffer[LEDSTRIPE_PWM_BUFFER_SIZE];
 static uint16_t frame_pos = 0;
 
 // writes the pwm values of one byte into the array which will be used by the dma
