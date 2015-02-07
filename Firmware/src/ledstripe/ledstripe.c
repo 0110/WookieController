@@ -13,7 +13,7 @@
 #include "ledstripe/ledstripe.h"
 
 ledstripe_color ledstripe_framebuffer[LEDSTRIPE_FRAMEBUFFER_SIZE];
-volatile uint8_t ledstripe_pwm_buffer[LEDSTRIPE_PWM_BUFFER_SIZE];
+uint8_t ledstripe_pwm_buffer[LEDSTRIPE_PWM_BUFFER_SIZE];
 static uint16_t frame_pos = 0;
 
 // writes the pwm values of one byte into the array which will be used by the dma
@@ -94,6 +94,7 @@ void ledstripe_init(void) {
 
 	// Fill the buffer with values:
 	Update_Buffer(ledstripe_pwm_buffer);
+	Update_Buffer(ledstripe_pwm_buffer + (LEDSTRIPE_PWM_BUFFER_SIZE / 2));
 
 	/*  GPIO config done in board.h
 	 *  AF TIM3; Push
@@ -126,11 +127,9 @@ void ledstripe_init(void) {
 			STM32_DMA_CR_DIR_M2P |
 			STM32_DMA_CR_TCIE |
 			STM32_DMA_CR_HTIE |
-			STM32_DMA_CR_MBURST_SINGLE |
 			STM32_DMA_CR_MINC |
 			STM32_DMA_CR_MSIZE_BYTE |
 			STM32_DMA_CR_CIRC |
-			STM32_DMA_CR_PBURST_SINGLE |
 			STM32_DMA_CR_PSIZE_HWORD ;
 
 	/* DMA setup.*/
