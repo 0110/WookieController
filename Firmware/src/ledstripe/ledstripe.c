@@ -67,14 +67,12 @@ static void ledstripe_irq_handler(void* data, uint32_t flags) {
 	(void) data;
 
 	// Half-Transfer completed
-	// HTIF2 im DMA_LISR reg
-	if ( flags & (1<<20)) {
+	if ( flags & (1<<4)) {
 		Update_Buffer(ledstripe_pwm_buffer);
 	}
 
 	// Transfer completed
-	// TCIF2 im DMA_LISR reg
-	if (flags & (1<<21)) {
+	if (flags & (1<<5)) {
 		Update_Buffer(ledstripe_pwm_buffer + (LEDSTRIPE_PWM_BUFFER_SIZE / 2));
 	}
 }
