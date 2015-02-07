@@ -142,6 +142,7 @@ void ledstripe_init(void) {
 	// DMA init
 	STM32_TIM3->DIER = STM32_TIM_DIER_CC3DE; // enable DMA for channel 3
 
+	// Activate it:
 	STM32_TIM3->CR1 |= STM32_TIM_CR1_CEN; // TIM3 enable; CR1 is now locked
 	STM32_TIM3->EGR |= STM32_TIM_EGR_UG;
 
