@@ -115,8 +115,9 @@ void ledstripe_init(void) {
 	
 	STM32_TIM3->CR1 |= STM32_TIM_CR1_CEN; // TIM3 enable; CR1 is now locked
 
+#if 0
 	// DMA init
-	//STM32_TIM3->DIER = STM32_TIM_DIER_CC3DE; // enable DMA for channel 3
+	STM32_TIM3->DIER = STM32_TIM_DIER_CC3DE; // enable DMA for channel 3
 
 	dmaStreamAllocate(STM32_DMA1_STREAM2, 0, ledstripe_irq_handler, NULL);
 
@@ -141,5 +142,6 @@ void ledstripe_init(void) {
 	dmaStreamSetMode(STM32_DMA1_STREAM2, mode);
 	dmaStreamSetFIFO(STM32_DMA1_STREAM2, STM32_DMA_FCR_FTH_HALF );
 	dmaStreamEnable(STM32_DMA1_STREAM2);
+#endif
 }
 
