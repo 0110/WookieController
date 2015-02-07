@@ -41,6 +41,10 @@ extern "C"
 
 extern ledstripe_color ledstripe_framebuffer[LEDSTRIPE_FRAMEBUFFER_SIZE];
 
+/** @fn void ledstripe_init(void)
+ * @brief Initialization of the Timer/PWM and DMA
+ * Using the PIN PC9 as output.
+ */
 void ledstripe_init(void);
 
 #ifdef __cplusplus
