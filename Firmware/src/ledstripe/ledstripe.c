@@ -88,7 +88,7 @@ void ledstripe_init(void) {
 	for (i = 0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
 		ledstripe_framebuffer[i].red = 0;
 		ledstripe_framebuffer[i].green = 0;
-		ledstripe_framebuffer[i].blue = 1;
+		ledstripe_framebuffer[i].blue = 0xff;
 	}
 
 	/*  GPIO config done in board.h
@@ -112,18 +112,15 @@ void ledstripe_init(void) {
 
 	STM32_TIM3->CCR[2] = 49;
 	
-	
+	// DMA init
+	STM32_TIM3->DIER = STM32_TIM_DIER_CC3DE; // enable DMA for channel 3
 
 	STM32_TIM3->CR1 |= STM32_TIM_CR1_CEN; // TIM3 enable; CR1 is now locked
 	STM32_TIM3->EGR |= STM32_TIM_EGR_UG;
 
-#if 0
-	// DMA init
-	STM32_TIM3->DIER = STM32_TIM_DIER_CC3DE; // enable DMA for channel 3
+	dmaStreamAllocate(STM32_DMA1_STREAM7, 0, ledstripe_irq_handler, NULL);
 
-	dmaStreamAllocate(STM32_DMA1_STREAM2, 0, ledstripe_irq_handler, NULL);
-
-	uint32_t mode = STM32_DMA_CR_CHSEL(5) |
+	uint32_t mode = STM32_DMA_CR_CHSEL(2) | /* Select Channel 2 */
 			STM32_DMA_CR_PL(1) |  //DMA priority (0..3|lowest..highest)
 			STM32_DMA_CR_DIR_M2P |
 			STM32_DMA_CR_TCIE |
@@ -137,13 +134,13 @@ void ledstripe_init(void) {
 
 
 	/* DMA setup.*/
-	dmaStreamSetPeripheral(STM32_DMA1_STREAM2, STM32_TIM3->CCR[3]);
+	dmaStreamSetPeripheral(STM32_DMA1_STREAM7, STM32_TIM3->CCR[2]);
 
-	dmaStreamSetMemory0(STM32_DMA1_STREAM2, ledstripe_pwm_buffer);
-	dmaStreamSetTransactionSize(STM32_DMA1_STREAM2, LEDSTRIPE_PWM_BUFFER_SIZE);
-	dmaStreamSetMode(STM32_DMA1_STREAM2, mode);
-	dmaStreamSetFIFO(STM32_DMA1_STREAM2, STM32_DMA_FCR_FTH_HALF );
-	dmaStreamEnable(STM32_DMA1_STREAM2);
-#endif
+	dmaStreamSetMemory0(STM32_DMA1_STREAM7, ledstripe_pwm_buffer);
+	dmaStreamSetTransactionSize(STM32_DMA1_STREAM7, LEDSTRIPE_PWM_BUFFER_SIZE);
+	dmaStreamSetMode(STM32_DMA1_STREAM7, mode);
+	dmaStreamSetFIFO(STM32_DMA1_STREAM7, STM32_DMA_FCR_FTH_HALF );
+	dmaStreamEnable(STM32_DMA1_STREAM7);
+
 }
 
