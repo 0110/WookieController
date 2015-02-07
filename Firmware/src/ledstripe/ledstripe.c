@@ -11,6 +11,7 @@
  */
 
 #include "ledstripe/ledstripe.h"
+#include "pwm.h"
 
 ledstripe_color ledstripe_framebuffer[LEDSTRIPE_FRAMEBUFFER_SIZE];
 static uint8_t ledstripe_pwm_buffer[LEDSTRIPE_PWM_BUFFER_SIZE];
@@ -94,28 +95,25 @@ void ledstripe_init(void) {
 	/*  GPIO config done in board.h
 	 *  AF TIM3; Push
 	 */
-
-	// Timer/PWM init
-	// enable clock for timer
-	rccEnableTIM3(FALSE);
-	rccResetTIM3();
-
-	STM32_TIM3->CR1 = 0;
-	STM32_TIM3->PSC = 0; // timer prescaler 0
-	STM32_TIM3->ARR = 104; // timer period 104
-	STM32_TIM3->CR1 = STM32_TIM_CR1_CKD(0) | // set clock CKD 1
-			// STM32_TIM_CR1_DIR | // up counting
-			STM32_TIM_CR1_ARPE; // ARRPreloadConfig enable
-	STM32_TIM3->CCMR2 = STM32_TIM_CCMR2_OC3M(6) | // set PWM mode 1 for channel 3
-			STM32_TIM_CCMR2_OC3PE; // OCPreload_Enable
-	STM32_TIM3->CCER = STM32_TIM_CCER_CC3E; // OC3 output enable /* Not set: STM32_TIM_CCER_CC3P */
-
-	//DEBUG: Set an default value (as DMA is not working)
-	//STM32_TIM3->CCR[2] = 49;
+	PWMConfig ledconfig_pwm_cfg = {
+			84000000,
+			104,
+			NULL,
+			{
+					{ PWM_OUTPUT_DISABLED, NULL },
+					{ PWM_OUTPUT_DISABLED, NULL },
+					{ PWM_OUTPUT_ACTIVE_HIGH, NULL },
+					{ PWM_OUTPUT_DISABLED, NULL }
+			},
+			0,
+			0
+	};
+	dmaInit();
+	pwmStart(&PWMD3, &ledconfig_pwm_cfg);
 	
 
 	/******************** DMA *****************************/
-	dmaInit();
+
 	// DMA init
 	uint32_t mode = STM32_DMA_CR_CHSEL(5) | /* Select Channel 5 */
 			STM32_DMA_CR_PL(2) |  //DMA priority (0..3|lowest..highest)
@@ -141,12 +139,12 @@ void ledstripe_init(void) {
 
 	// DMA init
 	STM32_TIM3->DIER = STM32_TIM_DIER_CC3DE; // enable DMA for channel 3
-
-	// Activate it:
-	STM32_TIM3->CR1 |= STM32_TIM_CR1_CEN; // TIM3 enable; CR1 is now locked
-	STM32_TIM3->EGR |= STM32_TIM_EGR_UG;
-
-
+//
+//	// Activate it:
+//	STM32_TIM3->CR1 |= STM32_TIM_CR1_CEN; // TIM3 enable; CR1 is now locked
+//	STM32_TIM3->EGR |= STM32_TIM_EGR_UG;
+//
+//
 
 
 
