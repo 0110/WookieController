@@ -96,6 +96,9 @@ void ledstripe_init(void) {
 	 */
 
 	// Timer/PWM init
+	// enable clock for timer
+	rccEnableTIM3(FALSE);
+	rccResetTIM3();
 
 	STM32_TIM3->CR1 = 0;
 	STM32_TIM3->PSC = 0; // timer prescaler 0
@@ -107,13 +110,12 @@ void ledstripe_init(void) {
 			STM32_TIM_CCMR2_OC3PE; // OCPreload_Enable
 	STM32_TIM3->CCER = STM32_TIM_CCER_CC3E; // OC3 output enable /* Not set: STM32_TIM_CCER_CC3P */
 
-	STM32_TIM3->CCR[3] = 49;
+	STM32_TIM3->CCR[2] = 49;
 	
-	// enable clock for timer
-	rccEnableTIM3(TRUE);
-	rccResetTIM3();
 	
+
 	STM32_TIM3->CR1 |= STM32_TIM_CR1_CEN; // TIM3 enable; CR1 is now locked
+	STM32_TIM3->EGR |= STM32_TIM_EGR_UG;
 
 #if 0
 	// DMA init
