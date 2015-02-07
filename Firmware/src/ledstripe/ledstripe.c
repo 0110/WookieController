@@ -110,14 +110,15 @@ void ledstripe_init(void) {
 			STM32_TIM_CCMR2_OC3PE; // OCPreload_Enable
 	STM32_TIM3->CCER = STM32_TIM_CCER_CC3E; // OC3 output enable /* Not set: STM32_TIM_CCER_CC3P */
 
-	STM32_TIM3->CCR[2] = 49;
+	//DEBUG: Set an default value (as DMA is not working)
+	//STM32_TIM3->CCR[2] = 49;
 	
 
 	/******************** DMA *****************************/
 	dmaInit();
 	// DMA init
-	uint32_t mode = STM32_DMA_CR_CHSEL(2) | /* Select Channel 2 */
-			STM32_DMA_CR_PL(1) |  //DMA priority (0..3|lowest..highest)
+	uint32_t mode = STM32_DMA_CR_CHSEL(5) | /* Select Channel 5 */
+			STM32_DMA_CR_PL(2) |  //DMA priority (0..3|lowest..highest)
 			STM32_DMA_CR_DIR_M2P |
 			STM32_DMA_CR_TCIE |
 			STM32_DMA_CR_HTIE |
@@ -129,13 +130,13 @@ void ledstripe_init(void) {
 			STM32_DMA_CR_PSIZE_HWORD ;
 
 	/* DMA setup.*/
-	dmaStreamAllocate(STM32_DMA1_STREAM7, 0, ledstripe_irq_handler, NULL);
+	dmaStreamAllocate(STM32_DMA1_STREAM7, 10, ledstripe_irq_handler, NULL);
 	dmaStreamSetPeripheral(STM32_DMA1_STREAM7, STM32_TIM3->CCR[2]);
 
 	dmaStreamSetMemory0(STM32_DMA1_STREAM7, ledstripe_pwm_buffer);
 	dmaStreamSetTransactionSize(STM32_DMA1_STREAM7, LEDSTRIPE_PWM_BUFFER_SIZE);
 	dmaStreamSetMode(STM32_DMA1_STREAM7, mode);
-	dmaStreamSetFIFO(STM32_DMA1_STREAM7, STM32_DMA_FCR_FTH_HALF );
+//	dmaStreamSetFIFO(STM32_DMA1_STREAM7, STM32_DMA_FCR_FTH_HALF );
 	dmaStreamEnable(STM32_DMA1_STREAM7);
 
 	// DMA init
