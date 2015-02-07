@@ -129,7 +129,7 @@ void ledstripe_init(void) {
 
 	/* DMA setup.*/
 	dmaStreamAllocate(STM32_DMA1_STREAM7, 10, ledstripe_irq_handler, NULL);
-	dmaStreamSetPeripheral(STM32_DMA1_STREAM7, STM32_TIM3->CCR[2]);
+	dmaStreamSetPeripheral(STM32_DMA1_STREAM7, &(STM32_TIM3->CCR[2]));
 
 	dmaStreamSetMemory0(STM32_DMA1_STREAM7, ledstripe_pwm_buffer);
 	dmaStreamSetTransactionSize(STM32_DMA1_STREAM7, LEDSTRIPE_PWM_BUFFER_SIZE);
