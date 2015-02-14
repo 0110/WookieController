@@ -85,6 +85,7 @@ void ledstripe_init(void) {
 		ledstripe_pwm_buffer[i] = 0;
 	}
 	for (i = 0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+#ifdef COLOR_MODE
 		switch (i%3) {
 			case 0:
 				ledstripe_framebuffer[i].red = 0x00;
@@ -102,7 +103,11 @@ void ledstripe_init(void) {
 				ledstripe_framebuffer[i].blue = 0;
 				break;
 		}
-
+#else
+		ledstripe_framebuffer[i].red = 0xFF;
+		ledstripe_framebuffer[i].green = 0xFF;
+		ledstripe_framebuffer[i].blue = 0xFF;
+#endif
 	}
 
 	// Fill the buffer with values:
