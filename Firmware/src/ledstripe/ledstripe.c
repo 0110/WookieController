@@ -13,11 +13,11 @@
 #include "ledstripe/ledstripe.h"
 
 ledstripe_color ledstripe_framebuffer[LEDSTRIPE_FRAMEBUFFER_SIZE];
-uint8_t ledstripe_pwm_buffer[LEDSTRIPE_PWM_BUFFER_SIZE];
+uint16_t ledstripe_pwm_buffer[LEDSTRIPE_PWM_BUFFER_SIZE];
 static uint16_t frame_pos = 0;
 
 // writes the pwm values of one byte into the array which will be used by the dma
-static inline void color2pwm(uint8_t ** dest, uint8_t color) {
+static inline void color2pwm(uint16_t ** dest, uint8_t color) {
 	uint8_t mask = 0x80;
 	do {
 		if (color & mask) {
@@ -30,11 +30,11 @@ static inline void color2pwm(uint8_t ** dest, uint8_t color) {
 	} while (mask != 0);
 }
 
-static void Update_Buffer(uint8_t* buffer) {
+static void Update_Buffer(uint16_t* buffer) {
 	static int incomplete_return = 0;
 	ledstripe_color *framebufferp;
 	uint32_t i, j;
-	uint8_t * bufp;
+	uint16_t * bufp;
 
 	for (i = 0; i < (LEDSTRIPE_PWM_BUFFER_SIZE / 2) / 24; i++) {
 		if (incomplete_return) {
@@ -85,9 +85,24 @@ void ledstripe_init(void) {
 		ledstripe_pwm_buffer[i] = 0;
 	}
 	for (i = 0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
-		ledstripe_framebuffer[i].red = 0;
-		ledstripe_framebuffer[i].green = 0;
-		ledstripe_framebuffer[i].blue = 0xff;
+		switch (i%3) {
+			case 0:
+				ledstripe_framebuffer[i].red = 0x00;
+				ledstripe_framebuffer[i].green = 0;
+				ledstripe_framebuffer[i].blue = 0xFF;
+				break;
+			case 1:
+				ledstripe_framebuffer[i].red = 0x00;
+				ledstripe_framebuffer[i].green = 0xFF;
+				ledstripe_framebuffer[i].blue = 0;
+				break;
+			case 2:
+				ledstripe_framebuffer[i].red = 0xFF;
+				ledstripe_framebuffer[i].green = 0x0;
+				ledstripe_framebuffer[i].blue = 0;
+				break;
+		}
+
 	}
 
 	// Fill the buffer with values:
@@ -114,7 +129,7 @@ void ledstripe_init(void) {
 	STM32_TIM3->CCER = STM32_TIM_CCER_CC3E; // OC3 output enable /* Not set: STM32_TIM_CCER_CC3P */
 
 	//DEBUG: Set an default value (as DMA is not working)
-	//STM32_TIM3->CCR[2] = 49;
+	STM32_TIM3->CCR[2] = 0;
 	
 
 	/******************** DMA *****************************/
@@ -126,7 +141,7 @@ void ledstripe_init(void) {
 			STM32_DMA_CR_TCIE |
 			STM32_DMA_CR_HTIE |
 			STM32_DMA_CR_MINC |
-			STM32_DMA_CR_MSIZE_BYTE |
+			STM32_DMA_CR_MSIZE_HWORD |
 			STM32_DMA_CR_CIRC |
 			STM32_DMA_CR_PSIZE_HWORD ;
 
@@ -137,7 +152,7 @@ void ledstripe_init(void) {
 	dmaStreamSetMemory0(STM32_DMA1_STREAM7, ledstripe_pwm_buffer);
 	dmaStreamSetTransactionSize(STM32_DMA1_STREAM7, LEDSTRIPE_PWM_BUFFER_SIZE);
 	dmaStreamSetMode(STM32_DMA1_STREAM7, mode);
-//	dmaStreamSetFIFO(STM32_DMA1_STREAM7, STM32_DMA_FCR_FTH_HALF );
+	//dmaStreamSetFIFO(STM32_DMA1_STREAM7,  STM32_DMA_FCR_DMDIS | STM32_DMA_FCR_FTH_HALF );
 	dmaStreamEnable(STM32_DMA1_STREAM7);
 
 	// DMA init
