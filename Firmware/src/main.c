@@ -110,8 +110,6 @@ static msg_t ledThread(void *arg) {
 		if (pos_b > 1)
 			ledstripe_framebuffer[pos_b - 2].blue = 0;
 		pos_b++;
-
-		chThdSleepMilliseconds(10);
 	}
 
 	return RDY_OK;
