@@ -91,7 +91,7 @@ static msg_t ledThread(void *arg) {
 			ledstripe_framebuffer[pos_b - 1].blue = 64;
 		if (pos_b > 1)
 			ledstripe_framebuffer[pos_b - 2].blue = 10;
-		chThdSleepMilliseconds(20);
+		chThdSleepMilliseconds(10);
 		ledstripe_framebuffer[pos_r].red = 0;
 		if (pos_r > 0)
 			ledstripe_framebuffer[pos_r - 1].red = 0;
