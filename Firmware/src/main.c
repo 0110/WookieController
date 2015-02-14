@@ -63,7 +63,6 @@ static msg_t blinkerThread(void *arg) {
  */
 static WORKING_AREA(waLEDstripBlink, 128);
 static msg_t ledThread(void *arg) {
-	int i;
 	int pos_r = 0;
 	int pos_g = 0;
 	int pos_b = 0;
@@ -72,10 +71,6 @@ static msg_t ledThread(void *arg) {
 
 	while (TRUE)
 	{
-		for (i = 0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
-			ledstripe_framebuffer[i].red = ledstripe_framebuffer[i].green =
-					ledstripe_framebuffer[i].blue = 0;
-		}
 		//code for running light
 		pos_r %= LEDSTRIPE_FRAMEBUFFER_SIZE;
 		pos_g %= LEDSTRIPE_FRAMEBUFFER_SIZE;
@@ -85,11 +80,11 @@ static msg_t ledThread(void *arg) {
 			ledstripe_framebuffer[pos_r - 1].red = 64;
 		if (pos_r > 1)
 			ledstripe_framebuffer[pos_r - 2].red = 10;
-		ledstripe_framebuffer[pos_g].green = 255;
+		ledstripe_framebuffer[pos_g].green = 0;
 		if (pos_g > 0)
-			ledstripe_framebuffer[pos_g - 1].green = 64;
+			ledstripe_framebuffer[pos_g - 1].green = 0;
 		if (pos_g > 1)
-			ledstripe_framebuffer[pos_g - 2].green = 10;
+			ledstripe_framebuffer[pos_g - 2].green = 0;
 		ledstripe_framebuffer[pos_b].blue = 255;
 		;
 		if (pos_b > 0)
