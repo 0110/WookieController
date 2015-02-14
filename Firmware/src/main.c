@@ -61,6 +61,33 @@ static msg_t blinkerThread(void *arg) {
 }
 
 /*
+ * This is a periodic thread that does absolutely nothing except flashing
+ * a LED.
+ */
+static WORKING_AREA(waLEDstripBlink, 128);
+static msg_t ledThread(void *arg)
+{
+	int i;
+	uint8_t color = 0;
+	(void) arg;
+	chRegSetThreadName("ledThread");
+	while (TRUE) {
+		for (i = 0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+			ledstripe_framebuffer[i].red = 0x0;
+			ledstripe_framebuffer[i].green = 0x0;
+			ledstripe_framebuffer[i].blue = color;
+		}
+		color+=10;
+		if (color >= 255U)
+		{
+			color = 0;
+		}
+		chThdSleepMilliseconds(100);
+	}
+	return RDY_OK;
+}
+
+/*
  * Application entry point.
  */
 int main(void) {
@@ -102,6 +129,11 @@ int main(void) {
 	UPRINT("Start blinker thread ...");
 	chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
 			blinkerThread, NULL);
+	UPRINT( " Done\r\n");
+
+	UPRINT("Start led thread ...");
+	chThdCreateStatic(waLEDstripBlink, sizeof(waLEDstripBlink), NORMALPRIO,
+			ledThread, NULL);
 	UPRINT( " Done\r\n");
 
 	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
