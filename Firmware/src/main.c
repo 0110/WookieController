@@ -30,10 +30,8 @@
 /* Command line related.                                                     */
 /*===========================================================================*/
 
-static const ShellCommand commands[] = {
-		{ "mem", cmd_mem },
-		{ "threads", cmd_threads },
-		{ NULL, NULL } };
+static const ShellCommand commands[] = { { "mem", cmd_mem }, { "threads",
+		cmd_threads }, { NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
 		{ (BaseSequentialStream *) &SD6, commands };
@@ -53,8 +51,7 @@ static msg_t blinkerThread(void *arg) {
 	chRegSetThreadName("blinker");
 	while (TRUE) {
 		palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
-		chThdSleepMilliseconds(500);
-		palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
+		chThdSleepMilliseconds(500); palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
 		chThdSleepMilliseconds(500);
 	}
 	return RDY_OK;
@@ -65,25 +62,63 @@ static msg_t blinkerThread(void *arg) {
  * a LED.
  */
 static WORKING_AREA(waLEDstripBlink, 128);
-static msg_t ledThread(void *arg)
-{
+static msg_t ledThread(void *arg) {
 	int i;
-	uint8_t color = 0;
+	int pos_r = 0;
+	int pos_g = 0;
+	int pos_b = 0;
+
 	(void) arg;
-	chRegSetThreadName("ledThread");
-	while (TRUE) {
+
+	while (TRUE)
+	{
 		for (i = 0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
-			ledstripe_framebuffer[i].red = 0x0;
-			ledstripe_framebuffer[i].green = 0x0;
-			ledstripe_framebuffer[i].blue = color;
+			ledstripe_framebuffer[i].red = ledstripe_framebuffer[i].green =
+					ledstripe_framebuffer[i].blue = 0;
 		}
-		color+=10;
-		if (color >= 255U)
-		{
-			color = 0;
-		}
-		chThdSleepMilliseconds(100);
+		//code for running light
+		pos_r %= LEDSTRIPE_FRAMEBUFFER_SIZE;
+		pos_g %= LEDSTRIPE_FRAMEBUFFER_SIZE;
+		pos_b %= LEDSTRIPE_FRAMEBUFFER_SIZE;
+		ledstripe_framebuffer[pos_r].red = 255;
+		if (pos_r > 0)
+			ledstripe_framebuffer[pos_r - 1].red = 64;
+		if (pos_r > 1)
+			ledstripe_framebuffer[pos_r - 2].red = 10;
+		ledstripe_framebuffer[pos_g].green = 255;
+		if (pos_g > 0)
+			ledstripe_framebuffer[pos_g - 1].green = 64;
+		if (pos_g > 1)
+			ledstripe_framebuffer[pos_g - 2].green = 10;
+		ledstripe_framebuffer[pos_b].blue = 255;
+		;
+		if (pos_b > 0)
+			ledstripe_framebuffer[pos_b - 1].blue = 64;
+		if (pos_b > 1)
+			ledstripe_framebuffer[pos_b - 2].blue = 10;
+		chThdSleepMilliseconds(20);
+		ledstripe_framebuffer[pos_r].red = 0;
+		if (pos_r > 0)
+			ledstripe_framebuffer[pos_r - 1].red = 0;
+		if (pos_r > 1)
+			ledstripe_framebuffer[pos_r - 2].red = 0;
+		pos_r++;
+		ledstripe_framebuffer[pos_g].green = 0;
+		if (pos_g > 0)
+			ledstripe_framebuffer[pos_g - 1].green = 0;
+		if (pos_g > 1)
+			ledstripe_framebuffer[pos_g - 2].green = 0;
+		pos_g++;
+		ledstripe_framebuffer[pos_b].blue = 0;
+		if (pos_b > 0)
+			ledstripe_framebuffer[pos_b - 1].blue = 0;
+		if (pos_b > 1)
+			ledstripe_framebuffer[pos_b - 2].blue = 0;
+		pos_b++;
+
+		chThdSleepMilliseconds(10);
 	}
+
 	return RDY_OK;
 }
 
@@ -92,70 +127,67 @@ static msg_t ledThread(void *arg)
  */
 int main(void) {
 
-	/*
-	 * System initializations.
-	 * - HAL initialization, this also initializes the configured device drivers
-	 *   and performs the board-specific initializations.
-	 * - Kernel initialization, the main() function becomes a thread and the
-	 *   RTOS is active.
-	 */
-	halInit();
-	chSysInit();
+/*
+ * System initializations.
+ * - HAL initialization, this also initializes the configured device drivers
+ *   and performs the board-specific initializations.
+ * - Kernel initialization, the main() function becomes a thread and the
+ *   RTOS is active.
+ */
+halInit();
+chSysInit();
 
-	/*
-	 * Initialize USB serial console
-	 */
-	usbcdc_init(commands);
+/*
+ * Initialize USB serial console
+ */
+usbcdc_init(commands);
 
-	/*
-	 * Shell manager initialization.
-	 */
-	shellInit();
+/*
+ * Shell manager initialization.
+ */
+shellInit();
 
-	/*
-	 * Activates the serial driver 6 and SDC driver 1 using default
-	 * configuration.
-	 */
-	sdStart(&SD6, NULL);
+/*
+ * Activates the serial driver 6 and SDC driver 1 using default
+ * configuration.
+ */
+sdStart(&SD6, NULL);
 
-	chThdSleep(MS2ST(100));
+chThdSleep(MS2ST(100));
 
-	/*
-	* Initialize LedDriver
-	*/
-	ledstripe_init();
+/*
+ * Initialize LedDriver
+ */
+ledstripe_init();
 
-	UPRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
-	UPRINT("Start blinker thread ...");
-	chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
-			blinkerThread, NULL);
-	UPRINT( " Done\r\n");
+UPRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
+UPRINT("Start blinker thread ...");
+chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
+		blinkerThread, NULL);
+UPRINT(" Done\r\n");
 
-	UPRINT("Start led thread ...");
-	chThdCreateStatic(waLEDstripBlink, sizeof(waLEDstripBlink), NORMALPRIO,
-			ledThread, NULL);
-	UPRINT( " Done\r\n");
+UPRINT("Start led thread ...");
+chThdCreateStatic(waLEDstripBlink, sizeof(waLEDstripBlink), NORMALPRIO,
+		ledThread, NULL);
+UPRINT(" Done\r\n");
 
-	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
+shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
+/*
+ * Normal main() thread activity, in this demo it does nothing except
+ * sleeping in a loop and check the button state, when the button is
+ * pressed the test procedure is launched with output on the serial
+ * driver 2.
+ */
+while (TRUE) {
+	usbcdc_process();
 
-	/*
-	 * Normal main() thread activity, in this demo it does nothing except
-	 * sleeping in a loop and check the button state, when the button is
-	 * pressed the test procedure is launched with output on the serial
-	 * driver 2.
-	 */
-	while (TRUE)
-	{
-		usbcdc_process();
-
-		if (palReadPad(GPIOA, GPIOA_BUTTON))
-		{
-			UPRINT("BUTTON pressed\r\n");
-		}
-
-		/* Wait some time, to make the scheduler running tasks with lower prio */
-		chThdSleep(MS2ST(500));
+	if (palReadPad(GPIOA, GPIOA_BUTTON)) {
+		UPRINT("BUTTON pressed\r\n");
 	}
+
+	/* Wait some time, to make the scheduler running tasks with lower prio */
+	chThdSleep(MS2ST(500));
+}
 }
 
