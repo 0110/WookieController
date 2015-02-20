@@ -87,11 +87,33 @@ void cmd_mirror(BaseSequentialStream *chp, int argc, char *argv[])
   }
   else if (strcmp("serial", argv[0]) == 0)
   {
+      EventListener elGPSdata;
+      flagsmask_t flags;
+      chEvtRegisterMask((EventSource *)chnGetEventSource(&SD6), &elGPSdata, EVENT_MASK(1));
+
       chprintf(chp, "Mirroring...\r\n");
       while (TRUE) /*FIXME make it stoppable via command */
       {
-          chprintf(chp, "%s\r\n", SD6.ib);
-          chThdSleepMilliseconds(50);
+          /* Found serial reading here:
+           * http://forum.chibios.org/phpbb/viewtopic.php?p=12262&sid=5f8c68257a2cd5be83790ce6f7e1282d#p12262 */
+          chEvtWaitOneTimeout(EVENT_MASK(1), MS2ST(10));
+          chSysLock();
+          flags = chEvtGetAndClearFlags(&elGPSdata);
+          chSysUnlock();
+
+          if (flags & CHN_INPUT_AVAILABLE)
+          {
+             msg_t charbuf;
+             do
+             {
+                charbuf = chnGetTimeout(&SD6, TIME_IMMEDIATE);
+                if ( charbuf != Q_TIMEOUT )
+                {
+                   chprintf(chp, "%c", (char)charbuf);
+                }
+             }
+             while (charbuf != Q_TIMEOUT);
+          }
       }
   }
 }
