@@ -109,7 +109,18 @@ void cmd_mirror(BaseSequentialStream *chp, int argc, char *argv[])
                 charbuf = chnGetTimeout(&SD6, TIME_IMMEDIATE);
                 if ( charbuf != Q_TIMEOUT )
                 {
-                   chprintf(chp, "%c", (char)charbuf);
+                   switch ((char)charbuf)
+                   {
+                   case '\n':
+                     chprintf(chp, "\r\n");
+                     break;
+                   case '\r':
+                      chprintf(chp, "\r\n");
+                      break;
+                   default:
+                     chprintf(chp, "%c", (char)charbuf);
+                     break;
+                   }
                 }
              }
              while (charbuf != Q_TIMEOUT);
