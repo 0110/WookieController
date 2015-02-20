@@ -76,10 +76,31 @@ void cmd_lcd(BaseSequentialStream *chp, int argc, char *argv[])
 
 }
 
+void cmd_mirror(BaseSequentialStream *chp, int argc, char *argv[])
+{
+  if (argc < 1)
+  {
+    chprintf(chp, "Usage <options>\r\n"
+        "The following options are present\r\n"
+        "- serial\tAll text from SD6 mirrored to this shell\r\n");
+    return;
+  }
+  else if (strcmp("serial", argv[0]) == 0)
+  {
+      chprintf(chp, "Mirroring...\r\n");
+      while (TRUE) /*FIXME make it stoppable via command */
+      {
+          chprintf(chp, "%s\r\n", SD6.ib);
+          chThdSleepMilliseconds(50);
+      }
+  }
+}
+
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
 		{ "lcd", cmd_lcd },
+		{ "mirror", cmd_mirror },
 		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
