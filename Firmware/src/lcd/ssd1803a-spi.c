@@ -56,7 +56,7 @@ sendViaSPI(int RW, int RS, uint8_t data)
   SWAP_NIPPLE(tmp, 7, 4, transferStore[2])
 
   spi_implement_send(SPI_TELEGRAM_LENGTH, transferStore);
-  chThdSleep(MS2ST(2)); /* give the scheduler some time */
+  chThdSleep(MS2ST(5)); /* give the scheduler some time */
 }
 
 /******************************************************************************
@@ -103,15 +103,17 @@ ssd1803a_spi_init(void)
   sendViaSPI(0, 0, 0x01); /* Clear Display */
   sendViaSPI(0, 0, 0x02); /* Return home */
 
-  sendViaSPI(0, 0, 0x3A); /* Function Set */
-  sendViaSPI(0, 0, 0x72); /* Rom Selection Command 1/2 */
-  sendViaSPI(0, 1, 0x04); /* Rom Selection Command 2/2 (Selected ROMC) */
-  sendViaSPI(0, 0, 0x3A); /* Function Set */
+//  sendViaSPI(0, 0, 0x3A); /* Function Set */
+//  sendViaSPI(0, 0, 0x72); /* Rom Selection Command 1/2 */
+//  sendViaSPI(0, 1, 0x04); /* Rom Selection Command 2/2 (Selected ROMC) */
+//  sendViaSPI(0, 0, 0x3A); /* Function Set */
 
   //sendViaSPI(0,0,0x3A); /* Function Set */
   /* DEMO gigantic characters */
   //sendViaSPI(0,0,0x38); /* two big lines  0 0 1 1 | 1 0 0 0  */
   //sendViaSPI(0,0,0x3A); /* Function Set */
+
+  chThdSleep(MS2ST(50)); /* give the scheduler some time */
   gRunning = TRUE;
 }
 

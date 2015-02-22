@@ -187,8 +187,6 @@ int main(void) {
 	 */
 	shellInit();
 
-	ssd1803a_spi_init();
-
 	/*
 	 * Activates the serial driver 6 and SDC driver 1 using default
 	 * configuration.
@@ -205,6 +203,10 @@ int main(void) {
 			blinkerThread, NULL);
 	UPRINT( " Done\r\n");
 
+	UPRINT("Init LCD library ...");
+        ssd1803a_spi_init();
+        UPRINT( " Done\r\n");
+
 	/*
 	 * Normal main() thread activity, in this demo it does nothing except
 	 * sleeping in a loop and check the button state, when the button is
@@ -219,6 +221,20 @@ int main(void) {
 		{
 			palTogglePad(GPIOD, GPIOD_LED5);	/* Red On*/
 			usbcdc_print("Button pressed\r\n");
+
+			if (palReadPad(GPIOD, GPIOD_LED5))
+                        {
+                            if (ssd1803a_spi_sendText("BUTTON pressed",
+                                strlen("BUTTON pressed")) != SSD1803A_RET_OK)
+                            {
+                                usbcdc_print("Could not update LCD\r\n");
+                            }
+                        }
+			else
+                        {
+			    /* Clear screen */
+			    ssd1803a_spi_sendText(" ", strlen(" "));
+                        }
 		}
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
