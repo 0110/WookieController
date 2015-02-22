@@ -99,21 +99,20 @@ ssd1803a_spi_init(void)
   sendViaSPI(0, 0, 0x0C);
 
   /* Custom initialization */
-  chThdSleep(MS2ST(50)); /* give the scheduler some time */
+  chThdSleep(MS2ST(50)); /* give the LCD some time */
   sendViaSPI(0, 0, 0x01); /* Clear Display */
   sendViaSPI(0, 0, 0x02); /* Return home */
 
-//  sendViaSPI(0, 0, 0x3A); /* Function Set */
-//  sendViaSPI(0, 0, 0x72); /* Rom Selection Command 1/2 */
-//  sendViaSPI(0, 1, 0x04); /* Rom Selection Command 2/2 (Selected ROMC) */
-//  sendViaSPI(0, 0, 0x3A); /* Function Set */
+  sendViaSPI(0, 0, 0x3A); /* Function Set */
+  sendViaSPI(0, 0, 0x72); /* Rom Selection Command 1/2 */
+  sendViaSPI(0, 1, 0x04); /* Rom Selection Command 2/2 (Selected ROMC) */
+  sendViaSPI(0, 0, 0x3A); /* Function Set */
 
   //sendViaSPI(0,0,0x3A); /* Function Set */
   /* DEMO gigantic characters */
   //sendViaSPI(0,0,0x38); /* two big lines  0 0 1 1 | 1 0 0 0  */
   //sendViaSPI(0,0,0x3A); /* Function Set */
 
-  chThdSleep(MS2ST(50)); /* give the scheduler some time */
   gRunning = TRUE;
 }
 
@@ -123,12 +122,13 @@ ssd1803a_spi_sendText(char *s, int textLength)
   int i;
 
   if (gRunning != TRUE)
-    {
-      return SSD1803A_RET_NOTINITIALIZED;
-    }
+  {
+    return SSD1803A_RET_NOTINITIALIZED;
+  }
 
   sendViaSPI(0, 0, 0x01); /* Clear Display */
   sendViaSPI(0, 0, 0x02); /* Return home */
+  chThdSleep(MS2ST(5)); /* give the LCD some time */
 
   /* Converting the data according to ROM A */
   for (i = 0; i < textLength; i++)
@@ -192,6 +192,7 @@ ssd1803a_spi_sendText(char *s, int textLength)
           /*FIXME simple copy the value, as we have no idea how to convert it (or currently not implemented) */
           sendViaSPI(0, 1, s[i]);
       }
+      chThdSleep(MS2ST(5)); /* give the LCD some time */
   }
   return SSD1803A_RET_OK;
 }
