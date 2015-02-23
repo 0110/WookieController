@@ -26,7 +26,7 @@
 
 #define UPRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
 
-static int gEventMaskInited=0;
+static int gEventMaskInited=0;  /**< Flag, if the Serial reading logic is already initialized */
 
 #define ENDLESS_UART_LOOP       EventListener elGPSdata; \
       flagsmask_t flags; \
