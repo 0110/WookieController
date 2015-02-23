@@ -82,7 +82,8 @@ void cmd_mirror(BaseSequentialStream *chp, int argc, char *argv[])
   {
     chprintf(chp, "Usage <options>\r\n"
         "The following options are present\r\n"
-        "- serial\tAll text from SD6 mirrored to this shell\r\n");
+        "- serial\tAll text from SD6 mirrored to this shell\r\n"
+        "- 2serial <arg>\tArguments are written to the serial console\r\n");
     return;
   }
   else if (strcmp("serial", argv[0]) == 0)
@@ -91,8 +92,8 @@ void cmd_mirror(BaseSequentialStream *chp, int argc, char *argv[])
       flagsmask_t flags;
       chEvtRegisterMask((EventSource *)chnGetEventSource(&SD6), &elGPSdata, EVENT_MASK(1));
 
-      chprintf(chp, "Mirroring...\r\n");
-      while (TRUE) /*FIXME make it stoppable via command */
+      chprintf(chp, "Mirroring...\r\n(Press button to quit function)\r\n");
+      while (!palReadPad(GPIOA, GPIOA_BUTTON))
       {
           /* Found serial reading here:
            * http://forum.chibios.org/phpbb/viewtopic.php?p=12262&sid=5f8c68257a2cd5be83790ce6f7e1282d#p12262 */
@@ -125,6 +126,13 @@ void cmd_mirror(BaseSequentialStream *chp, int argc, char *argv[])
              }
              while (charbuf != Q_TIMEOUT);
           }
+      }
+  }
+  else if (strcmp("2serial", argv[0]) == 0)
+  {
+      if (argc >= 1)
+      {
+          UPRINT(argv[1]);
       }
   }
 }
