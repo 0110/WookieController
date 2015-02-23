@@ -26,9 +26,15 @@
 
 #define UPRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
 
+static int gEventMaskInited=0;
+
 #define ENDLESS_UART_LOOP       EventListener elGPSdata; \
       flagsmask_t flags; \
-      chEvtRegisterMask((EventSource *)chnGetEventSource(&SD6), &elGPSdata, EVENT_MASK(1)); \
+      if (gEventMaskInited == 0) \
+      { \
+        chEvtRegisterMask((EventSource *)chnGetEventSource(&SD6), &elGPSdata, EVENT_MASK(1)); \
+        gEventMaskInited = 1; \
+      } \
  \
       chprintf(chp, "Mirroring...\r\n(Press button to quit function)\r\n"); \
       while (!palReadPad(GPIOA, GPIOA_BUTTON)) \
@@ -146,8 +152,9 @@ void cmd_mirror(BaseSequentialStream *chp, int argc, char *argv[])
   {
       if (argc >= 1)
       {
-          UPRINT("%s\r\n", argv[1]);
+          UPRINT("%s\n", argv[1]);
           chThdSleepMilliseconds(50);
+          chprintf(chp, "Finshed sending %s\r\n", argv[1]);
           ENDLESS_UART_LOOP
       }
       else
