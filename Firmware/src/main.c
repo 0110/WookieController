@@ -26,6 +26,46 @@
 
 #define UPRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
 
+#define ENDLESS_UART_LOOP       EventListener elGPSdata; \
+      flagsmask_t flags; \
+      chEvtRegisterMask((EventSource *)chnGetEventSource(&SD6), &elGPSdata, EVENT_MASK(1)); \
+ \
+      chprintf(chp, "Mirroring...\r\n(Press button to quit function)\r\n"); \
+      while (!palReadPad(GPIOA, GPIOA_BUTTON)) \
+      { \
+          /* Found serial reading here:
+           * http://forum.chibios.org/phpbb/viewtopic.php?p=12262&sid=5f8c68257a2cd5be83790ce6f7e1282d#p12262 */ \
+          chEvtWaitOneTimeout(EVENT_MASK(1), MS2ST(10)); \
+          chSysLock(); \
+          flags = chEvtGetAndClearFlags(&elGPSdata); \
+          chSysUnlock(); \
+          \
+          if (flags & CHN_INPUT_AVAILABLE) \
+          { \
+             msg_t charbuf; \
+             do \
+             { \
+                charbuf = chnGetTimeout(&SD6, TIME_IMMEDIATE); \
+                if ( charbuf != Q_TIMEOUT ) \
+                { \
+                   switch ((char)charbuf) \
+                   { \
+                   case '\n': \
+                     chprintf(chp, "\r\n"); \
+                     break; \
+                   case '\r': \
+                      chprintf(chp, "\r\n"); \
+                      break; \
+                   default: \
+                     chprintf(chp, "%c", (char)charbuf); \
+                     break; \
+                   } \
+                } \
+             } \
+             while (charbuf != Q_TIMEOUT); \
+          } \
+      }
+
 /*===========================================================================*/
 /* Command line related.                                                     */
 /*===========================================================================*/
@@ -83,57 +123,42 @@ void cmd_mirror(BaseSequentialStream *chp, int argc, char *argv[])
     chprintf(chp, "Usage <options>\r\n"
         "The following options are present\r\n"
         "- serial\tAll text from SD6 mirrored to this shell\r\n"
-        "- 2serial <arg>\tArguments are written to the serial console\r\n");
+        "- 2serial <arg>\tArguments are written to the serial console\r\n"
+        "- 2serial2 <arg>\tArguments are written to the serial console(and listens afterwards)\r\n");
     return;
   }
   else if (strcmp("serial", argv[0]) == 0)
   {
-      EventListener elGPSdata;
-      flagsmask_t flags;
-      chEvtRegisterMask((EventSource *)chnGetEventSource(&SD6), &elGPSdata, EVENT_MASK(1));
-
-      chprintf(chp, "Mirroring...\r\n(Press button to quit function)\r\n");
-      while (!palReadPad(GPIOA, GPIOA_BUTTON))
-      {
-          /* Found serial reading here:
-           * http://forum.chibios.org/phpbb/viewtopic.php?p=12262&sid=5f8c68257a2cd5be83790ce6f7e1282d#p12262 */
-          chEvtWaitOneTimeout(EVENT_MASK(1), MS2ST(10));
-          chSysLock();
-          flags = chEvtGetAndClearFlags(&elGPSdata);
-          chSysUnlock();
-
-          if (flags & CHN_INPUT_AVAILABLE)
-          {
-             msg_t charbuf;
-             do
-             {
-                charbuf = chnGetTimeout(&SD6, TIME_IMMEDIATE);
-                if ( charbuf != Q_TIMEOUT )
-                {
-                   switch ((char)charbuf)
-                   {
-                   case '\n':
-                     chprintf(chp, "\r\n");
-                     break;
-                   case '\r':
-                      chprintf(chp, "\r\n");
-                      break;
-                   default:
-                     chprintf(chp, "%c", (char)charbuf);
-                     break;
-                   }
-                }
-             }
-             while (charbuf != Q_TIMEOUT);
-          }
-      }
+      ENDLESS_UART_LOOP
   }
   else if (strcmp("2serial", argv[0]) == 0)
   {
       if (argc >= 1)
       {
-          UPRINT(argv[1]);
+          UPRINT("%s\r\n", argv[1]);
       }
+      else
+      {
+          chprintf(chp, "No Command found\r\n");
+      }
+  }
+  else if (strcmp("2serial2", argv[0]) == 0)
+  {
+      if (argc >= 1)
+      {
+          UPRINT("%s\r\n", argv[1]);
+          chThdSleepMilliseconds(50);
+          ENDLESS_UART_LOOP
+      }
+      else
+      {
+          chprintf(chp, "No Command found\r\n");
+      }
+  }
+  else
+  {
+      chprintf(chp, "Unkown command\r\n"
+          "Use 'mirror' without arguments for help\r\n");
   }
 }
 
