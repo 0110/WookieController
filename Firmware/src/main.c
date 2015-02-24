@@ -19,6 +19,8 @@
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
 
+#include "esp8266/esp8266.h"
+
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
@@ -52,10 +54,16 @@ void cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
 	}
 }
 
+void cmd_esp8266(BaseSequentialStream *chp, int argc, char *argv[])
+{
+	esp8266_init("SSID", "password");
+}
+
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
 		{ "led" , cmd_led },
+		{ "esp" , cmd_esp8266 },
 		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =

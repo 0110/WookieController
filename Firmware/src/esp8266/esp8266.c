@@ -29,7 +29,7 @@ void esp8266_init(char *ssid, char *password)
 	* TX: PD5
 	*/
 	sdStart(&SD2, /* FIXME &sc, hack: */ NULL);
-
+	WLAN_UPRINT("AT\r\n");
 }
 
 #endif /* ESP8266_C_ */
