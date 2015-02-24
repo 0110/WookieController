@@ -5,15 +5,12 @@
  *      Author: c3ma
  */
 
-#ifndef ESP8266_C_
-#define ESP8266_C_
-
 #include "esp8266.h"
 
 #include "ch.h"
 #include "hal.h"
 
-#define WLAN_UPRINT( ... ) chprintf((BaseSequentialStream *) &SD2, __VA_ARGS__); /**< Uart print */
+#define WLAN_UPRINT( ... ) chprintf((BaseSequentialStream *) &SD2, __VA_ARGS__); /**< UART print for WLAN module */
 
 void esp8266_init(char *ssid, char *password)
 {
@@ -29,7 +26,7 @@ void esp8266_init(char *ssid, char *password)
 	* TX: PD5
 	*/
 	sdStart(&SD2, /* FIXME &sc, hack: */ NULL);
+	chThdSleepMilliseconds(50);
+
 	WLAN_UPRINT("AT\r\n");
 }
-
-#endif /* ESP8266_C_ */
