@@ -10,7 +10,7 @@
 
 #include "mcuconf.h"
 
-#ifndef STM32_SERIAL_USE_USART2
+#ifndef STM32_SERIAL_USE_USART6
 #error "We need the second UART for the WLAN dongle"
 #endif
 

@@ -25,8 +25,6 @@
  * DEFINITIONS
  ******************************************************************************/
 
-#define UPRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
-
 /*===========================================================================*/
 /* Command line related.                                                     */
 /*===========================================================================*/
@@ -65,9 +63,6 @@ static const ShellCommand commands[] = {
 		{ "led" , cmd_led },
 		{ "esp" , cmd_esp8266 },
 		{ NULL, NULL } };
-
-static const ShellConfig shell_cfg1 =
-		{ (BaseSequentialStream *) &SD6, commands };
 
 /*===========================================================================*/
 /* Main and generic code.                                                    */
@@ -117,21 +112,10 @@ int main(void) {
 	 */
 	shellInit();
 
-	/*
-	 * Activates the serial driver 6 and SDC driver 1 using default
-	 * configuration.
-	 */
-	sdStart(&SD6, NULL);
-
 	chThdSleep(MS2ST(100));
 
-	UPRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
-	UPRINT("Start blinker thread ...");
 	chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
 			blinkerThread, NULL);
-	UPRINT( " Done\r\n");
-
-	shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
 	/*
 	 * Normal main() thread activity, in this demo it does nothing except
