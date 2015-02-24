@@ -32,4 +32,11 @@ void esp8266_init(char *ssid, char *password)
 
 	WLAN_UPRINT("AT\r\n");
 	WLAN_UPRINT("Hello World %d\r\n", "Arg1");
+
+	/* Set client mode: */
+	/*TODO AT+CWMODE=1*/
+
+	/* Connect to WLAN */
+	/*TODO AT+CWJAP="SSID","secret" */
+
 }

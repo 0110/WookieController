@@ -1,8 +1,10 @@
 /*
  * esp8266.h
  *
- *  Created on: Feb 24, 2015
- *      Author: c3ma
+ * Created on: Feb 24, 2015
+ * Author: c3ma
+ *
+ * Source of commands: http://defcon-cc.dyndns.org/wiki/ESP8266#Software
  */
 
 #ifndef ESP8266_H_
