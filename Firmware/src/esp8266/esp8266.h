@@ -8,8 +8,9 @@
 #ifndef ESP8266_H_
 #define ESP8266_H_
 
+#include "mcuconf.h"
 
-#ifndef STM32_UART_USE_USART2
+#ifndef STM32_SERIAL_USE_USART2
 #error "We need the second UART for the WLAN dongle"
 #endif
 
