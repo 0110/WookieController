@@ -70,6 +70,7 @@ static int readLine(char *pText, int bufferLeng)
 
    for(i=0;i < bufferLeng && !finishFlag; i++)
    {
+       chThdSleepMilliseconds(10);
        /* Found serial reading here:
         * http://forum.chibios.org/phpbb/viewtopic.php?p=12262&sid=5f8c68257a2cd5be83790ce6f7e1282d#p12262 */
        chEvtWaitOneTimeout(EVENT_MASK(1), MS2ST(10));
@@ -90,15 +91,14 @@ static int readLine(char *pText, int bufferLeng)
                      case '\n':
                      case '\r':
                        finishFlag=TRUE;
-//                       (*(pText + i)) = '\0';
-                       read++; /* also make a zero to mark the end of the text */
+                       /* also make a zero to mark the end of the text */
+                       pText[read] = '\0';
                        break;
                      default:
-                       (pText[i]) = (char)charbuf;
-                       usbcdc_print("%c\r\n", (char) charbuf);
-                       read++;
+                       pText[read] = (char)charbuf;
                        break;
                      }
+                     read++;
                  }
            }
            while (charbuf != Q_TIMEOUT);
@@ -131,7 +131,6 @@ void esp8266_init(char *ssid, char *password)
 
 	WLAN_UPRINT("AT\r\n");
 	WLAN_UPRINT("Hello World : %s\r\n", "Arg1");
-	chThdSleepMilliseconds(500);
 	int r = readLine(textbuffer, TEXTLINE_MAX_LENGTH);
 	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
