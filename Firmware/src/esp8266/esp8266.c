@@ -115,6 +115,8 @@ static int readLine(char *pText, int bufferLeng)
 void esp8266_init(char *ssid, char *password)
 {
         char textbuffer[TEXTLINE_MAX_LENGTH];
+        int r=0;
+
 	/* Set the baudrate to the default of 115200 */
 	SerialConfig sc;
 	/*FIXME: this should normally work: sc.sc_speed = 115200; */
@@ -127,12 +129,14 @@ void esp8266_init(char *ssid, char *password)
 	* TX: PA2
 	*/
 	sdStart(UART_PORT, /* FIXME &sc, hack: */ NULL);
-	chThdSleepMilliseconds(50);
+	chThdSleepMilliseconds(500);
 
 	WLAN_UPRINT("AT\r\n");
-	WLAN_UPRINT("Hello World : %s\r\n", "Arg1");
-	int r = readLine(textbuffer, TEXTLINE_MAX_LENGTH);
+        chThdSleepMilliseconds(50);
+	usbcdc_print("Sending AT ...\r\n");
+	r = readLine(textbuffer, TEXTLINE_MAX_LENGTH);
 	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
+
 
 	/* Set client mode: */
 	/*TODO AT+CWMODE=1*/
