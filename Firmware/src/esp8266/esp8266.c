@@ -135,20 +135,18 @@ void esp8266_init(char *ssid, char *password)
 	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
-	chThdSleepMilliseconds(100);
+#if ESP8266_AUTO_RESET
 	usbcdc_print("Reset board\r\n");
 	/* Reset the WLAN board */
-	WLAN_UPRINT("\r\n");
-	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
-
-	/* Set client mode: */
-	/*TODO AT+CWMODE=1*/
-#if 0
-	WLAN_UPRINT("AT+CWMODE=1\r\n");
+	WLAN_UPRINT("AT+RST \r\n");
 	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 #endif
+
+	/* Set client mode: */
+	WLAN_UPRINT("AT+CWMODE=1\r\n");
+	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 	/* Connect to WLAN */
 	/*TODO AT+CWJAP="SSID","secret" */
 
