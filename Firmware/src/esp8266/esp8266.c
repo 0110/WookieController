@@ -38,8 +38,6 @@
  * LOCAL VARIABLES for this module
  ******************************************************************************/
 
-static int gEventMaskInited=0; /**< Flag, if the Serial reading logic is already initialized */
-
 /******************************************************************************
  * LOCAL FUNCTIONS
  ******************************************************************************/
@@ -56,11 +54,7 @@ static int readAll(char *pText, int bufferLeng)
   flagsmask_t flags;
   int i, read=0;
   int finishFlag=0;
-  if (gEventMaskInited == 0)
-  {
-       chEvtRegisterMask((EventSource *)chnGetEventSource(UART_PORT), &elGPSdata, EVENT_MASK(1));
-       gEventMaskInited = 1;
-  }
+  chEvtRegisterMask((EventSource *)chnGetEventSource(UART_PORT), &elGPSdata, EVENT_MASK(1));
 
   /* Check faulty input parameter */
    if (bufferLeng <= 0)
@@ -97,8 +91,6 @@ static int readAll(char *pText, int bufferLeng)
            }
            while (charbuf != Q_TIMEOUT);
        }
-
-       chThdSleepMilliseconds(10);
    }
 
    /* do not write after YOUR memory */
@@ -106,6 +98,8 @@ static int readAll(char *pText, int bufferLeng)
    {
 	   read = bufferLeng - 1;
    }
+
+   chEvtUnregister((EventSource *)chnGetEventSource(UART_PORT), &elGPSdata);
 
    /* also make a zero to mark the end of the text */
    pText[read] = '\0';
@@ -141,6 +135,12 @@ void esp8266_init(char *ssid, char *password)
 	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
+	chThdSleepMilliseconds(100);
+	usbcdc_print("Reset board\r\n");
+	/* Reset the WLAN board */
+	WLAN_UPRINT("\r\n");
+	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
 	/* Set client mode: */
 	/*TODO AT+CWMODE=1*/
