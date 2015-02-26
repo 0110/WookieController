@@ -55,6 +55,8 @@ void cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
 void cmd_esp8266(BaseSequentialStream *chp, int argc, char *argv[])
 {
 	esp8266_init("SSID", "password");
+
+	esp8266_printIP(chp);
 }
 
 static const ShellCommand commands[] = {

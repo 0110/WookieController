@@ -113,8 +113,8 @@ static int readAll(char *pText, int bufferLeng)
 
 void esp8266_init(char *ssid, char *password)
 {
-        char textbuffer[TEXTLINE_MAX_LENGTH];
-        int r=0;
+	char textbuffer[TEXTLINE_MAX_LENGTH];
+	int r=0;
 
 	/* Set the baudrate to the default of 115200 */
 	SerialConfig sc;
@@ -149,5 +149,14 @@ void esp8266_init(char *ssid, char *password)
 	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 	/* Connect to WLAN */
 	/*TODO AT+CWJAP="SSID","secret" */
+}
 
+void esp8266_printIP(BaseSequentialStream *chp)
+{
+	char textbuffer[TEXTLINE_MAX_LENGTH];
+	int r=0;
+
+	WLAN_UPRINT("AT+CIFSR\r\n");
+	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+	chprintf(chp, "Read %3d :  %s\r\n", r, textbuffer);
 }

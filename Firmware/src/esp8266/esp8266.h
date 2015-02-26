@@ -19,6 +19,7 @@
  ******************************************************************************/
 
 #include "mcuconf.h"
+#include "ch.h"
 
 #ifndef STM32_SERIAL_USE_USART6
 #error "We need the second UART for the WLAN dongle"
@@ -38,6 +39,12 @@
  * @brief initialization of the UART Wifi module.
  */
 void esp8266_init(char *ssid, char *password);
+
+/** @fn void esp8266_printIP(BaseSequentialStream *chp)
+ * @param chp	Stream to print the information on
+ * @brief Print the information about the own IP address.
+ */
+void esp8266_printIP(BaseSequentialStream *chp);
 
 /*@}*/
 
