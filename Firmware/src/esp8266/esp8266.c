@@ -144,10 +144,11 @@ void esp8266_init(char *ssid, char *password)
 
 	/* Set client mode: */
 	/*TODO AT+CWMODE=1*/
+#if 0
 	WLAN_UPRINT("AT+CWMODE=1\r\n");
 	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
-
+#endif
 	/* Connect to WLAN */
 	/*TODO AT+CWJAP="SSID","secret" */
 
