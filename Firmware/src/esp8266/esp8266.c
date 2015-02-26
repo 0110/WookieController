@@ -130,8 +130,8 @@ void esp8266_init(char *ssid, char *password)
 	/*
 	* Activates the serial driver 6
 	* using default the configuration.
-	* RX: PA3
-	* TX: PA2
+	* RX: PC7
+	* TX: PC6
 	*/
 	sdStart(UART_PORT, /* FIXME &sc, hack: */ NULL);
 	chThdSleepMilliseconds(500);

@@ -131,8 +131,6 @@ int main(void) {
 		{
 			palSetPad(GPIOD, GPIOD_LED5);	/* Red On*/
 			usbcdc_print("Button pressed\r\n");
-			/*FIXME Demo */
-			esp8266_init("SSID", "password");
 		}
 
 		/* Wait some time, to make the scheduler running tasks with lower prio */
