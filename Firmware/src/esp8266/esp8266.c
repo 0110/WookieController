@@ -50,7 +50,7 @@ static int gEventMaskInited=0; /**< Flag, if the Serial reading logic is already
  * @param[in]           bufferLeng      The maximum of characters, that could be read.
  * @return amount of read characters (or -1 on errors)
  */
-static int readLine(char *pText, int bufferLeng)
+static int readAll(char *pText, int bufferLeng)
 {
   EventListener elGPSdata;
   flagsmask_t flags;
@@ -70,7 +70,6 @@ static int readLine(char *pText, int bufferLeng)
 
    for(i=0;i < bufferLeng && !finishFlag; i++)
    {
-       chThdSleepMilliseconds(10);
        /* Found serial reading here:
         * http://forum.chibios.org/phpbb/viewtopic.php?p=12262&sid=5f8c68257a2cd5be83790ce6f7e1282d#p12262 */
        chEvtWaitOneTimeout(EVENT_MASK(1), MS2ST(10));
@@ -88,11 +87,6 @@ static int readLine(char *pText, int bufferLeng)
                  {
                      switch ((char)charbuf)
                      {
-                     case '\n':
-                     case '\r':
-                       finishFlag=TRUE;
-                       /* also make a zero to mark the end of the text */
-                       pText[read] = '\0';
                        break;
                      default:
                        pText[read] = (char)charbuf;
@@ -103,7 +97,18 @@ static int readLine(char *pText, int bufferLeng)
            }
            while (charbuf != Q_TIMEOUT);
        }
+
+       chThdSleepMilliseconds(10);
    }
+
+   /* do not write after YOUR memory */
+   if (read >= bufferLeng)
+   {
+	   read = bufferLeng - 1;
+   }
+
+   /* also make a zero to mark the end of the text */
+   pText[read] = '\0';
 
    return read;
 }
@@ -132,14 +137,16 @@ void esp8266_init(char *ssid, char *password)
 	chThdSleepMilliseconds(500);
 
 	WLAN_UPRINT("AT\r\n");
-        chThdSleepMilliseconds(50);
 	usbcdc_print("Sending AT ...\r\n");
-	r = readLine(textbuffer, TEXTLINE_MAX_LENGTH);
+	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
 
 	/* Set client mode: */
 	/*TODO AT+CWMODE=1*/
+	WLAN_UPRINT("AT+CWMODE=1\r\n");
+	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
 	/* Connect to WLAN */
 	/*TODO AT+CWJAP="SSID","secret" */
