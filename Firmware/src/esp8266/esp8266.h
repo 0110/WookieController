@@ -30,6 +30,19 @@
  ******************************************************************************/
 
 /******************************************************************************
+* TYPE DEFINITIONS
+******************************************************************************/
+/** @enum esp8266_ret_t
+* @brief Status
+* return value for all global functions in the esp8266 module
+*/
+typedef enum {
+  RET_OK, /**< OK, no Error occurred */
+  RET_ERROR, /**< Global not further specified error! */
+  RET_COMMUNICATION_ERR /**< Unexpected response from ESP8266 module */
+} esp8266_ret_t;
+
+/******************************************************************************
  * GLOBAL FUNCTIONS
  ******************************************************************************/
 
@@ -39,7 +52,7 @@
  * @brief initialization of the UART Wifi module.
  * If the two paramater ssid and password are not set, the last used WiFi is used again.
  */
-void esp8266_init(char *ssid, char *password);
+esp8266_ret_t esp8266_init(char *ssid, char *password);
 
 /** @fn void esp8266_printIP(BaseSequentialStream *chp)
  * @param chp	Stream to print the information on

@@ -18,6 +18,7 @@
 
 #include "usbcdc/usbcdc.h"
 
+#include <string.h>
 
 /******************************************************************************
  * DEFINES
@@ -28,6 +29,13 @@
 #define WLAN_UPRINT( ... ) chprintf((BaseSequentialStream *) UART_PORT, __VA_ARGS__); /**< UART print for WLAN module */
 
 #define TEXTLINE_MAX_LENGTH     128
+
+#define CHECK_RESPONSE(CMD, RESPONSE)          r = readAll(textbuffer, TEXTLINE_MAX_LENGTH); \
+                                if (strcmp(textbuffer+sizeof(CMD), RESPONSE) != 0) \
+                                { \
+                                    usbcdc_print("Got %s\tinstead of %s (%d Bytes read)\r\n", textbuffer+sizeof(CMD), RESPONSE, r); \
+                                    return RET_COMMUNICATION_ERR; \
+                                }
 
 
 /******************************************************************************
@@ -105,7 +113,7 @@ static int readAll(char *pText, int bufferLeng)
  * GLOBAL FUNCTIONS
  ******************************************************************************/
 
-void esp8266_init(char *ssid, char *password)
+esp8266_ret_t esp8266_init(char *ssid, char *password)
 {
 	char textbuffer[TEXTLINE_MAX_LENGTH];
 	int r=0;
@@ -122,12 +130,10 @@ void esp8266_init(char *ssid, char *password)
 	* TX: PC6
 	*/
 	sdStart(UART_PORT, /* FIXME &sc, hack: */ NULL);
-	chThdSleepMilliseconds(500);
 
 	WLAN_UPRINT("AT\r\n");
 	usbcdc_print("Sending AT ...\r\n");
-	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
+	CHECK_RESPONSE("AT\r\n", "OK\r\n");
 
 #ifdef ESP8266_AUTO_RESET
 	usbcdc_print("Reset board\r\n");
@@ -137,7 +143,6 @@ void esp8266_init(char *ssid, char *password)
 	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 #endif
 
-	chThdSleepMilliseconds(10);
 	/* Set client mode: */
 	usbcdc_print("Set client mode...\r\n");
 	WLAN_UPRINT("AT+CWMODE=1\r\n");
@@ -155,15 +160,17 @@ void esp8266_init(char *ssid, char *password)
           r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
           usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 	}
+
+	return RET_OK;
 }
 
 void esp8266_printIP(BaseSequentialStream *chp)
 {
-        chprintf(chp, "Get our IP address...\r\n");
 	char textbuffer[TEXTLINE_MAX_LENGTH];
 	int r=0;
 
 	WLAN_UPRINT("AT+CIFSR\r\n");
 	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	chprintf(chp, "Read %3d :  %s\r\n", r, textbuffer);
+
+	chprintf(chp, "IP: %s\r\n", r, textbuffer+(sizeof("AT+CIFSR\r\n")-1));
 }
