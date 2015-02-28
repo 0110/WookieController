@@ -147,8 +147,12 @@ void esp8266_init(char *ssid, char *password)
 	WLAN_UPRINT("AT+CWMODE=1\r\n");
 	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
+
 	/* Connect to WLAN */
-	/*TODO AT+CWJAP="SSID","secret" */
+	/*AT+CWJAP="SSID","secret" */
+	WLAN_UPRINT("AT+CWJAP=\"%s\",\"%s\"\r\n", ssid, password);
+        r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+        usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 }
 
 void esp8266_printIP(BaseSequentialStream *chp)
