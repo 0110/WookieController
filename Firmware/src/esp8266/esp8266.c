@@ -144,7 +144,7 @@ esp8266_ret_t esp8266_init(char *ssid, char *password)
 
 	/* Set client mode: */
 	WLAN_UPRINT("AT+CWMODE=1\r\n");
-	CHECK_RESPONSE("AT+CWMODE=1\r\r\nno change\r\n");
+	CHECK_RESPONSE("AT+CWMODE=1\r\nno change\r\n");
 
 #ifdef ESP8266_AUTO_RESET
         /* Reset the WLAN board */
@@ -152,6 +152,11 @@ esp8266_ret_t esp8266_init(char *ssid, char *password)
         r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
         usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 #endif
+
+        /* Set the data transmission mode */
+        WLAN_UPRINT("AT+CIPMODE=1\r\n");
+        r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+        usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
 	if (ssid != NULL && password != NULL)
 	{

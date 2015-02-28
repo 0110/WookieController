@@ -86,6 +86,9 @@ void cmd_esp8266(BaseSequentialStream *chp, int argc, char *argv[])
   }
   else if (argc >= 1 && strcmp(argv[0], "server") == 0)
   {
+      esp8266_closeTCPServer();
+      chThdSleepMilliseconds(100);
+      chprintf(chp, "Open TCP socket...\r\n");
       esp8266_openTCPServer(1234);
   }
   else
