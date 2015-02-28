@@ -79,13 +79,7 @@ static int readAll(char *pText, int bufferLeng)
                  charbuf = chnGetTimeout(UART_PORT, TIME_IMMEDIATE);
                  if ( charbuf != Q_TIMEOUT )
                  {
-                     switch ((char)charbuf)
-                     {
-                       break;
-                     default:
-                       pText[read] = (char)charbuf;
-                       break;
-                     }
+                     pText[read] = (char)charbuf;
                      read++;
                  }
            }

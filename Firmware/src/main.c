@@ -60,6 +60,12 @@ void cmd_esp8266(BaseSequentialStream *chp, int argc, char *argv[])
     chThdSleepMilliseconds(100);
     esp8266_printIP(chp);
   }
+  else if (argc >= 1 && strcmp(argv[0], "reconnect") == 0)
+  {
+    esp8266_init(NULL, NULL);
+    chThdSleepMilliseconds(100);
+    esp8266_printIP(chp);
+  }
   else if (argc >= 1 && strcmp(argv[0], "ip") == 0)
   {
     esp8266_printIP(chp);
@@ -68,6 +74,7 @@ void cmd_esp8266(BaseSequentialStream *chp, int argc, char *argv[])
   {
     chprintf(chp, "possible arguments are:\r\n"
         "- connect <ssid> <password>\tConnect to the given WiFi with its password\r\n"
+        "- reconnect\t\t\tConnect to the last connected WiFi\r\n"
         "- ip\t\t\t\tprint the current IP address\r\n");
   }
 }
