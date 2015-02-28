@@ -37,6 +37,7 @@
  * @param[in] ssid     the ssid of the network to connect to
  * @param[in] password the password of ssid
  * @brief initialization of the UART Wifi module.
+ * If the two paramater ssid and password are not set, the last used WiFi is used again.
  */
 void esp8266_init(char *ssid, char *password);
 
