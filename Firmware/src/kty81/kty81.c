@@ -111,6 +111,9 @@ kty81_ret_t kty81_init(void)
   adcSTM32EnableTSVREFE();
   palSetPadMode(GPIOC, GPIOC_PIN1, PAL_MODE_INPUT_ANALOG);
 
+  /** Give the current some time to flow and stabilize */
+  chThdSleepMilliseconds(50);
+
 #ifdef DEBUG_KTY81
   usbcdc_print( " Done\r\n");
 #endif
