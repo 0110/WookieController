@@ -94,7 +94,7 @@
  *
  * In order to calculate the resistance of the KTY81, the following formula should be used:<br/>
  * <code>
- * R_KTY81 = V_PC1 * 2500 / (5.0 - V_PC1 )
+ * R_KTY81 = V_PC1 * 2500 / (3.3V - V_PC1 )
  * </code><br/>
  * The voltage (V_PC1) is calculated based on the ADC values.
  */
@@ -114,8 +114,8 @@
 #define KTY81_ADC2V_FACTOR            0.00077f     /**< Factor to calculate between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET */
 #define KTY81_ADC2V_OFFSET            0.0f         /**< Offset between ADC and the volt value received on the PIN; Used in the formula: V= FACTOR * (uC-ADC - OFFSET) + OFFSET  */
 
-#define KTY81_VCC                     3.15f        /**< Used VCC for the temperature measurement circuit */
-#define KTY81_PULLUP_RESISTOR         996.0f       /**< Pull Up resistor between VCC and the measure point */
+#define KTY81_VCC                     3.52f         /**< Used VCC for the temperature measurement circuit */
+#define KTY81_PULLUP_RESISTOR         1002.0f       /**< Pull Up resistor between VCC and the measure point */
 
 /******************************************************************************
  * TYPE DEFINITIONS
