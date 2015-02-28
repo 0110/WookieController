@@ -30,10 +30,10 @@
 
 #define TEXTLINE_MAX_LENGTH     128
 
-#define CHECK_RESPONSE(CMD, RESPONSE)          r = readAll(textbuffer, TEXTLINE_MAX_LENGTH); \
-                                if (strcmp(textbuffer+sizeof(CMD), RESPONSE) != 0) \
+#define CHECK_RESPONSE(RESPONSE)          r = readAll(textbuffer, TEXTLINE_MAX_LENGTH); \
+                                if (strcmp(textbuffer, RESPONSE) != 0) \
                                 { \
-                                    usbcdc_print("Got %s\tinstead of %s (%d Bytes read)\r\n", textbuffer+sizeof(CMD), RESPONSE, r); \
+                                    usbcdc_print("Got '%s' instead of '%s' (%d Bytes read)\r\n", textbuffer, RESPONSE, r); \
                                     return RET_COMMUNICATION_ERR; \
                                 }
 
@@ -133,7 +133,7 @@ esp8266_ret_t esp8266_init(char *ssid, char *password)
 
 	WLAN_UPRINT("AT\r\n");
 	usbcdc_print("Sending AT ...\r\n");
-	CHECK_RESPONSE("AT\r\n", "OK\r\n");
+	CHECK_RESPONSE("AT\r\nOK\r\n");
 
 #ifdef ESP8266_AUTO_RESET
 	usbcdc_print("Reset board\r\n");
