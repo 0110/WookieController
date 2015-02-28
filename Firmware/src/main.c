@@ -57,6 +57,8 @@ void cmd_esp8266(BaseSequentialStream *chp, int argc, char *argv[])
   if (argc >= 3 && strcmp(argv[0], "connect") == 0)
   {
     esp8266_init(argv[1], argv[2]);
+    chThdSleepMilliseconds(100);
+    esp8266_printIP(chp);
   }
   else if (argc >= 1 && strcmp(argv[0], "ip") == 0)
   {
