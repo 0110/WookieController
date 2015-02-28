@@ -10,5 +10,5 @@ APPSRC = src/main.c \
 APPINC = ${APP}
 
 # List all user C define here
-APPDEFS =
+APPDEFS = -DDEBUG_KTY81
 

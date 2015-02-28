@@ -11,6 +11,14 @@
 #include "hal.h"
 
 /******************************************************************************
+ * INCLUDES
+ ******************************************************************************/
+
+#ifdef DEBUG_KTY81
+#include "usbcdc/usbcdc.h"
+#endif
+
+/******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
 
@@ -93,8 +101,8 @@ void adccb(ADCDriver *adcp, adcsample_t *buffer, size_t n) {
 
 kty81_ret_t kty81_init(void)
 {
-#ifdef UPRINT
-  UPRINT("Initialize ADC ...");
+#ifdef DEBUG_KTY81
+  usbcdc_print("Initialize ADC ...");
 #endif
   /*
    * The pin PC1 on the port GPIOC is programmed as analog input.
@@ -103,8 +111,8 @@ kty81_ret_t kty81_init(void)
   adcSTM32EnableTSVREFE();
   palSetPadMode(GPIOC, GPIOC_PIN1, PAL_MODE_INPUT_ANALOG);
 
-#ifdef UPRINT
-  UPRINT( " Done\r\n");
+#ifdef DEBUG_KTY81
+  usbcdc_print( " Done\r\n");
 #endif
 
    return RET_OK;
@@ -147,6 +155,11 @@ kty81_ret_t kty81_read(int32_t *temperature)
 
   /* Deactivate the circuit (don't mess with our power) */
   palClearPad(GPIOA, TEMP_CONTROL); /* PA8 OFF */
+
+
+#ifdef DEBUG_KTY81
+  usbcdc_print( "%4d mVolt\t %3d Ohm\r\n", (int32_t)(volatage*1000), tempResistorValue);
+#endif
 
   return RET_OK;
 }
