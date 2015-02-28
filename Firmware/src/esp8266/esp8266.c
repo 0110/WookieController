@@ -136,24 +136,22 @@ esp8266_ret_t esp8266_init(char *ssid, char *password)
 	* RX: PC7
 	* TX: PC6
 	*/
+	sdStop(UART_PORT);
 	sdStart(UART_PORT, /* FIXME &sc, hack: */ NULL);
 
 	WLAN_UPRINT("AT\r\n");
-	usbcdc_print("Sending AT ...\r\n");
 	CHECK_RESPONSE("AT\r\n\r\nOK\r\n");
 
-#ifdef ESP8266_AUTO_RESET
-	usbcdc_print("Reset board\r\n");
-	/* Reset the WLAN board */
-	WLAN_UPRINT("AT+RST \r\n");
-	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
-#endif
-
 	/* Set client mode: */
-	usbcdc_print("Set client mode...\r\n");
 	WLAN_UPRINT("AT+CWMODE=1\r\n");
 	CHECK_RESPONSE("AT+CWMODE=1\r\r\nno change\r\n");
+
+#ifdef ESP8266_AUTO_RESET
+        /* Reset the WLAN board */
+        WLAN_UPRINT("AT+RST \r\n");
+        r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+        usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
+#endif
 
 	if (ssid != NULL && password != NULL)
 	{
@@ -178,6 +176,30 @@ void esp8266_printIP(BaseSequentialStream *chp)
 	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	if (r > (int) (sizeof(WLAN_CMD_GETIP)))
 	{
-	    chprintf(chp, "IP: %s", textbuffer+(sizeof(WLAN_CMD_GETIP)-1));
+	    chprintf(chp, "IP: %s", textbuffer+(sizeof(WLAN_CMD_GETIP) - 1));
 	}
+}
+
+esp8266_ret_t esp8266_openTCPServer(int port)
+{
+  char textbuffer[TEXTLINE_MAX_LENGTH];
+  int r=0;
+
+  WLAN_UPRINT("AT+CIPSERVER=1,%d\r\n", port);
+  r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+  usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
+
+  return RET_OK;
+}
+
+esp8266_ret_t esp8266_closeTCPServer(void)
+{
+  char textbuffer[TEXTLINE_MAX_LENGTH];
+  int r=0;
+
+  WLAN_UPRINT("AT+CIPSERVER=0\r\n");
+  r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+  usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
+
+  return RET_OK;
 }

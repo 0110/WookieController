@@ -60,6 +60,24 @@ esp8266_ret_t esp8266_init(char *ssid, char *password);
  */
 void esp8266_printIP(BaseSequentialStream *chp);
 
+/** @fn esp8266_ret_t esp8266_openTCPServer(int port)
+ * @param port  The port number where the TCP socket should listen on
+ * @brief Starts an TCP Server
+ */
+esp8266_ret_t esp8266_openTCPServer(int port);
+
+/** @fn esp8266_ret_t esp8266_closeTCPServer()
+ * @brief Close the TCP Server
+ */
+esp8266_ret_t esp8266_closeTCPServer(void);
+
+/** @fn esp8266_ret_t esp8266_printTCP(const char *s, ...)
+ * @brief prints the given string on the TCP socket
+ * @param[in]   s       string to print including formating definition
+ * @param[in]   ...     All values for the formating options
+ */
+esp8266_ret_t esp8266_printTCP(const char *s, ...);
+
 /*@}*/
 
 #endif /* ESP8266_H_ */

@@ -72,6 +72,8 @@ void cmd_esp8266(BaseSequentialStream *chp, int argc, char *argv[])
     {
       chThdSleepMilliseconds(100);
       esp8266_printIP(chp);
+      chThdSleepMilliseconds(100);
+      esp8266_openTCPServer(1234);
     }
     else
     {
@@ -81,6 +83,10 @@ void cmd_esp8266(BaseSequentialStream *chp, int argc, char *argv[])
   else if (argc >= 1 && strcmp(argv[0], "ip") == 0)
   {
     esp8266_printIP(chp);
+  }
+  else if (argc >= 1 && strcmp(argv[0], "server") == 0)
+  {
+      esp8266_openTCPServer(1234);
   }
   else
   {
