@@ -47,13 +47,17 @@
  * digraph HardwareSetup {
  * rankdir=LR;
  * node [shape=record];
+ * SWITCH [ label="BS 170|{<3> Source|<2> Gate|<1>Drain}" ];
  * GND [ label="GND" ];
  * PA8 [ label="PA8 (3.15V)" ];
  * PIN [ label="PC1" ];
  * CON;
- * GND -> CON [ label="kty81" arrowhead=none ];
+ * V3 [ label="3.3V" ];
+ * PA8 -> SWITCH:2 [ arrowhead=none ];
+ * GND -> SWITCH:3 [ arrowhead=none ];
+ * SWITCH:1 -> CON [ label="kty81" arrowhead=none ];
  * CON -> PIN [ label="9.8 kOhm" arrowhead=none ];
- * CON -> PA8 [ label="1.0 kOhm" arrowhead=none ];
+ * CON -> V3 [ label="1.0 kOhm" arrowhead=none ];
  * }
  * @enddot
  *
