@@ -33,10 +33,17 @@
 #define CHECK_RESPONSE(RESPONSE)          r = readAll(textbuffer, TEXTLINE_MAX_LENGTH); \
                                 if (strcmp(textbuffer, RESPONSE) != 0) \
                                 { \
+                                    int i; \
                                     usbcdc_print("Got '%s' instead of '%s' (%d Bytes read)\r\n", textbuffer, RESPONSE, r); \
+                                    /* Print complete buffer as hex values */ \
+                                    for(i=0; i<r;i++) \
+                                    { \
+                                        usbcdc_print("%2i %2X =? %2X\r\n", i, textbuffer[i], RESPONSE[i]); \
+                                    } \
                                     return RET_COMMUNICATION_ERR; \
                                 }
 
+#define WLAN_CMD_GETIP  "AT+CIFSR\r\n"
 
 /******************************************************************************
  * GLOBAL VARIABLES for this module
@@ -133,7 +140,7 @@ esp8266_ret_t esp8266_init(char *ssid, char *password)
 
 	WLAN_UPRINT("AT\r\n");
 	usbcdc_print("Sending AT ...\r\n");
-	CHECK_RESPONSE("AT\r\nOK\r\n");
+	CHECK_RESPONSE("AT\r\n\r\nOK\r\n");
 
 #ifdef ESP8266_AUTO_RESET
 	usbcdc_print("Reset board\r\n");
@@ -146,9 +153,7 @@ esp8266_ret_t esp8266_init(char *ssid, char *password)
 	/* Set client mode: */
 	usbcdc_print("Set client mode...\r\n");
 	WLAN_UPRINT("AT+CWMODE=1\r\n");
-	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
-
+	CHECK_RESPONSE("AT+CWMODE=1\r\r\nno change\r\n");
 
 	if (ssid != NULL && password != NULL)
 	{
@@ -169,8 +174,10 @@ void esp8266_printIP(BaseSequentialStream *chp)
 	char textbuffer[TEXTLINE_MAX_LENGTH];
 	int r=0;
 
-	WLAN_UPRINT("AT+CIFSR\r\n");
+	WLAN_UPRINT(WLAN_CMD_GETIP);
 	r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-
-	chprintf(chp, "IP: %s\r\n", r, textbuffer+(sizeof("AT+CIFSR\r\n")-1));
+	if (r > (int) (sizeof(WLAN_CMD_GETIP)))
+	{
+	    chprintf(chp, "IP: %s", textbuffer+(sizeof(WLAN_CMD_GETIP)-1));
+	}
 }
