@@ -33,13 +33,13 @@
 #define CHECK_RESPONSE(RESPONSE)          r = readAll(textbuffer, TEXTLINE_MAX_LENGTH); \
                                 if (strcmp(textbuffer, RESPONSE) != 0) \
                                 { \
-                                    int i; \
+                                    /*int i;*/ \
                                     usbcdc_print("Got '%s' instead of '%s' (%d Bytes read)\r\n", textbuffer, RESPONSE, r); \
                                     /* Print complete buffer as hex values */ \
-                                    for(i=0; i<r;i++) \
+                                    /*for(i=0; i<r;i++) \
                                     { \
                                         usbcdc_print("%2i %2X =? %2X\r\n", i, textbuffer[i], RESPONSE[i]); \
-                                    } \
+                                    } */ \
                                     return RET_COMMUNICATION_ERR; \
                                 }
 
