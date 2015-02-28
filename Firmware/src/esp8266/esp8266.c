@@ -33,13 +33,13 @@
 #define CHECK_RESPONSE(RESPONSE)          r = readAll(textbuffer, TEXTLINE_MAX_LENGTH); \
                                 if (strcmp(textbuffer, RESPONSE) != 0) \
                                 { \
-                                    /*int i;*/ \
+                                    int i; \
                                     usbcdc_print("Got '%s' instead of '%s' (%d Bytes read)\r\n", textbuffer, RESPONSE, r); \
                                     /* Print complete buffer as hex values */ \
-                                    /*for(i=0; i<r;i++) \
+                                    for(i=0; i<r;i++) \
                                     { \
                                         usbcdc_print("%2i %2X =? %2X\r\n", i, textbuffer[i], RESPONSE[i]); \
-                                    } */ \
+                                    } \
                                     return RET_COMMUNICATION_ERR; \
                                 }
 
@@ -144,7 +144,7 @@ esp8266_ret_t esp8266_init(char *ssid, char *password)
 
 	/* Set client mode: */
 	WLAN_UPRINT("AT+CWMODE=1\r\n");
-	CHECK_RESPONSE("AT+CWMODE=1\r\nno change\r\n");
+	CHECK_RESPONSE("AT+CWMODE=1\r\r\nno change\r\n");
 
 #ifdef ESP8266_AUTO_RESET
         /* Reset the WLAN board */
@@ -154,7 +154,10 @@ esp8266_ret_t esp8266_init(char *ssid, char *password)
 #endif
 
         /* Set the data transmission mode */
-        WLAN_UPRINT("AT+CIPMODE=1\r\n");
+        WLAN_UPRINT("AT+CIPMUX=1\r\n");
+        r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+        usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
+        WLAN_UPRINT("AT+CIPMODE=0\r\n");
         r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
         usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
