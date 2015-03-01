@@ -29,6 +29,8 @@
 static WORKING_AREA(waLEDstripBlink, 128);
 static msg_t ledThread(void *arg);
 
+#define LED_END_POSTION		155
+
 /*===========================================================================*/
 /* Command line related. */
 /*===========================================================================*/
@@ -69,16 +71,19 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[]) {
 			ledstripe_framebuffer[i].green = 0;
 			ledstripe_framebuffer[i].blue = 0;
 		}
-	} else if (argc >= 1 && strcmp(argv[0], "endblue") == 0) {
+	} else if (argc >= 4 && strcmp(argv[0], "end") == 0) {
+		int red = atoi(argv[1]);
+		int green = atoi(argv[2]);
+		int blue = atoi(argv[3]);
 		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
 			ledstripe_framebuffer[i].red = 0;
 			ledstripe_framebuffer[i].green = 0;
 			ledstripe_framebuffer[i].blue = 0;
 		}
-		for(i=156; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
-			ledstripe_framebuffer[i].red = 0;
-			ledstripe_framebuffer[i].green = 0;
-			ledstripe_framebuffer[i].blue = 255;
+		for(i=LED_END_POSTION; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+			ledstripe_framebuffer[i].red = red;
+			ledstripe_framebuffer[i].green = green;
+			ledstripe_framebuffer[i].blue = blue;
 		}
 	} else if (argc >= 1 && strcmp(argv[0], "start") == 0) {
 		chprintf(chp,"Start led thread ...");
@@ -92,6 +97,7 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[]) {
 		chprintf(chp, "possible arguments are:\r\n"
 				"-test1\r\n"
 				"-start\r\n"
+				"-end (red) (green) (blue)\tSet the last box\r\n"
 				"- on\r\n"
 				"- off\r\n");
 	}
@@ -187,7 +193,9 @@ static msg_t ledThread(void *arg) {
 /*
  * Application entry point.
  */
-int main(void) {
+int main(void)
+{
+int i, red, green, blue;
 
 /*
  * System initializations.
@@ -239,9 +247,44 @@ shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
  */
 while (TRUE) {
 	usbcdc_process();
-
+	int offset=LED_END_POSTION;
 	if (palReadPad(GPIOA, GPIOA_BUTTON)) {
-		UPRINT("BUTTON pressed\r\n");
+		if (ledstripe_framebuffer[offset].red
+				&& ledstripe_framebuffer[offset].green
+				&& ledstripe_framebuffer[offset].blue)
+		{
+			red = green = blue = 0;
+		}
+		else if (ledstripe_framebuffer[offset].red)
+		{
+			red = 0;
+			green = 255;
+			blue = 0;
+		}
+		else if (ledstripe_framebuffer[offset].green)
+		{
+			red = 0;
+			green = 0;
+			blue = 255;
+		}
+		else if (ledstripe_framebuffer[offset].blue)
+		{
+			red = 255;
+			green = 0;
+			blue = 0;
+		}
+		else
+		{
+			red = green = blue = 255;
+		}
+		UPRINT("Set %2X%2X%2X (RRGGBB)\r\n", red, green, blue);
+
+		/* Update the end of the stripe */
+		for(i=offset; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+			ledstripe_framebuffer[i].red = red;
+			ledstripe_framebuffer[i].green = green;
+			ledstripe_framebuffer[i].blue = blue;
+		}
 	}
 
 	/* Wait some time, to make the scheduler running tasks with lower prio */
