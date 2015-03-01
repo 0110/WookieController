@@ -41,21 +41,21 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[]) {
 			ledstripe_framebuffer[i].green = 0;
 			ledstripe_framebuffer[i].blue = 0;
 		}
-		chThdSleepMilliseconds(10000);
+		chThdSleepMilliseconds(5000);
 		chprintf(chp,"Green ...\r\n");
 		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
 			ledstripe_framebuffer[i].green = 255;
 			ledstripe_framebuffer[i].red = 0;
 			ledstripe_framebuffer[i].blue = 0;
 		}
-		chThdSleepMilliseconds(10000);
+		chThdSleepMilliseconds(5000);
 		chprintf(chp,"Blue ...\r\n");
 		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
 			ledstripe_framebuffer[i].blue = 255;
 			ledstripe_framebuffer[i].red = 0;
 			ledstripe_framebuffer[i].green = 0;
 		}
-		chThdSleepMilliseconds(10000);
+		chThdSleepMilliseconds(5000);
 	}
 	else if (argc >= 1 && strcmp(argv[0], "on") == 0) {
 		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
@@ -68,6 +68,17 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[]) {
 			ledstripe_framebuffer[i].red = 0;
 			ledstripe_framebuffer[i].green = 0;
 			ledstripe_framebuffer[i].blue = 0;
+		}
+	} else if (argc >= 1 && strcmp(argv[0], "endblue") == 0) {
+		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+			ledstripe_framebuffer[i].red = 0;
+			ledstripe_framebuffer[i].green = 0;
+			ledstripe_framebuffer[i].blue = 0;
+		}
+		for(i=156; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+			ledstripe_framebuffer[i].red = 0;
+			ledstripe_framebuffer[i].green = 0;
+			ledstripe_framebuffer[i].blue = 255;
 		}
 	} else if (argc >= 1 && strcmp(argv[0], "start") == 0) {
 		chprintf(chp,"Start led thread ...");
