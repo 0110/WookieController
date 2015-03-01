@@ -56,9 +56,9 @@ static void Update_Buffer(uint16_t* buffer) {
 				bufp = buffer + (i * 24);
 // edit here to change order of colors in "ws2812_framebuffer" (0x00RRGGBB, 0x00GGBBRR, etc)
 // the chip needs G R B
+				color2pwm(&bufp, framebufferp->blue); // blue
 				color2pwm(&bufp, framebufferp->green); // green
 				color2pwm(&bufp, framebufferp->red); // red
-				color2pwm(&bufp, framebufferp->blue); // blue
 			}
 		}
 	}
