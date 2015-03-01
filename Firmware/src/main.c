@@ -249,25 +249,25 @@ while (TRUE) {
 	usbcdc_process();
 	int offset=LED_END_POSTION;
 	if (palReadPad(GPIOA, GPIOA_BUTTON)) {
-		if (ledstripe_framebuffer[offset].red
-				&& ledstripe_framebuffer[offset].green
-				&& ledstripe_framebuffer[offset].blue)
+		if (ledstripe_framebuffer[offset].red > 0
+				&& ledstripe_framebuffer[offset].green >0
+				&& ledstripe_framebuffer[offset].blue >0)
 		{
 			red = green = blue = 0;
 		}
-		else if (ledstripe_framebuffer[offset].red)
+		else if (ledstripe_framebuffer[offset].red > 0)
 		{
 			red = 0;
 			green = 255;
 			blue = 0;
 		}
-		else if (ledstripe_framebuffer[offset].green)
+		else if (ledstripe_framebuffer[offset].green > 0)
 		{
 			red = 0;
 			green = 0;
 			blue = 255;
 		}
-		else if (ledstripe_framebuffer[offset].blue)
+		else if (ledstripe_framebuffer[offset].blue > 0)
 		{
 			red = 255;
 			green = 0;
