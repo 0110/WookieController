@@ -27,11 +27,35 @@
 #define UPRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
 
 /*===========================================================================*/
-/* Command line related.                                                     */
+/* Command line related. */
 /*===========================================================================*/
+void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[]) {
+	int i;
+	if (argc >= 1 && strcmp(argv[0], "on") == 0) {
+		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+			ledstripe_framebuffer[i].red = 255;
+			ledstripe_framebuffer[i].green = 255;
+			ledstripe_framebuffer[i].blue = 255;
+		}
+	} else if (argc >= 1 && strcmp(argv[0], "off") == 0) {
+		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+			ledstripe_framebuffer[i].red = 0;
+			ledstripe_framebuffer[i].green = 0;
+			ledstripe_framebuffer[i].blue = 0;
+		}
+	} else /* Usage */
+	{
+		chprintf(chp, "possible arguments are:\r\n"
+				"- on\r\n"
+				"- off\r\n");
+	}
+}
 
-static const ShellCommand commands[] = { { "mem", cmd_mem }, { "threads",
-		cmd_threads }, { NULL, NULL } };
+static const ShellCommand commands[] = {
+		{ "led", cmd_ledctrl },
+		{ "mem", cmd_mem },
+		{ "threads", cmd_threads },
+		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
 		{ (BaseSequentialStream *) &SD6, commands };
@@ -160,8 +184,8 @@ chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
 UPRINT(" Done\r\n");
 
 UPRINT("Start led thread ...");
-chThdCreateStatic(waLEDstripBlink, sizeof(waLEDstripBlink), NORMALPRIO,
-		ledThread, NULL);
+/*chThdCreateStatic(waLEDstripBlink, sizeof(waLEDstripBlink), NORMALPRIO,
+		ledThread, NULL);*/
 UPRINT(" Done\r\n");
 
 shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
