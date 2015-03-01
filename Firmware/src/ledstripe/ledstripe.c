@@ -37,6 +37,7 @@ static void Update_Buffer(uint16_t* buffer) {
 	uint16_t * bufp;
 
 	for (i = 0; i < (LEDSTRIPE_PWM_BUFFER_SIZE / 2) / 24; i++) {
+		/* Make the reset (the complete stripe is set) */
 		if (incomplete_return) {
 			incomplete_return = 0;
 			for (j = 0; j < 24; j++) {
@@ -146,11 +147,4 @@ void ledstripe_init(void) {
 	// Activate it:
 	STM32_TIM3->CR1 |= STM32_TIM_CR1_CEN; // TIM3 enable; CR1 is now locked
 	STM32_TIM3->EGR |= STM32_TIM_EGR_UG;
-
-
-
-
-
-
 }
-
