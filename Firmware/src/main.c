@@ -248,12 +248,15 @@ shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 while (TRUE) {
 	usbcdc_process();
 	int offset=LED_END_POSTION;
-	if (palReadPad(GPIOA, GPIOA_BUTTON)) {
+	if (palReadPad(GPIOA, GPIOA_BUTTON))
+	{
 		if (ledstripe_framebuffer[offset].red > 0
 				&& ledstripe_framebuffer[offset].green >0
 				&& ledstripe_framebuffer[offset].blue >0)
 		{
-			red = green = blue = 0;
+			red = 255;
+			green = 0;
+			blue = 0;
 		}
 		else if (ledstripe_framebuffer[offset].red > 0)
 		{
@@ -269,7 +272,7 @@ while (TRUE) {
 		}
 		else if (ledstripe_framebuffer[offset].blue > 0)
 		{
-			red = 255;
+			red = 0;
 			green = 0;
 			blue = 0;
 		}
