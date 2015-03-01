@@ -26,12 +26,38 @@
 
 #define UPRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
 
+static WORKING_AREA(waLEDstripBlink, 128);
+static msg_t ledThread(void *arg);
+
 /*===========================================================================*/
 /* Command line related. */
 /*===========================================================================*/
 void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[]) {
 	int i;
-	if (argc >= 1 && strcmp(argv[0], "on") == 0) {
+	if (argc >= 1 && strcmp(argv[0], "test1") == 0) {
+		chprintf(chp,"Red ...\r\n");
+		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+			ledstripe_framebuffer[i].red = 255;
+			ledstripe_framebuffer[i].green = 0;
+			ledstripe_framebuffer[i].blue = 0;
+		}
+		chThdSleepMilliseconds(10000);
+		chprintf(chp,"Green ...\r\n");
+		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+			ledstripe_framebuffer[i].green = 255;
+			ledstripe_framebuffer[i].red = 0;
+			ledstripe_framebuffer[i].blue = 0;
+		}
+		chThdSleepMilliseconds(10000);
+		chprintf(chp,"Blue ...\r\n");
+		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
+			ledstripe_framebuffer[i].blue = 255;
+			ledstripe_framebuffer[i].red = 0;
+			ledstripe_framebuffer[i].green = 0;
+		}
+		chThdSleepMilliseconds(10000);
+	}
+	else if (argc >= 1 && strcmp(argv[0], "on") == 0) {
 		for(i=0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++) {
 			ledstripe_framebuffer[i].red = 255;
 			ledstripe_framebuffer[i].green = 255;
@@ -43,9 +69,18 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[]) {
 			ledstripe_framebuffer[i].green = 0;
 			ledstripe_framebuffer[i].blue = 0;
 		}
-	} else /* Usage */
+	} else if (argc >= 1 && strcmp(argv[0], "start") == 0) {
+		chprintf(chp,"Start led thread ...");
+		chThdCreateStatic(waLEDstripBlink, sizeof(waLEDstripBlink), NORMALPRIO,
+				ledThread, NULL);
+		chprintf(chp," Done\r\n");
+
+	}
+	else /* Usage */
 	{
 		chprintf(chp, "possible arguments are:\r\n"
+				"-test1\r\n"
+				"-start\r\n"
 				"- on\r\n"
 				"- off\r\n");
 	}
@@ -85,7 +120,6 @@ static msg_t blinkerThread(void *arg) {
  * This is a periodic thread that does absolutely nothing except flashing
  * a LED.
  */
-static WORKING_AREA(waLEDstripBlink, 128);
 static msg_t ledThread(void *arg) {
 	int pos_r = 0;
 	int pos_g = 0;
@@ -183,10 +217,6 @@ chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
 		blinkerThread, NULL);
 UPRINT(" Done\r\n");
 
-UPRINT("Start led thread ...");
-/*chThdCreateStatic(waLEDstripBlink, sizeof(waLEDstripBlink), NORMALPRIO,
-		ledThread, NULL);*/
-UPRINT(" Done\r\n");
 
 shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
