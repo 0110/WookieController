@@ -103,10 +103,34 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[]) {
 	}
 }
 
+void cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
+{
+	if (argc >= 1 && strcmp(argv[0], "test") == 0)
+	{
+		chprintf(chp, "LED test\r\n");
+	}
+	else if (argc >= 1 && strcmp(argv[0], "on") == 0)
+	{
+		palSetPad(GPIOD, GPIOD_LED5);	/* Red ON*/
+	}
+	else if (argc >= 1 && strcmp(argv[0], "off") == 0)
+	{
+		palClearPad(GPIOD, GPIOD_LED5);	/* Red OFF */
+	}
+	else	/* Usage */
+	{
+		chprintf(chp, "possible arguments are:\r\n"
+				"- test\r\n"
+				"- on\r\n"
+				"- off\r\n");
+	}
+}
+
 static const ShellCommand commands[] = {
 		{ "led", cmd_ledctrl },
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
+		{ "led" , cmd_led },
 		{ NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
