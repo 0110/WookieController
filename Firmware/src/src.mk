@@ -2,7 +2,6 @@
 APPSRC = src/main.c \
 		src/rpm/rpm.c \
 		src/usbcdc/usbcdc.c \
-		src/ledstripe/ledstripe.c \
 		src/cmd/cmd_threads.c \
 		src/cmd/cmd_mem.c 
 
