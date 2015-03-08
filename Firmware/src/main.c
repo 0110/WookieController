@@ -24,7 +24,8 @@
  * DEFINITIONS
  ******************************************************************************/
 
-#define PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
+#define PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__);/**< Uart print */ \
+                        usbcdc_print(__VA_ARGS__);
 
 static WORKING_AREA(waLEDstripBlink, 128);
 static msg_t
