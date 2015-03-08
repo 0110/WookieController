@@ -139,7 +139,7 @@ main(void)
   /*
    * Activates the serial driver 6 to communicate with the WLAN (ESP8266) module
    */
-  sdStart(&SD6, NULL);
+  esp8266_init();
 
   chThdSleep(MS2ST(100));
 
