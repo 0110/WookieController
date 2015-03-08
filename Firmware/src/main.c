@@ -103,7 +103,8 @@ blinkerThread(void *arg)
   while (TRUE)
     {
       palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
-      chThdSleepMilliseconds(500);palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
+      chThdSleepMilliseconds(500);
+      palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
       chThdSleepMilliseconds(500);
     }
   return RDY_OK;
@@ -160,6 +161,9 @@ main(void)
       if (palReadPad(GPIOA, GPIOA_BUTTON))
       {
           PRINT("Button pressed\r\n");
+          /* Send something via the WLAN module: */
+          chprintf((BaseSequentialStream *) &SD6, "s:send(\"Button pressed\")\n");
+          palTogglePad(GPIOD, GPIOD_LED5); /* Green.  */
       }
 
       /* Wait some time, to make the scheduler running tasks with lower prio */
