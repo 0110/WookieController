@@ -124,11 +124,8 @@ esp8266_ret_t esp8266_init()
 {
         char textbuffer[TEXTLINE_MAX_LENGTH];
         int r=0;
-
-        /* Set the baudrate to the default of 115200 */
         SerialConfig sc;
-        /*FIXME: this should normally work: sc.sc_speed = 115200; */
-        /* At the moment, we can skip this, as this is the same baudrate as the default one*/
+        sc.speed = 9600;
 
         /*
         * Activates the serial driver 6
@@ -137,7 +134,7 @@ esp8266_ret_t esp8266_init()
         * TX: PC6
         */
         sdStop(UART_PORT);
-        sdStart(UART_PORT, /* FIXME &sc, hack: */ NULL);
+        sdStart(UART_PORT, &sc);
 
         chThdSleepMilliseconds(10);
         r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
