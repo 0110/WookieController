@@ -1,3 +1,9 @@
+[submodule "Firmware/board"]
+	path = Firmware/board
+	url = https://github.com/0110/CH_board_element14_STM32F4DIS-BB.git
+[submodule "Firmware/lib/lcd"]
+	path = Firmware/lib/lcd
+	url = https://github.com/Anubirux/ChibiOS-LCD-Driver.gitv
 [submodule "Firmware/lib/ChibiOS"]
 	path = Firmware/lib/ChibiOS
 	url = https://github.com/mabl/ChibiOS.git
