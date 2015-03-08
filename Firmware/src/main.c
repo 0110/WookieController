@@ -137,18 +137,20 @@ main(void)
    */
   shellInit();
 
-  /*
-   * Activates the serial driver 6 to communicate with the WLAN (ESP8266) module
-   */
-  esp8266_init();
-
-  chThdSleep(MS2ST(100));
+  chThdSleep(MS2ST(50));
+  usbcdc_process();
+  chThdSleep(MS2ST(50));
 
   PRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
   PRINT("Start blinker thread ...");
   chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
       blinkerThread, NULL);
   PRINT(" Done\r\n");
+
+  /*
+   * Activates the serial driver 6 to communicate with the WLAN (ESP8266) module
+   */
+  esp8266_init();
 
   /*
    * Normal main() thread activity, in this demo it does nothing except
