@@ -24,7 +24,7 @@
  * DEFINITIONS
  ******************************************************************************/
 
-#define UPRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
+#define PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__); /**< Uart print */
 
 static WORKING_AREA(waLEDstripBlink, 128);
 static msg_t
@@ -280,11 +280,11 @@ main(void)
    */
   ledstripe_init();
 
-  UPRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
-  UPRINT("Start blinker thread ...");
+  PRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
+  PRINT("Start blinker thread ...");
   chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
       blinkerThread, NULL);
-  UPRINT(" Done\r\n");
+  PRINT(" Done\r\n");
 
   shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
@@ -330,7 +330,7 @@ main(void)
             {
               red = green = blue = 255;
             }
-          UPRINT("Set %2X%2X%2X (RRGGBB)\r\n", red, green, blue);
+          PRINT("Set %2X%2X%2X (RRGGBB)\r\n", red, green, blue);
 
           /* Update the end of the stripe */
           for (i = offset; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++)
