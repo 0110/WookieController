@@ -79,11 +79,26 @@ void cmd_rpm(BaseSequentialStream *chp, int argc, char *argv[])
         }
 }
 
+void
+cmd_esp(BaseSequentialStream *chp, int argc, char *argv[])
+{
+  if (argc >= 1)
+  {
+    chprintf(chp, "Sending %s\r\n", argv[0]);
+    esp8266_debugcmd(argv[0]);
+  }
+  else /* Usage */
+  {
+    chprintf(chp, "Simply append the command to execute\r\n");
+  }
+}
+
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
 		{ "led" , cmd_led },
 		{ "rpm" , cmd_rpm },
+		{ "esp" , cmd_esp },
 		{ NULL, NULL } };
 
 /*===========================================================================*/

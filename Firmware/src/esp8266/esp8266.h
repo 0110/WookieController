@@ -59,6 +59,15 @@ esp8266_ret_t esp8266_init(void);
  */
 esp8266_ret_t esp8266_printUDP(const char *s, ...);
 
+/** @fn esp8266_ret_t esp8266_debugcmd(const char *s)
+ * @brief Send a Command directly to the WLAN Uart
+ * @param[in]   s       string with the command
+ * The output will be printet to the USB UART
+ *
+ * @return success or failure
+ */
+esp8266_ret_t esp8266_debugcmd(const char *s);
+
 /*@}*/
 
 #endif /* ESP8266_H_ */

@@ -158,3 +158,16 @@ esp8266_ret_t esp8266_printUDP(const char *s, ...)
   return ESP8266_RET_OK;
 }
 
+esp8266_ret_t esp8266_debugcmd(const char *s)
+{
+  char textbuffer[TEXTLINE_MAX_LENGTH];
+  int r=0;
+
+  WLAN_UPRINT(s);
+
+  chThdSleepMilliseconds(10);
+  r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+  usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
+
+  return ESP8266_RET_OK;
+}
