@@ -149,9 +149,7 @@ esp8266_ret_t esp8266_printUDP(const char *s, ...)
   int r=0;
   (void) s; /*FIXME must be used later! */
 
-  WLAN_UPRINT("AT+CWJAP=\"%s\",\"%s\"\r\n");
-
-  chThdSleepMilliseconds(10);
+  WLAN_UPRINT("s:send(\"%s\")\r");
   r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
   usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
@@ -173,8 +171,6 @@ esp8266_ret_t esp8266_debugcmd(const char *s)
   usbcdc_print("Sending '%s'\r\n", textbuffer);
 
   WLAN_UPRINT(s);
-
-  chThdSleepMilliseconds(10);
   r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
   usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
