@@ -163,6 +163,15 @@ esp8266_ret_t esp8266_debugcmd(const char *s)
   char textbuffer[TEXTLINE_MAX_LENGTH];
   int r=0;
 
+  memset(textbuffer, 0, TEXTLINE_MAX_LENGTH);
+
+#define UART_LINE_END   "\r"
+
+  strcpy(textbuffer, s);
+  memcpy(textbuffer + strlen(s), UART_LINE_END, sizeof(UART_LINE_END));
+
+  usbcdc_print("Sending '%s'\r\n", textbuffer);
+
   WLAN_UPRINT(s);
 
   chThdSleepMilliseconds(10);

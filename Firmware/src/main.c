@@ -84,8 +84,7 @@ cmd_esp(BaseSequentialStream *chp, int argc, char *argv[])
 {
   if (argc >= 1)
   {
-    chprintf(chp, "Sending %s\r\n", argv[0]);
-    esp8266_debugcmd(argv[0]);
+      esp8266_debugcmd(argv[0]);
   }
   else /* Usage */
   {
