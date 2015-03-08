@@ -163,7 +163,7 @@ esp8266_ret_t esp8266_debugcmd(const char *s)
 
   memset(textbuffer, 0, TEXTLINE_MAX_LENGTH);
 
-#define UART_LINE_END   "\r"
+#define UART_LINE_END   "\n"
 
   strcpy(textbuffer, s);
   memcpy(textbuffer + strlen(s), UART_LINE_END, sizeof(UART_LINE_END));

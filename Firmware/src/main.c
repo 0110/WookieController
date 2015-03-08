@@ -142,6 +142,11 @@ main(void)
   chSysInit();
 
   /*
+   * Activates the serial driver 6 to communicate with the WLAN (ESP8266) module
+   */
+  esp8266_init();
+
+  /*
    * Initialize USB serial console
    */
   usbcdc_init(commands);
@@ -159,10 +164,6 @@ main(void)
       blinkerThread, NULL);
   PRINT(" Done\r\n");
 
-  /*
-   * Activates the serial driver 6 to communicate with the WLAN (ESP8266) module
-   */
-  esp8266_init();
 
   /*
    * Normal main() thread activity, in this demo it does nothing except
