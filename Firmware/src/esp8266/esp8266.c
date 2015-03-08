@@ -122,32 +122,39 @@ static int readAll(char *pText, int bufferLeng)
 
 esp8266_ret_t esp8266_init()
 {
-        char textbuffer[TEXTLINE_MAX_LENGTH];
-        int r=0;
-        SerialConfig sc;
-        sc.speed = 9600;
+  char textbuffer[TEXTLINE_MAX_LENGTH];
+  int r=0;
+  SerialConfig sc;
+  sc.speed = 9600;
 
-        /*
-        * Activates the serial driver 6
-        * using default the configuration.
-        * RX: PC7
-        * TX: PC6
-        */
-        sdStop(UART_PORT);
-        sdStart(UART_PORT, &sc);
+  /*
+  * Activates the serial driver 6
+  * using default the configuration.
+  * RX: PC7
+  * TX: PC6
+  */
+  sdStop(UART_PORT);
+  sdStart(UART_PORT, &sc);
 
-        chThdSleepMilliseconds(10);
-        r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-        usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
+  chThdSleepMilliseconds(10);
+  r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+  usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
-        return ESP8266_RET_OK;
+  return ESP8266_RET_OK;
 }
 
 esp8266_ret_t esp8266_printUDP(const char *s, ...)
 {
+  char textbuffer[TEXTLINE_MAX_LENGTH];
+  int r=0;
   (void) s; /*FIXME must be used later! */
 
   WLAN_UPRINT("AT+CWJAP=\"%s\",\"%s\"\r\n");
+
+  chThdSleepMilliseconds(10);
+  r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+  usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
+
   return ESP8266_RET_OK;
 }
 

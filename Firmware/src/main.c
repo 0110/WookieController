@@ -26,7 +26,7 @@
  * DEFINITIONS
  ******************************************************************************/
 
-#define PRINT( ... )	usbcdc_print(__VA_ARGS__);/**< Uart print */
+#define PRINT( ... )	usbcdc_print(__VA_ARGS__); usbcdc_process(); /**< Uart print */
 
 
 /*===========================================================================*/
@@ -137,9 +137,7 @@ main(void)
    */
   shellInit();
 
-  chThdSleep(MS2ST(50));
-  usbcdc_process();
-  chThdSleep(MS2ST(50));
+  chThdSleep(MS2ST(100));
 
   PRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
   PRINT("Start blinker thread ...");
