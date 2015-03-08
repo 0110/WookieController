@@ -37,9 +37,9 @@
 * return value for all global functions in the esp8266 module
 */
 typedef enum {
-  RET_OK, /**< OK, no Error occurred */
-  RET_ERROR, /**< Global not further specified error! */
-  RET_COMMUNICATION_ERR /**< Unexpected response from ESP8266 module */
+  ESP8266_RET_OK, /**< OK, no Error occurred */
+  ESP8266_RET_ERROR, /**< Global not further specified error! */
+  ESP8266_RET_COMMUNICATION_ERR /**< Unexpected response from ESP8266 module */
 } esp8266_ret_t;
 
 /******************************************************************************

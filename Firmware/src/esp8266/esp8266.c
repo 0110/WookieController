@@ -143,7 +143,7 @@ esp8266_ret_t esp8266_init()
         r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
         usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
-        return RET_OK;
+        return ESP8266_RET_OK;
 }
 
 esp8266_ret_t esp8266_printUDP(const char *s, ...)
@@ -151,6 +151,6 @@ esp8266_ret_t esp8266_printUDP(const char *s, ...)
   (void) s; /*FIXME must be used later! */
 
   WLAN_UPRINT("AT+CWJAP=\"%s\",\"%s\"\r\n");
-  return RET_OK;
+  return ESP8266_RET_OK;
 }
 

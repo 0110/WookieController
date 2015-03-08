@@ -17,6 +17,7 @@
 #include "shell.h"
 
 #include "usbcdc/usbcdc.h"
+#include "esp8266/esp8266.h"
 #include "cmd/cmd.h"
 
 #include "rpm/rpm.h"
@@ -162,7 +163,7 @@ main(void)
       {
           PRINT("Button pressed\r\n");
           /* Send something via the WLAN module: */
-          chprintf((BaseSequentialStream *) &SD6, "s:send(\"Button pressed\")\n");
+          esp8266_printUDP("Button pressed");
           palTogglePad(GPIOD, GPIOD_LED5); /* Green.  */
       }
 
