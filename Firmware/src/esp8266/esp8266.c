@@ -122,10 +122,12 @@ static int readAll(char *pText, int bufferLeng)
 
 esp8266_ret_t esp8266_init()
 {
-  char textbuffer[TEXTLINE_MAX_LENGTH];
-  int r=0;
-  SerialConfig sc;
-  sc.speed = 9600;
+  SerialConfig sc = {
+          9600,
+        0,
+        USART_CR2_STOP1_BITS | USART_CR2_LINEN,
+        0
+      };
 
   /*
   * Activates the serial driver 6
@@ -136,10 +138,6 @@ esp8266_ret_t esp8266_init()
   sdStop(UART_PORT);
   sdStart(UART_PORT, &sc);
 
-  chThdSleepMilliseconds(10);
-  r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-  usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
-
   return ESP8266_RET_OK;
 }
 
@@ -147,9 +145,11 @@ esp8266_ret_t esp8266_printUDP(const char *s, ...)
 {
   char textbuffer[TEXTLINE_MAX_LENGTH];
   int r=0;
-  (void) s; /*FIXME must be used later! */
+  WLAN_UPRINT("s:send(\"");
+  WLAN_UPRINT(s);
+  WLAN_UPRINT("\")\r\n");
 
-  WLAN_UPRINT("s:send(\"%s\")\r");
+  chThdSleepMilliseconds(10);
   r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
   usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
@@ -161,16 +161,9 @@ esp8266_ret_t esp8266_debugcmd(const char *s)
   char textbuffer[TEXTLINE_MAX_LENGTH];
   int r=0;
 
-  memset(textbuffer, 0, TEXTLINE_MAX_LENGTH);
-
-#define UART_LINE_END   "\n"
-
-  strcpy(textbuffer, s);
-  memcpy(textbuffer + strlen(s), UART_LINE_END, sizeof(UART_LINE_END));
-
-  usbcdc_print("Sending '%s'\r\n", textbuffer);
-
+  usbcdc_print("Sending '%s'\r\n", s);
   WLAN_UPRINT(s);
+
   r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
   usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
