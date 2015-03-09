@@ -147,7 +147,7 @@ esp8266_ret_t esp8266_printUDP(const char *s, ...)
   int r=0;
   WLAN_UPRINT("s:send(\"");
   WLAN_UPRINT(s);
-  WLAN_UPRINT("\")\r\n");
+  WLAN_UPRINT("\")\r");
 
   chThdSleepMilliseconds(10);
   r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);

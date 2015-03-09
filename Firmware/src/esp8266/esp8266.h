@@ -4,9 +4,26 @@
  * @author Ollo
  * @date 24.02.2015
  *
- * Source of commands: http://defcon-cc.dyndns.org/wiki/ESP8266#Software
+ * Using the following custom firmware: https://github.com/nodemcu/nodemcu-firmware
+ * at this Version:  nodemcu_20150212.bin
  *
- * @defgroup ESP6266 Output library (USB UART)
+ * At startup, the following script is executed:
+ * @code{.unparsed}
+ * --init.lua will be excuted on each reboot
+ * file.open("init.lua","w")
+ * file.writeline([[wifi.setmode(wifi.SOFTAP)]])
+ * file.writeline([[wifi.ap.config({ssid="mobileAP",pwd="myLAN4Bike"})]])
+ * file.writeline([[ip=wifi.ap.getip()]])
+ * file.writeline([[print("Access Point started with")]])
+ * file.writeline([[print(ip)]])
+ * file.writeline([[s=net.createServer(net.UDP)]])
+ * file.writeline([[s:on("receive",function(s,c) print(c) end)]])
+ * file.writeline([[s:listen(1234)]])
+ * file.writeline([[print("TCP Server started on port 1234")]])
+ * file.close()
+ * @endcode
+ *
+ * @defgroup ESP6266 Output library (WLAN UART)
  * @{
  *
  */
