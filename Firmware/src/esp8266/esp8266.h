@@ -69,12 +69,12 @@ typedef enum {
  */
 esp8266_ret_t esp8266_init(void);
 
-/** @fn esp8266_ret_t esp8266_printTCP(const char *s, ...)
- * @brief prints the given string on the TCP socket
+/** @fn esp8266_ret_t esp8266_UDPprintln(const char *s, ...)
+ * @brief prints the given string on the UDP socket
  * @param[in]   s       string to print including formating definition
  * @param[in]   ...     All values for the formating options
  */
-esp8266_ret_t esp8266_printUDP(const char *s, ...);
+esp8266_ret_t esp8266_UDPprintln(const char *s, ...);
 
 /** @fn esp8266_ret_t esp8266_debugcmd(const char *s)
  * @brief Send a Command directly to the WLAN Uart

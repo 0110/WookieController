@@ -162,7 +162,7 @@ int main(void)
           PRINT("Button pressed\r\n");
 
           /* Send something via the WLAN module: */
-          esp8266_printUDP("Button pressed");
+          esp8266_UDPprintln("Button pressed");
           palTogglePad(GPIOD, GPIOD_LED6); /* Blue.  */
       }
 
