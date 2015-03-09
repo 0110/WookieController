@@ -20,8 +20,6 @@
 
 #include <string.h>
 
-#include <stdarg.h>             /**< Necessary for variable amount of arguments (needed at printf) */
-
 /******************************************************************************
  * DEFINES
  ******************************************************************************/
@@ -143,16 +141,16 @@ esp8266_ret_t esp8266_init()
   return ESP8266_RET_OK;
 }
 
-esp8266_ret_t esp8266_UDPprintln(const char *s, ...)
+esp8266_ret_t esp8266_UDPprintln(const char *text, ...)
 {
   char textbuffer[TEXTLINE_MAX_LENGTH];
   int r=0;
   va_list ap;
+  va_start(ap, text);
   WLAN_UPRINT("s:send(\"");
-  va_start(ap, s);
-  WLAN_UPRINT(s, ap);
-  va_end(ap);
+  usbcdc_chvprintf((BaseSequentialStream *) UART_PORT, text, ap);
   WLAN_UPRINT("\\n\")\r");
+  va_end(ap);
 
   chThdSleepMilliseconds(10);
   r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);

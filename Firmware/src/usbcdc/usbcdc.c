@@ -8,7 +8,6 @@
  */
 #include "usbcdc/usbcdc.h"
 #include "ch.h"
-#include <stdarg.h>
 
 /******************************************************************************
  * GLOBAL VARIABLES for this module
@@ -428,7 +427,8 @@ static char *ftoa(char *p, double num) {
 }
 #endif
 
-static void chvprintf(BaseSequentialStream *chp, const char *fmt, va_list ap) {
+void usbcdc_chvprintf(BaseSequentialStream *chp, const char *fmt, va_list ap)
+{
   char *p, *s, c, filler;
   int i, precision, width;
   bool_t is_long, left_align;
@@ -586,7 +586,7 @@ void usbcdc_print(const char *text, ...)
         if (SDU1.config->usbp->state == USB_ACTIVE)
         {
                 va_start(ap, text);
-                chvprintf((BaseSequentialStream *)&SDU1, text, ap);
+                usbcdc_chvprintf((BaseSequentialStream *)&SDU1, text, ap);
                 va_end(ap);
         }
 }

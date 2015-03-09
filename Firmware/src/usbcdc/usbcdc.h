@@ -63,6 +63,7 @@
 
 #include "chprintf.h"
 #include "shell.h"
+#include <stdarg.h>             /**< Necessary for variable amount of arguments (needed at printf) */
 
 #define SHELL_WA_SIZE   THD_WA_SIZE(2048)       /**< Memory for the SHELL connected via USB */
 
@@ -90,6 +91,13 @@ void usbcdc_process(void);
  * @param[in]   ...     All values for the formating options
  */
 void usbcdc_print(const char *s, ...);
+
+/** @fn void chvprintf(BaseSequentialStream *chp, const char *fmt, va_list ap)
+ * @param[in]   chp     Stream to write on
+ * @param[in]   fmt     Format text
+ * @param[in]   ap      Parameter for the formated text
+ */
+void usbcdc_chvprintf(BaseSequentialStream *chp, const char *fmt, va_list ap);
 
 #ifdef __cplusplus
 }

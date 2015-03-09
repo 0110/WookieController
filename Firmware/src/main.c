@@ -116,6 +116,8 @@ blinkerThread(void *arg)
  */
 int main(void)
 {
+  uint8_t i=0;
+
   /*
    * System initializations.
    * - HAL initialization, this also initializes the configured device drivers
@@ -155,19 +157,19 @@ int main(void)
    * driver 2.
    */
   while (TRUE)
-    {
+  {
       usbcdc_process();
       if (palReadPad(GPIOA, GPIOA_BUTTON))
       {
           PRINT("Button pressed\r\n");
-
+          i++;
           /* Send something via the WLAN module: */
-          esp8266_UDPprintln("Button pressed");
+          esp8266_UDPprintln("Button pressed %u times", i);
           palTogglePad(GPIOD, GPIOD_LED6); /* Blue.  */
       }
 
       /* Wait some time, to make the scheduler running tasks with lower prio */
       chThdSleep(MS2ST(500));
-    }
+  }
 }
 
