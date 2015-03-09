@@ -79,25 +79,11 @@ void cmd_rpm(BaseSequentialStream *chp, int argc, char *argv[])
         }
 }
 
-void
-cmd_esp(BaseSequentialStream *chp, int argc, char *argv[])
-{
-  if (argc >= 1)
-  {
-      esp8266_debugcmd(argv[0]);
-  }
-  else /* Usage */
-  {
-    chprintf(chp, "Simply append the command to execute\r\n");
-  }
-}
-
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
 		{ "led" , cmd_led },
 		{ "rpm" , cmd_rpm },
-		{ "esp" , cmd_esp },
 		{ NULL, NULL } };
 
 /*===========================================================================*/
@@ -128,8 +114,7 @@ blinkerThread(void *arg)
 /*
  * Application entry point.
  */
-int
-main(void)
+int main(void)
 {
   /*
    * System initializations.
@@ -156,8 +141,6 @@ main(void)
    */
   shellInit();
 
-  chThdSleep(MS2ST(100));
-
   PRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
   PRINT("Start blinker thread ...");
   chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
@@ -177,9 +160,10 @@ main(void)
       if (palReadPad(GPIOA, GPIOA_BUTTON))
       {
           PRINT("Button pressed\r\n");
+
           /* Send something via the WLAN module: */
           esp8266_printUDP("Button pressed");
-          palTogglePad(GPIOD, GPIOD_LED5); /* Green.  */
+          palTogglePad(GPIOD, GPIOD_LED6); /* Blue.  */
       }
 
       /* Wait some time, to make the scheduler running tasks with lower prio */
