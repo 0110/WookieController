@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+[submodule "Firmware/lib/lcd"]
+	path = Firmware/lib/lcd
+	url = https://github.com/Anubirux/ChibiOS-LCD-Driver.gitv
+>>>>>>> 7c7031835da0eb4ec546b92f90710e567b9e1f62
 [submodule "Firmware/lib/ChibiOS"]
 	path = Firmware/lib/ChibiOS
 	url = https://github.com/mabl/ChibiOS.git

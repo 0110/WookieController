@@ -30,7 +30,7 @@
 //#define BOARD_PHY_ID 0x0007C0F0
 #define BOARD_PHY_ADDRESS 0x00
 #define BOARD_PHY_RMII    1
-#define BOARD_PHY_RESET  boardEthRst 
+#define BOARD_PHY_RESET  boardEthRst
 
 /*
  * Board oscillators-related settings.

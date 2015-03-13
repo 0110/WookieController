@@ -114,3 +114,4 @@ void boardEthRst(void) {
   palSetPad(GPIOE, GPIOE_ETH_RMII_NRST);
   for (i = 0; i < 20000; i++);
 }
+
