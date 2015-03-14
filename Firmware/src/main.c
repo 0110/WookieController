@@ -298,7 +298,7 @@ main(void)
   while (TRUE)
     {
       usbcdc_process();
-      int offset = LED_END_POSTION;
+      int offset = 0;
       if (palReadPad(GPIOA, GPIOA_BUTTON))
         {
           if (ledstripe_framebuffer[offset].red > 0
@@ -331,7 +331,7 @@ main(void)
             {
               red = green = blue = 255;
             }
-          PRINT("Set %2X%2X%2X (RRGGBB)\r\n", red, green, blue);
+          PRINT("Set %.2X%.2X%.2X (RRGGBB)\r\n", red, green, blue);
 
           /* Update the end of the stripe */
           for (i = offset; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++)
