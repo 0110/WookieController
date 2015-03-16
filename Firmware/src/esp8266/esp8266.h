@@ -19,7 +19,7 @@
  * file.writeline([[s=net.createServer(net.UDP)]])
  * file.writeline([[s:on("receive",function(s,c) print(c) end)]])
  * file.writeline([[s:listen(1234)]])
- * file.writeline([[print("TCP Server started on port 1234")]])
+ * file.writeline([[print("UDP Server started on port 1234")]])
  * file.close()
  * @endcode
  *
