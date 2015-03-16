@@ -28,11 +28,6 @@
 /******************************************************************************
  * LOCAL VARIABLES
  ******************************************************************************/
-/*
- * This is a periodic thread that does absolutely nothing except flashing
- * a LED.
- */
-static WORKING_AREA(waThreadRpm, RPM_THREAD_WORKING_AREA_SIZE);
 
 /**
  * @var gRoundPerMinutes
@@ -40,46 +35,74 @@ static WORKING_AREA(waThreadRpm, RPM_THREAD_WORKING_AREA_SIZE);
  */
 static uint32_t gRoundPerMinutes = 0;
 
+static volatile uint32_t startTime = 0;
+
+/* Triggered when the button is pressed or released. The LED5 is set to ON.*/
+static void extcb1(EXTDriver *extp, expchannel_t channel) {
+
+  (void)extp;
+  (void)channel;
+
+  palTogglePad(GPIOD, GPIOD_LED5); /* Red ? */
+  //chSysLockFromIsr();
+
+  if (startTime > 0)
+  {
+      gRoundPerMinutes =  chTimeElapsedSince(startTime);
+  }
+  startTime = chTimeNow();
+
+  //chSysUnlockFromIsr();
+}
+
+static const EXTConfig extcfg = {
+  {
+    {EXT_CH_MODE_FALLING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOA, extcb1},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL},
+    {EXT_CH_MODE_DISABLED, NULL}
+  }
+};
+
 /******************************************************************************
  * LOCAL FUNCTIONS
  ******************************************************************************/
 
-static msg_t rpmThread(void *arg)
-{
-    uint32_t trigger = 0U;
-    uint32_t i = 0U;
-    (void) arg;
-    chRegSetThreadName("rpm");
 
-    while(TRUE)
-    {
-        trigger = 0U;
-        for(i=0U; i < REFERENCE_TIME; i+= SLEEP_TIME)
-        {
-          if (palReadPad(GPIOA, GPIOA_BTNRPM1))
-          {
-              trigger++;
-          }
-          chThdSleep(MS2ST(SLEEP_TIME));
-        }
-        gRoundPerMinutes = trigger * TICKS_REFTIME2RPM;
-    }
-    return RDY_OK;
-}
 
 /******************************************************************************
  * GLOBAL FUNCTIONS
  ******************************************************************************/
 
 
-/* ICU Driver should be the thing, we are searching:
- * http://chibios.sourceforge.net/html/group___i_c_u.html
- */
-
 rpm_ret_t rpm_init(void)
 {
-  chThdCreateStatic(waThreadRpm, sizeof(waThreadRpm), NORMALPRIO,
-                          rpmThread, NULL);
+  /*
+   * Activates the EXT driver 1.
+   */
+  extStart(&EXTD1, &extcfg);
+
+  extChannelEnable(&EXTD1, 0);
+
   return RET_OK;
 }
 
