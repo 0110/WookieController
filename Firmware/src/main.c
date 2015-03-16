@@ -169,7 +169,7 @@ int main(void)
       }
 
       /* Wait some time, to make the scheduler running tasks with lower prio */
-      chThdSleep(MS2ST(500));
+      chThdSleep(MS2ST(100));
   }
 }
 
