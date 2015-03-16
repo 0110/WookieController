@@ -151,8 +151,6 @@ esp8266_ret_t esp8266_UDPprintln(const char *text, ...)
   usbcdc_chvprintf((BaseSequentialStream *) UART_PORT, text, ap);
   WLAN_UPRINT("\\n\")\r");
   va_end(ap);
-
-  chThdSleepMilliseconds(10);
   r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
   usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
 
