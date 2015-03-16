@@ -71,6 +71,11 @@ static msg_t rpmThread(void *arg)
  * GLOBAL FUNCTIONS
  ******************************************************************************/
 
+
+/* ICU Driver should be the thing, we are searching:
+ * http://chibios.sourceforge.net/html/group___i_c_u.html
+ */
+
 rpm_ret_t rpm_init(void)
 {
   chThdCreateStatic(waThreadRpm, sizeof(waThreadRpm), NORMALPRIO,
