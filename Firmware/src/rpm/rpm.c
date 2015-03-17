@@ -115,6 +115,11 @@ static const EXTConfig extcfg = {
 
 rpm_ret_t rpm_init(void)
 {
+  if (gRpmInited == TRUE)
+  {
+      return RET_ALREADY_INITED;
+  }
+
   /*
    * Activates the EXT driver 1.
    */
@@ -137,5 +142,5 @@ rpm_ret_t rpm_getKMperHour(uint32_t* kmPerH)
   /*FIXME for now simply copy the ticks out */
   (*kmPerH) = ST2MS(gTicksBetweenTrigger);
 
-  return RET_ERROR;
+  return RET_ERROR; /*FIXME change this for the final implementation! */
 }

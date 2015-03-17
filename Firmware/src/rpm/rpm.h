@@ -39,6 +39,7 @@
  */
 typedef enum {
 	RET_OK,
+	RET_ALREADY_INITED,
 	RET_ERROR,
         RET_ERR_NOT_INITED
 } rpm_ret_t;
@@ -50,7 +51,9 @@ typedef enum {
 
 /** @fn rpm_ret_t rpm_init(void)
  * @brief Initialization function
- * @return status RET_OK on success
+ * @return status
+ * RET_OK on success
+ * RET_ALREADY_INITED of no initialization is necessary
  */
 rpm_ret_t rpm_init(void);
 
@@ -58,7 +61,9 @@ rpm_ret_t rpm_init(void);
  * @brief Get actual speed
  * @param[out]  kmPerH  Actual speed in kilometer per hour
  *
- * @return status RET_OK on success
+ * @return status
+ * RET_OK on success
+ * RET_ERR_NOT_INITED if the library is not initialized. Call @link rpm_init before!
  */
 rpm_ret_t rpm_getKMperHour(uint32_t*    kmPerH);
 

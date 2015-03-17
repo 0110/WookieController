@@ -33,8 +33,10 @@
 /* Command line related. */
 /*===========================================================================*/
 
-void
-cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
+/******************************************************************************
+ * Tiny example to control an OUTPUT-PIN
+ */
+void cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
 {
   if (argc >= 1 && strcmp(argv[0], "test") == 0)
     {
@@ -57,33 +59,10 @@ cmd_led(BaseSequentialStream *chp, int argc, char *argv[])
     }
 }
 
-void cmd_rpm(BaseSequentialStream *chp, int argc, char *argv[])
-{
-        if (argc >= 1 && strcmp(argv[0], "test") == 0)
-        {
-                PRINT("Start the RPM library ...");
-                rpm_init();
-                PRINT( " Done\r\n");
-        }
-        else if (argc >= 1 && strcmp(argv[0], "speed") == 0)
-        {
-            uint32_t speed=0;
-            rpm_getKMperHour(&speed);
-            chprintf(chp, "%d km/h\r\n", speed);
-        }
-        else    /* Usage */
-        {
-                chprintf(chp, "possible arguments are:\r\n"
-                                "- test\r\n"
-                                "- speed\r\n");
-        }
-}
-
 static const ShellCommand commands[] = {
 		{ "mem", cmd_mem },
 		{ "threads", cmd_threads },
 		{ "led" , cmd_led },
-		{ "rpm" , cmd_rpm },
 		{ NULL, NULL } };
 
 /*===========================================================================*/
@@ -117,6 +96,7 @@ blinkerThread(void *arg)
 int main(void)
 {
   uint8_t i=0;
+  uint32_t speed=0;
 
   /*
    * System initializations.
@@ -132,6 +112,8 @@ int main(void)
    * Activates the serial driver 6 to communicate with the WLAN (ESP8266) module
    */
   esp8266_init();
+
+  rpm_init();
 
   /*
    * Initialize USB serial console
@@ -159,15 +141,20 @@ int main(void)
   while (TRUE)
   {
       usbcdc_process();
+
+#if 0
       if (palReadPad(GPIOA, GPIOA_BUTTON))
       {
           PRINT("Button pressed\r\n");
           i++;
           /* Send something via the WLAN module: */
-          esp8266_UDPprintln("Button pressed %u times", i);
+          //esp8266_UDPprintln("Button pressed %u times", i);
           palTogglePad(GPIOD, GPIOD_LED6); /* Blue.  */
       }
-
+#else
+      rpm_getKMperHour(&speed);
+      esp8266_UDPprintln("Frequency %5u ms", speed);
+#endif
       /* Wait some time, to make the scheduler running tasks with lower prio */
       chThdSleep(MS2ST(50));
   }
