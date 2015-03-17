@@ -55,13 +55,15 @@ static uint32_t gTicksBetweenTrigger = 0;
 
 static volatile uint32_t startTime = 0; /**< Ticks of the clock, for the last input */
 
+static int gRpmInited = FALSE;
+
 /* Triggered when the button is pressed or released. The LED5 is set to ON.*/
 static void extcb1(EXTDriver *extp, expchannel_t channel) {
 
   (void)extp;
   (void)channel;
 
-  palTogglePad(GPIOD, GPIOD_LED5); /* Red ? */
+  palTogglePad(GPIOD, GPIOD_LED5); /* Red */
   //chSysLockFromIsr();
 
   if (startTime > 0)
@@ -112,7 +114,6 @@ static const EXTConfig extcfg = {
  * GLOBAL FUNCTIONS
  ******************************************************************************/
 
-
 rpm_ret_t rpm_init(void)
 {
   /*
@@ -122,11 +123,18 @@ rpm_ret_t rpm_init(void)
 
   extChannelEnable(&EXTD1, 0);
 
+  gRpmInited = TRUE;
+
   return RET_OK;
 }
 
-rpm_ret_t rpm_getKMperHour(uint32_t*    kmPerH)
+rpm_ret_t rpm_getKMperHour(uint32_t* kmPerH)
 {
+  if (gRpmInited != TRUE)
+  {
+      return RET_ERR_NOT_INITED;
+  }
+
   /*FIXME for now simply copy the ticks out */
   (*kmPerH) = ST2MS(gTicksBetweenTrigger);
 

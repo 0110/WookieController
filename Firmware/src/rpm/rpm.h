@@ -39,7 +39,8 @@
  */
 typedef enum {
 	RET_OK,
-	RET_ERROR
+	RET_ERROR,
+        RET_ERR_NOT_INITED
 } rpm_ret_t;
 
 
