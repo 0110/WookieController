@@ -156,7 +156,7 @@ int main(void)
       esp8266_UDPprintln("Frequency %5u ms", speed);
 #endif
       /* Wait some time, to make the scheduler running tasks with lower prio */
-      chThdSleep(MS2ST(50));
+      chThdSleep(MS2ST(200));
   }
 }
 
