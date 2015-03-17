@@ -23,6 +23,22 @@
 #define REFERENCE_TIME    100   /**< Reference time to reach */
 #define TICKS_REFTIME2RPM 600   /**< Convention factor between the reference time to RPM */
 
+
+/**
+ * @brief   System ticks to milliseconds.
+ * @details Converts from system ticks number to milliseconds.
+ * @note    The result is rounded upward to the next tick boundary.
+ * It is the reverse alogrithom as @see MS2ST(msec)
+ *
+ * @param[in] ticks     number of ticks
+ * @return              The number of milliseconds.
+ *
+ * @api
+ */
+#define ST2MS(ticks)                                \
+  ((uint32_t)((((uint32_t)(ticks)) * 1000UL ) /     \
+                (((uint32_t)CH_FREQUENCY) - 1UL)))
+
 /******************************************************************************
  * PROTOTYPE
  ******************************************************************************/
@@ -112,7 +128,7 @@ rpm_ret_t rpm_init(void)
 rpm_ret_t rpm_getKMperHour(uint32_t*    kmPerH)
 {
   /*FIXME for now simply copy the ticks out */
-  (*kmPerH) = gTicksBetweenTrigger;
+  (*kmPerH) = ST2MS(gTicksBetweenTrigger);
 
   return RET_ERROR;
 }
