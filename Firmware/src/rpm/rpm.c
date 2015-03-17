@@ -57,6 +57,11 @@ static volatile uint32_t startTime = 0; /**< Ticks of the clock, for the last in
 
 static int gRpmInited = FALSE;
 
+/******************************************************************************
+ * LOCAL FUNCTIONS
+ ******************************************************************************/
+
+
 /* Triggered when the button is pressed or released. The LED5 is set to ON.*/
 static void extcb1(EXTDriver *extp, expchannel_t channel) {
 
@@ -103,12 +108,6 @@ static const EXTConfig extcfg = {
     {EXT_CH_MODE_DISABLED, NULL}
   }
 };
-
-/******************************************************************************
- * LOCAL FUNCTIONS
- ******************************************************************************/
-
-
 
 /******************************************************************************
  * GLOBAL FUNCTIONS
