@@ -76,6 +76,17 @@ esp8266_ret_t esp8266_init(void);
  */
 esp8266_ret_t esp8266_UDPprintln(const char *s, ...);
 
+/** @fn esp8266_ret_t esp8266_UDPprintlnAndRead(const char *s, ...)
+ * @brief prints the given string on the UDP socket
+ * @param[out]  output          Store the received characters
+ * @param[in]   maxOutput       Maximum amount of characters for the output buffer (e.g. sizeof(output))
+ * @param[in]   s               string to print including formating definition
+ * @param[in]   ...             All values for the formating options
+ *
+ * @return amount of characters read from the serial console coming from the WLAN module
+ */
+int esp8266_UDPprintlnAndRead(char* output, int maxOutput, const char *s, ...);
+
 /** @fn esp8266_ret_t esp8266_debugcmd(const char *s)
  * @brief Send a Command directly to the WLAN Uart
  * @param[in]   s       string with the command

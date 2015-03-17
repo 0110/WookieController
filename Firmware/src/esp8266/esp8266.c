@@ -143,18 +143,25 @@ esp8266_ret_t esp8266_init()
 
 esp8266_ret_t esp8266_UDPprintln(const char *text, ...)
 {
-  char textbuffer[TEXTLINE_MAX_LENGTH];
-  int r=0;
   va_list ap;
   va_start(ap, text);
   WLAN_UPRINT("s:send(\"");
   usbcdc_chvprintf((BaseSequentialStream *) UART_PORT, text, ap);
   WLAN_UPRINT("\\n\")\r");
   va_end(ap);
-  r = readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-  usbcdc_print("Read %3d :  %s\r\n", r, textbuffer);
-
   return ESP8266_RET_OK;
+}
+
+int esp8266_UDPprintlnAndRead(char* output, int maxOutput, const char *text, ...)
+{
+  va_list ap;
+  va_start(ap, text);
+  WLAN_UPRINT("s:send(\"");
+  usbcdc_chvprintf((BaseSequentialStream *) UART_PORT, text, ap);
+  WLAN_UPRINT("\\n\")\r");
+  va_end(ap);
+
+  return readAll(output, maxOutput);
 }
 
 esp8266_ret_t esp8266_debugcmd(const char *s)
