@@ -10,6 +10,8 @@
 
 #include "ch.h"
 #include "hal.h"
+#include "ext.h"
+#include "chvt.h"
 
 #include "usbcdc/usbcdc.h"
 
@@ -33,9 +35,9 @@
  * @var gRoundPerMinutes
  * @brief the calculated round per minute
  */
-static uint32_t gRoundPerMinutes = 0;
+static uint32_t gTicksBetweenTrigger = 0;
 
-static volatile uint32_t startTime = 0;
+static volatile uint32_t startTime = 0; /**< Ticks of the clock, for the last input */
 
 /* Triggered when the button is pressed or released. The LED5 is set to ON.*/
 static void extcb1(EXTDriver *extp, expchannel_t channel) {
@@ -48,8 +50,9 @@ static void extcb1(EXTDriver *extp, expchannel_t channel) {
 
   if (startTime > 0)
   {
-      gRoundPerMinutes =  chTimeElapsedSince(startTime);
+      gTicksBetweenTrigger = chTimeNow() - startTime;
   }
+
   startTime = chTimeNow();
 
   //chSysUnlockFromIsr();
@@ -108,8 +111,8 @@ rpm_ret_t rpm_init(void)
 
 rpm_ret_t rpm_getKMperHour(uint32_t*    kmPerH)
 {
-  /*FIXME for now simply copy the round per minutes */
-  (*kmPerH) = gRoundPerMinutes;
+  /*FIXME for now simply copy the ticks out */
+  (*kmPerH) = gTicksBetweenTrigger;
 
   return RET_ERROR;
 }
