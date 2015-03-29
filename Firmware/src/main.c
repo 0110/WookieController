@@ -247,6 +247,7 @@ int
 main(void)
 {
   int i, red, green, blue;
+  int offset = 0;
 
   /*
    * System initializations.
@@ -298,7 +299,6 @@ main(void)
   while (TRUE)
     {
       usbcdc_process();
-      int offset = 0;
       if (palReadPad(GPIOA, GPIOA_BUTTON))
         {
           if (ledstripe_framebuffer[offset].red > 0

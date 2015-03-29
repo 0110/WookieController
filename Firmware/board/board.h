@@ -354,7 +354,7 @@
 /*
  * GPIOB setup:
  *
- * PB0  - PIN0                      (input pullup).
+ * PB0  - LEDSTRIP Output           (alternate pullup).
  * PB1  - PIN1                      (input pullup).
  * PB2  - PIN2                      (input pullup).
  * PB3  - SWO                       (alternate 0).
@@ -451,7 +451,7 @@
                                      PIN_ODR_HIGH(GPIOB_ETH_RMII_TXD1) |            \
                                      PIN_ODR_HIGH(GPIOB_PIN14) |            \
                                      PIN_ODR_HIGH(GPIOB_SD_NCD))
-#define VAL_GPIOB_AFRL              (PIN_AFIO_AF(GPIOB_LEDSTRIP_OUT, 2) |           \
+#define VAL_GPIOB_AFRL              (PIN_AFIO_AF(GPIOB_LEDSTRIP_OUT, 7) |           \
                                      PIN_AFIO_AF(GPIOB_PIN1, 0) |           \
                                      PIN_AFIO_AF(GPIOB_PIN2, 0) |           \
                                      PIN_AFIO_AF(GPIOB_SWO, 0) |            \
