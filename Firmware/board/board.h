@@ -375,7 +375,7 @@
                                      PIN_MODE_INPUT(GPIOB_PIN1) |           \
                                      PIN_MODE_INPUT(GPIOB_PIN2) |           \
                                      PIN_MODE_ALTERNATE(GPIOB_SWO) |        \
-                                     PIN_MODE_OUTPUT(GPIOB_LEDSTRIPE_OUT) | \
+                                     PIN_MODE_ALTERNATE(GPIOB_LEDSTRIPE_OUT) | \
                                      PIN_MODE_INPUT(GPIOB_PIN5) |           \
                                      PIN_MODE_ALTERNATE(GPIOB_DMX_TX) |     \
                                      PIN_MODE_INPUT(GPIOB_PIN7) |           \
