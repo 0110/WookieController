@@ -31,7 +31,7 @@ static WORKING_AREA(waLEDstripBlink, 128);
 static msg_t
 ledThread(void *arg);
 
-#define LED_END_POSTION		155
+#define LED_END_POSTION		0
 
 /*===========================================================================*/
 /* Command line related. */
@@ -109,7 +109,16 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
       chThdCreateStatic(waLEDstripBlink, sizeof(waLEDstripBlink), NORMALPRIO,
           ledThread, NULL);
       chprintf(chp, " Done\r\n");
-
+    }
+  else if (argc >= 1 && strcmp(argv[0], "show") == 0)
+    {
+      for (i = 0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++)
+        {
+          chprintf(chp, "%.2X%.2X%.2X ",
+              ledstripe_framebuffer[i].red,
+              ledstripe_framebuffer[i].green,
+              ledstripe_framebuffer[i].blue = 0);
+        }
     }
   else /* Usage */
     {
@@ -117,8 +126,9 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
           "-test1\r\n"
           "-start\r\n"
           "-end (red) (green) (blue)\tSet the last box\r\n"
-          "- on\r\n"
-          "- off\r\n");
+          "-on\r\n"
+          "-off\r\n"
+          "-show\r\n");
     }
 }
 
