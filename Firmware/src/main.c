@@ -112,6 +112,7 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
     }
   else if (argc >= 1 && strcmp(argv[0], "show") == 0)
     {
+      chprintf(chp, "\r\n");
       for (i = 0; i < LEDSTRIPE_FRAMEBUFFER_SIZE; i++)
         {
           chprintf(chp, "%.2X%.2X%.2X ",
@@ -119,6 +120,7 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
               ledstripe_framebuffer[i].green,
               ledstripe_framebuffer[i].blue = 0);
         }
+        chprintf(chp, "\r\n");
     }
   else /* Usage */
     {
