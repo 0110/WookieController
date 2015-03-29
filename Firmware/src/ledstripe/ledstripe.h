@@ -43,9 +43,11 @@ extern ledstripe_color ledstripe_framebuffer[LEDSTRIPE_FRAMEBUFFER_SIZE];
 
 /** @fn void ledstripe_init(void)
  * @brief Initialization of the Timer/PWM and DMA
- * Using the PIN PB4 as output.
+ * @param[in] port      The port to use, e.g.: GPIOB
+ * @param[in] pin       The pin to use, e.g.:  GPIOB_PIN0
+ * The PIN and the port number must match! This is NOT checked internally.
  */
-void ledstripe_init(void);
+void ledstripe_init(GPIO_TypeDef *port, int pin);
 
 #ifdef __cplusplus
 }

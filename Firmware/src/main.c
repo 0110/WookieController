@@ -267,7 +267,7 @@ main(void)
   /*
    * Initialize LedDriver
    */
-  ledstripe_init();
+  ledstripe_init(GPIOB, GPIOB_PIN0);
 
   PRINT("\x1b[1J\x1b[0;0HStarting ChibiOS\r\n");
   PRINT("Start blinker thread ...");

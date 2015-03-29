@@ -78,8 +78,13 @@ static void ledstripe_irq_handler(void* data, uint32_t flags) {
 	}
 }
 
-void ledstripe_init(void) {
+void ledstripe_init(GPIO_TypeDef *port, int pin) {
 	int i;
+
+	/* Set the output PIN */
+	palSetGroupMode(port, (1 << pin), 0,
+	    PAL_MODE_OUTPUT_PUSHPULL|PAL_STM32_OSPEED_HIGHEST|PAL_STM32_PUDR_FLOATING);
+	/* Inspiration: https://github.com/omriiluz/WS2812B-LED-Driver-ChibiOS/tree/STM32F4-DISCOVERY-PORT */
 
 	// Init buffers
 	for (i = 0; i < LEDSTRIPE_PWM_BUFFER_SIZE; i++) {
