@@ -76,13 +76,13 @@
 #define GPIOA_SWCLK                 14
 #define GPIOA_PIN15                 15
 
-#define GPIOB_LEDSTRIP_OUT          0
+#define GPIOB_PIN0                  0
 #define GPIOB_PIN1                  1
 #define GPIOB_PIN2                  2
 #define GPIOB_SWO                   3
-#define GPIOB_PIN4                  4
+#define GPIOB_LEDSTRIPE_OUT         4
 #define GPIOB_PIN5                  5
-#define GPIOB_DMX_TX                   6
+#define GPIOB_DMX_TX                6
 #define GPIOB_PIN7                  7
 #define GPIOB_PIN8                  8
 #define GPIOB_SDA                   9
@@ -354,7 +354,7 @@
 /*
  * GPIOB setup:
  *
- * PB0  - LEDSTRIP Output           (alternate pullup).
+ * PB0  - PIN0                  (alternate pullup).
  * PB1  - PIN1                      (input pullup).
  * PB2  - PIN2                      (input pullup).
  * PB3  - SWO                       (alternate 0).
@@ -371,13 +371,13 @@
  * PB14 - PIN14                     (input pullup).
  * PB15 - PIN15                     (input pullup).
  */
-#define VAL_GPIOB_MODER             (PIN_MODE_ALTERNATE(GPIOB_LEDSTRIP_OUT) |           \
+#define VAL_GPIOB_MODER             (PIN_MODE_OUTPUT(GPIOB_PIN0) |           \
                                      PIN_MODE_INPUT(GPIOB_PIN1) |           \
                                      PIN_MODE_INPUT(GPIOB_PIN2) |           \
                                      PIN_MODE_ALTERNATE(GPIOB_SWO) |        \
-                                     PIN_MODE_INPUT(GPIOB_PIN4) |           \
+                                     PIN_MODE_OUTPUT(GPIOB_LEDSTRIPE_OUT) | \
                                      PIN_MODE_INPUT(GPIOB_PIN5) |           \
-                                     PIN_MODE_ALTERNATE(GPIOB_DMX_TX) |        \
+                                     PIN_MODE_ALTERNATE(GPIOB_DMX_TX) |     \
                                      PIN_MODE_INPUT(GPIOB_PIN7) |           \
                                      PIN_MODE_INPUT(GPIOB_PIN8) |           \
                                      PIN_MODE_ALTERNATE(GPIOB_SDA) |        \
@@ -387,11 +387,11 @@
                                      PIN_MODE_ALTERNATE(GPIOB_ETH_RMII_TXD1) |          \
                                      PIN_MODE_INPUT(GPIOB_PIN14) |          \
                                      PIN_MODE_ALTERNATE(GPIOB_SD_NCD))
-#define VAL_GPIOB_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOB_LEDSTRIP_OUT) |       \
+#define VAL_GPIOB_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOB_PIN0) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOB_PIN1) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOB_PIN2) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOB_SWO) |        \
-                                     PIN_OTYPE_PUSHPULL(GPIOB_PIN4) |       \
+                                     PIN_OTYPE_PUSHPULL(GPIOB_LEDSTRIPE_OUT) | \
                                      PIN_OTYPE_PUSHPULL(GPIOB_PIN5) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOB_DMX_TX) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOB_PIN7) |       \
@@ -403,28 +403,28 @@
                                      PIN_OTYPE_PUSHPULL(GPIOB_ETH_RMII_TXD1) |      \
                                      PIN_OTYPE_PUSHPULL(GPIOB_PIN14) |      \
                                      PIN_OTYPE_PUSHPULL(GPIOB_SD_NCD))
-#define VAL_GPIOB_OSPEEDR           (PIN_OSPEED_100M(GPIOB_LEDSTRIP_OUT) |          \
+#define VAL_GPIOB_OSPEEDR           (PIN_OSPEED_100M(GPIOB_PIN0) |          \
                                      PIN_OSPEED_100M(GPIOB_PIN1) |          \
                                      PIN_OSPEED_100M(GPIOB_PIN2) |          \
                                      PIN_OSPEED_100M(GPIOB_SWO) |           \
-                                     PIN_OSPEED_100M(GPIOB_PIN4) |          \
+                                     PIN_OSPEED_100M(GPIOB_LEDSTRIPE_OUT) | \
                                      PIN_OSPEED_100M(GPIOB_PIN5) |          \
-                                     PIN_OSPEED_100M(GPIOB_DMX_TX) |           \
+                                     PIN_OSPEED_100M(GPIOB_DMX_TX) |        \
                                      PIN_OSPEED_100M(GPIOB_PIN7) |          \
                                      PIN_OSPEED_100M(GPIOB_PIN8) |          \
                                      PIN_OSPEED_100M(GPIOB_SDA) |           \
                                      PIN_OSPEED_100M(GPIOB_CLK_IN) |        \
-                                     PIN_OSPEED_100M(GPIOB_ETH_RMII_TX_EN) |         \
-                                     PIN_OSPEED_100M(GPIOB_ETH_RMII_TXD0) |         \
-                                     PIN_OSPEED_100M(GPIOB_ETH_RMII_TXD1) |         \
+                                     PIN_OSPEED_100M(GPIOB_ETH_RMII_TX_EN) | \
+                                     PIN_OSPEED_100M(GPIOB_ETH_RMII_TXD0) |  \
+                                     PIN_OSPEED_100M(GPIOB_ETH_RMII_TXD1) | \
                                      PIN_OSPEED_100M(GPIOB_PIN14) |         \
                                      PIN_OSPEED_50M(GPIOB_SD_NCD))
-#define VAL_GPIOB_PUPDR             (PIN_PUPDR_FLOATING(GPIOB_LEDSTRIP_OUT) |         \
+#define VAL_GPIOB_PUPDR             (PIN_PUPDR_FLOATING(GPIOB_PIN0) |         \
                                      PIN_PUPDR_PULLUP(GPIOB_PIN1) |         \
                                      PIN_PUPDR_PULLUP(GPIOB_PIN2) |         \
                                      PIN_PUPDR_FLOATING(GPIOB_SWO) |        \
-                                     PIN_PUPDR_PULLUP(GPIOB_PIN4) |         \
-                                     PIN_PUPDR_PULLUP(GPIOB_PIN5) |         \
+                                     PIN_PUPDR_FLOATING(GPIOB_LEDSTRIPE_OUT) | \
+                                     PIN_PUPDR_PULLUP(GPIOB_PIN5) |            \
                                      PIN_PUPDR_FLOATING(GPIOB_DMX_TX) |        \
                                      PIN_PUPDR_PULLUP(GPIOB_PIN7) |         \
                                      PIN_PUPDR_PULLUP(GPIOB_PIN8) |         \
@@ -435,11 +435,11 @@
                                      PIN_PUPDR_FLOATING(GPIOB_ETH_RMII_TXD1) |        \
                                      PIN_PUPDR_PULLUP(GPIOB_PIN14) |        \
                                      PIN_PUPDR_PULLUP(GPIOB_SD_NCD))
-#define VAL_GPIOB_ODR               (PIN_ODR_HIGH(GPIOB_LEDSTRIP_OUT) |             \
+#define VAL_GPIOB_ODR               (PIN_ODR_HIGH(GPIOB_PIN0) |             \
                                      PIN_ODR_HIGH(GPIOB_PIN1) |             \
                                      PIN_ODR_HIGH(GPIOB_PIN2) |             \
                                      PIN_ODR_HIGH(GPIOB_SWO) |              \
-                                     PIN_ODR_HIGH(GPIOB_PIN4) |             \
+                                     PIN_ODR_HIGH(GPIOB_LEDSTRIPE_OUT) |    \
                                      PIN_ODR_HIGH(GPIOB_PIN5) |             \
                                      PIN_ODR_HIGH(GPIOB_DMX_TX) |              \
                                      PIN_ODR_HIGH(GPIOB_PIN7) |             \
@@ -451,13 +451,13 @@
                                      PIN_ODR_HIGH(GPIOB_ETH_RMII_TXD1) |            \
                                      PIN_ODR_HIGH(GPIOB_PIN14) |            \
                                      PIN_ODR_HIGH(GPIOB_SD_NCD))
-#define VAL_GPIOB_AFRL              (PIN_AFIO_AF(GPIOB_LEDSTRIP_OUT, 7) |           \
+#define VAL_GPIOB_AFRL              (PIN_AFIO_AF(GPIOB_PIN0, 7) |           \
                                      PIN_AFIO_AF(GPIOB_PIN1, 0) |           \
                                      PIN_AFIO_AF(GPIOB_PIN2, 0) |           \
                                      PIN_AFIO_AF(GPIOB_SWO, 0) |            \
-                                     PIN_AFIO_AF(GPIOB_PIN4, 0) |           \
+                                     PIN_AFIO_AF(GPIOB_LEDSTRIPE_OUT, 0) |  \
                                      PIN_AFIO_AF(GPIOB_PIN5, 0) |           \
-                                     PIN_AFIO_AF(GPIOB_DMX_TX, 7) |           \
+                                     PIN_AFIO_AF(GPIOB_DMX_TX, 7) |         \
                                      PIN_AFIO_AF(GPIOB_PIN7, 0))
 #define VAL_GPIOB_AFRH              (PIN_AFIO_AF(GPIOB_PIN8, 0) |           \
                                      PIN_AFIO_AF(GPIOB_SDA, 4) |            \
