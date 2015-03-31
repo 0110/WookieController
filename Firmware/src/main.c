@@ -118,7 +118,7 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
           chprintf(chp, "%.2X%.2X%.2X ",
               ledstripe_framebuffer[i].red,
               ledstripe_framebuffer[i].green,
-              ledstripe_framebuffer[i].blue = 0);
+              ledstripe_framebuffer[i].blue);
         }
         chprintf(chp, "\r\n");
     }
