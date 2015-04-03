@@ -131,6 +131,7 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
 	  for(i=0; i < length; i+=2){
 		  memcpy(pEnd, argv[0] +i, 2);
 		  number = strtol(pEnd, NULL, 16);
+		  chprintf(chp, "%d %d\r\n", j, number);
 		  switch(color)
 		  {
 		  case 0:
@@ -142,7 +143,7 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
 		  case 2:
 			  ledstripe_framebuffer[j].blue = number;
 			  j++;
-			  color=0;
+			  color=-1;
 			  break;
 		  }
 		  color++;
