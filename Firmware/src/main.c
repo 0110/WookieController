@@ -122,6 +122,19 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
         }
         chprintf(chp, "\r\n");
     }
+  else if (argc >= 1)  /* Update the LEDs directly */
+  {
+	  int i;
+	  long int number = 0;
+	  int length = strlen(argv[0]);
+	  char pEnd[2] = { '0', '0' };
+	  for(i=0; i < length; i+=2){
+		  memcpy(pEnd, argv[0] +i, 2);
+		  number = strtol(pEnd, NULL, 16);
+		  chprintf(chp, "%2X %d\r\n", number, number);
+	  }
+
+  }
   else /* Usage */
     {
       chprintf(chp, "possible arguments are:\r\n"
