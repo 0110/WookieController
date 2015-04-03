@@ -61,10 +61,11 @@ void __early_init(void) {
  * @brief   SDC card detection.
  */
 bool_t sdc_lld_is_card_inserted(SDCDriver *sdcp) {
+  static bool_t last_status = FALSE;
 
-  (void)sdcp;
-  /* TODO: Fill the implementation.*/
-  return TRUE;
+  if (blkIsTransferring(sdcp))
+    return last_status;
+  return last_status = (bool_t) !palReadPad(GPIOB, GPIOB_SD_NCD);
 }
 
 /**
@@ -73,7 +74,6 @@ bool_t sdc_lld_is_card_inserted(SDCDriver *sdcp) {
 bool_t sdc_lld_is_write_protected(SDCDriver *sdcp) {
 
   (void)sdcp;
-  /* TODO: Fill the implementation.*/
   return FALSE;
 }
 #endif /* HAL_USE_SDC */
@@ -106,3 +106,12 @@ bool_t mmc_lld_is_write_protected(MMCDriver *mmcp) {
  */
 void boardInit(void) {
 }
+
+void boardEthRst(void) {
+  volatile  int i;
+  palClearPad(GPIOE, GPIOE_ETH_RMII_NRST);
+  for ( i = 0; i < 20000; i++);
+  palSetPad(GPIOE, GPIOE_ETH_RMII_NRST);
+  for (i = 0; i < 20000; i++);
+}
+
