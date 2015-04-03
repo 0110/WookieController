@@ -122,6 +122,16 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
         }
         chprintf(chp, "\r\n");
     }
+  else if (argc >= 1 && strcmp(argv[0], "read") == 0)
+     {
+	  #define TEXTLINE_MAX_LENGTH 128
+	  char textbuffer[TEXTLINE_MAX_LENGTH];
+
+	  chprintf(chp, "Reading directly the characters\r\n");
+
+	  int r = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+	  chprintf(chp, "got '%s' (%d characters)\r\n", textbuffer, r);
+     }
   else if (argc >= 1)  /* Update the LEDs directly */
   {
 	  int i,j= 0, color = 0;
@@ -158,6 +168,7 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
           "-end (red) (green) (blue)\tSet the last box\r\n"
           "-on\r\n"
           "-off\r\n"
+          "-read\r\n"
           "-show\r\n");
     }
 }

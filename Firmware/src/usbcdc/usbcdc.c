@@ -590,3 +590,49 @@ void usbcdc_print(const char *text, ...)
                 va_end(ap);
         }
 }
+
+/** @fn int usbcdc_readAll(char *pText, int bufferLeng)
+ * @brief Reads a line
+ * @param[in|out] pText space for the text, that is read (and the read result)
+ * @param[in] bufferLeng The maximum of characters, that could be read.
+ * @return amount of read characters (or -1 on errors)
+ */
+int usbcdc_readAll(char *pText, int bufferLeng)
+{
+	EventListener elGPSdata;
+	flagsmask_t flags;
+	int i, read = 0;
+	int finishFlag = 0;
+	chEvtRegisterMask((EventSource *) chnGetEventSource(&SDU1), &elGPSdata,
+			EVENT_MASK(1));
+	/* Check faulty input parameter */
+	if (bufferLeng <= 0) {
+		return -1;
+	}
+	for (i = 0; i < bufferLeng && !finishFlag; i++) {
+		/* Found serial reading here:
+		 * http://forum.chibios.org/phpbb/viewtopic.php?p=12262&sid=5f8c68257a2cd5be83790ce6f7e1282d#p12262 */
+		chEvtWaitOneTimeout(EVENT_MASK(1), MS2ST(10));
+		chSysLock();
+		flags = chEvtGetAndClearFlags(&elGPSdata);
+		chSysUnlock();
+		if (flags & CHN_INPUT_AVAILABLE) {
+			msg_t charbuf;
+			do {
+				charbuf = chnGetTimeout(&SDU1, TIME_IMMEDIATE);
+				if (charbuf != Q_TIMEOUT) {
+					pText[read] = (char) charbuf;
+					read++;
+				}
+			} while (charbuf != Q_TIMEOUT);
+		}
+	}
+	/* do not write after YOUR memory */
+	if (read >= bufferLeng) {
+		read = bufferLeng - 1;
+	}
+	chEvtUnregister((EventSource *) chnGetEventSource(&SDU1), &elGPSdata);
+	/* also make a zero to mark the end of the text */
+	pText[read] = '\0';
+	return read;
+}

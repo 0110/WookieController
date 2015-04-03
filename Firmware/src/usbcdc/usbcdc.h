@@ -91,6 +91,14 @@ void usbcdc_process(void);
  */
 void usbcdc_print(const char *s, ...);
 
+/** @fn int usbcdc_readAll(char *pText, int bufferLeng)
+ * @brief Reads a line
+ * @param[in|out] pText space for the text, that is read (and the read result)
+ * @param[in] bufferLeng The maximum of characters, that could be read.
+ * @return amount of read characters (or -1 on errors)
+ */
+int usbcdc_readAll(char *pText, int bufferLeng);
+
 #ifdef __cplusplus
 }
 #endif
