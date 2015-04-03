@@ -612,7 +612,7 @@ int usbcdc_readAll(char *pText, int bufferLeng)
 	for (i = 0; i < bufferLeng && !finishFlag; i++) {
 		/* Found serial reading here:
 		 * http://forum.chibios.org/phpbb/viewtopic.php?p=12262&sid=5f8c68257a2cd5be83790ce6f7e1282d#p12262 */
-		chEvtWaitOneTimeout(EVENT_MASK(1), MS2ST(10));
+		chEvtWaitOneTimeout(EVENT_MASK(1), MS2ST(1));
 		chSysLock();
 		flags = chEvtGetAndClearFlags(&elGPSdata);
 		chSysUnlock();

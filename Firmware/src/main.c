@@ -33,6 +33,34 @@ ledThread(void *arg);
 
 #define LED_END_POSTION		0
 
+#define	STARTOFFSET				2
+#define HEX_SIZE				2
+#define TEXTLINE_MAX_LENGTH 	1024
+
+
+void readDirectWS2812cmd(void)
+{
+	PRINT("Waiting vof WS12812 commands\r\n");
+	int i, length, j = 0;
+	char textbuffer[TEXTLINE_MAX_LENGTH];
+	int r = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+	if(r >= 2 && (textbuffer[0] == 'W' && textbuffer[1] == 'S'))
+	{
+		PRINT("Go one: '%s'\r\n", textbuffer);
+		length = r - 2;
+		for(i=0; i < length; i+=3){
+			  ledstripe_framebuffer[j].red = 	(uint8_t) textbuffer[i+0];
+			  ledstripe_framebuffer[j].green = 	(uint8_t) textbuffer[i+1];
+			  ledstripe_framebuffer[j].blue = 	(uint8_t) textbuffer[i+2];
+			  j++;
+		}
+	}
+	else
+	{
+		PRINT("Found only '%s'\r\n", textbuffer);
+	}
+}
+
 /*===========================================================================*/
 /* Command line related. */
 /*===========================================================================*/
@@ -123,15 +151,11 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
         chprintf(chp, "\r\n");
     }
   else if (argc >= 1 && strcmp(argv[0], "read") == 0)
-     {
-	  #define TEXTLINE_MAX_LENGTH 128
-	  char textbuffer[TEXTLINE_MAX_LENGTH];
+    {
 
-	  chprintf(chp, "Reading directly the characters\r\n");
+      readDirectWS2812cmd();
 
-	  int r = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	  chprintf(chp, "got '%s' (%d characters)\r\n", textbuffer, r);
-     }
+    }
   else if (argc >= 1)  /* Update the LEDs directly */
   {
 	  int i,j= 0, color = 0;
@@ -325,6 +349,7 @@ main(void)
   while (TRUE)
     {
       usbcdc_process();
+
       if (palReadPad(GPIOA, GPIOA_BUTTON))
         {
           if (ledstripe_framebuffer[offset].red > 0
