@@ -124,14 +124,28 @@ cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
     }
   else if (argc >= 1)  /* Update the LEDs directly */
   {
-	  int i;
+	  int i,j= 0, color = 0;
 	  long int number = 0;
 	  int length = strlen(argv[0]);
 	  char pEnd[2] = { '0', '0' };
 	  for(i=0; i < length; i+=2){
 		  memcpy(pEnd, argv[0] +i, 2);
 		  number = strtol(pEnd, NULL, 16);
-		  chprintf(chp, "%2X %d\r\n", number, number);
+		  switch(color)
+		  {
+		  case 0:
+			  ledstripe_framebuffer[j].red = number;
+			  break;
+		  case 1:
+			  ledstripe_framebuffer[j].green = number;
+			  break;
+		  case 2:
+			  ledstripe_framebuffer[j].blue = number;
+			  j++;
+			  color=0;
+			  break;
+		  }
+		  color++;
 	  }
 
   }
