@@ -26,6 +26,8 @@ extern "C"
 
   void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[]);
 
+  void cmd_ws2812(BaseSequentialStream *chp, int argc, char *argv[]);
+
 #ifdef __cplusplus
 }
 #endif

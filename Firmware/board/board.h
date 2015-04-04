@@ -97,8 +97,8 @@
 #define GPIOC_PDM_OUT               3
 #define GPIOC_PIN4                  4
 #define GPIOC_PIN5                  5
-#define GPIOC_PIN6                  6
-#define GPIOC_MCLK                  7
+#define GPIOC_USART6_TX             6
+#define GPIOC_USART6_RX				7
 #define GPIOC_PIN8                  8
 #define GPIOC_PIN9                  9
 #define GPIOC_SCLK                  10
@@ -475,8 +475,8 @@
  * PC3  - PDM_OUT                   (input pullup).
  * PC4  - PIN4                      (input pullup).
  * PC5  - PIN5                      (input pullup).
- * PC6  - PIN6                      (input pullup).
- * PC7  - MCLK                      (alternate 6).
+ * PC6  - GPIOC_USART6_TX           (alternate 8).
+ * PC7  - GPIOC_USART6_RX           (alternate 8).
  * PC8  - PIN8                      (input pullup).
  * PC9  - PIN9                      (input pullup).
  * PC10 - SCLK                      (alternate 6).
@@ -492,8 +492,8 @@
                                      PIN_MODE_INPUT(GPIOC_PDM_OUT) |        \
                                      PIN_MODE_INPUT(GPIOC_PIN4) |           \
                                      PIN_MODE_INPUT(GPIOC_PIN5) |           \
-                                     PIN_MODE_INPUT(GPIOC_PIN6) |           \
-                                     PIN_MODE_ALTERNATE(GPIOC_MCLK) |       \
+                                     PIN_MODE_ALTERNATE(GPIOC_USART6_TX) |  \
+                                     PIN_MODE_ALTERNATE(GPIOC_USART6_RX) |  \
                                      PIN_MODE_INPUT(GPIOC_PIN8) |           \
                                      PIN_MODE_INPUT(GPIOC_PIN9) |           \
                                      PIN_MODE_ALTERNATE(GPIOC_SCLK) |       \
@@ -508,8 +508,8 @@
                                      PIN_OTYPE_PUSHPULL(GPIOC_PDM_OUT) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOC_PIN4) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOC_PIN5) |       \
-                                     PIN_OTYPE_PUSHPULL(GPIOC_PIN6) |       \
-                                     PIN_OTYPE_PUSHPULL(GPIOC_MCLK) |       \
+                                     PIN_OTYPE_PUSHPULL(GPIOC_USART6_TX) |  \
+                                     PIN_OTYPE_PUSHPULL(GPIOC_USART6_RX) |  \
                                      PIN_OTYPE_PUSHPULL(GPIOC_PIN8) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOC_PIN9) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOC_SCLK) |       \
@@ -524,8 +524,8 @@
                                      PIN_OSPEED_100M(GPIOC_PDM_OUT) |       \
                                      PIN_OSPEED_100M(GPIOC_PIN4) |          \
                                      PIN_OSPEED_100M(GPIOC_PIN5) |          \
-                                     PIN_OSPEED_100M(GPIOC_PIN6) |          \
-                                     PIN_OSPEED_100M(GPIOC_MCLK) |          \
+                                     PIN_OSPEED_100M(GPIOC_USART6_TX) |     \
+                                     PIN_OSPEED_100M(GPIOC_USART6_RX) |     \
                                      PIN_OSPEED_100M(GPIOC_PIN8) |          \
                                      PIN_OSPEED_100M(GPIOC_PIN9) |          \
                                      PIN_OSPEED_100M(GPIOC_SCLK) |          \
@@ -540,8 +540,8 @@
                                      PIN_PUPDR_PULLUP(GPIOC_PDM_OUT) |      \
                                      PIN_PUPDR_PULLUP(GPIOC_PIN4) |         \
                                      PIN_PUPDR_PULLUP(GPIOC_PIN5) |         \
-                                     PIN_PUPDR_PULLUP(GPIOC_PIN6) |         \
-                                     PIN_PUPDR_FLOATING(GPIOC_MCLK) |       \
+                                     PIN_PUPDR_PULLUP(GPIOC_USART6_TX) |    \
+                                     PIN_PUPDR_FLOATING(GPIOC_USART6_RX) |  \
                                      PIN_PUPDR_PULLUP(GPIOC_PIN8) |         \
                                      PIN_PUPDR_PULLUP(GPIOC_PIN9) |         \
                                      PIN_PUPDR_FLOATING(GPIOC_SCLK) |       \
@@ -556,8 +556,8 @@
                                      PIN_ODR_HIGH(GPIOC_PDM_OUT) |          \
                                      PIN_ODR_HIGH(GPIOC_PIN4) |             \
                                      PIN_ODR_HIGH(GPIOC_PIN5) |             \
-                                     PIN_ODR_HIGH(GPIOC_PIN6) |             \
-                                     PIN_ODR_HIGH(GPIOC_MCLK) |             \
+                                     PIN_ODR_HIGH(GPIOC_USART6_TX) |        \
+                                     PIN_ODR_HIGH(GPIOC_USART6_RX) |        \
                                      PIN_ODR_HIGH(GPIOC_PIN8) |             \
                                      PIN_ODR_HIGH(GPIOC_PIN9) |             \
                                      PIN_ODR_HIGH(GPIOC_SCLK) |             \
@@ -572,8 +572,8 @@
                                      PIN_AFIO_AF(GPIOC_PDM_OUT, 0) |        \
                                      PIN_AFIO_AF(GPIOC_PIN4, 0) |           \
                                      PIN_AFIO_AF(GPIOC_PIN5, 0) |           \
-                                     PIN_AFIO_AF(GPIOC_PIN6, 0) |           \
-                                     PIN_AFIO_AF(GPIOC_MCLK, 6))
+                                     PIN_AFIO_AF(GPIOC_USART6_TX, 8) |      \
+                                     PIN_AFIO_AF(GPIOC_USART6_RX, 8))
 #define VAL_GPIOC_AFRH              (PIN_AFIO_AF(GPIOC_PIN8, 0) |           \
                                      PIN_AFIO_AF(GPIOC_PIN9, 0) |           \
                                      PIN_AFIO_AF(GPIOC_SCLK, 6) |           \
