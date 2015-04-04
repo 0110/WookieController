@@ -40,8 +40,6 @@
  ******************************************************************************/
 static WORKING_AREA(waLEDstripBlink, 2048);
 
-static WORKING_AREA(waLEDstripRead, 2048);
-
 /******************************************************************************
  * LOCAL FUNCTIONS for this module
  ******************************************************************************/
@@ -120,6 +118,7 @@ static void readDirectWS2812cmd(BaseSequentialStream *chp)
 			chprintf(chp, "Go one: '%s'\r\n", textbuffer);
 		}
 
+		DEBUG_PRINT("Go one: '%s'\r\n", textbuffer);
 		length = r - 2;
 		for(i=0; i < length; i+=3){
 			  ledstripe_framebuffer[j].red = 	(uint8_t) textbuffer[i+0];
@@ -134,23 +133,6 @@ static void readDirectWS2812cmd(BaseSequentialStream *chp)
 			chprintf(chp, "Found only '%s'\r\n", textbuffer);
 		}
 	}
-}
-
-/*
- * This is a periodic thread that does absolutely nothing except flashing
- * a LED.
- */
-static msg_t	ledReadThread(void *arg)
-{
-	(void) arg;
-	chRegSetThreadName("ledReader");
-	DEBUG_PRINT("Thread running...")
-	while (TRUE)
-	{
-		readDirectWS2812cmd(NULL);
-	}
-
-	return RDY_OK;
 }
 
 /******************************************************************************
@@ -243,18 +225,14 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
         chprintf(chp, "\r\n");
     }
   else if (argc >= 1 && strcmp(argv[0], "read") == 0)
-    {
-
-      readDirectWS2812cmd(chp);
-
-    }
-  else if (argc >= 1 && strcmp(argv[0], "testread") == 0)
-      {
-  chprintf(chp, "Start led thread ...");
-        chThdCreateStatic(waLEDstripRead, sizeof(waLEDstripRead), NORMALPRIO,
-            ledReadThread, NULL);
-        chprintf(chp, " Done\r\n");
-   }
+  {
+	  chprintf(chp, "Start listening...\r\n");
+	  while (1)
+	  {
+		  readDirectWS2812cmd(chp);
+		  chThdSleepMilliseconds(50);
+	  }
+  }
   else if (argc >= 1)  /* Update the LEDs directly */
   {
 	  int i,j= 0, color = 0;
@@ -292,7 +270,6 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
           "-on\r\n"
           "-off\r\n"
           "-read\r\n"
-		  "-testread\r\n"
           "-show\r\n");
     }
 }
