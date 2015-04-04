@@ -109,29 +109,28 @@ ledThread(void *arg)
 
 static void readDirectWS2812cmd(BaseSequentialStream *chp)
 {
-	int i, length, j = 0;
+	int i, j = 0;
 	char textbuffer[TEXTLINE_MAX_LENGTH];
-	int r = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	if(r >= 2 && (textbuffer[0] == 'W' && textbuffer[1] == 'S'))
+	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+	if(length >= 2 && (textbuffer[0] == 'W' && textbuffer[1] == 'S'))
 	{
 		if (chp != NULL) {
 			chprintf(chp, "Go one: '%s'\r\n", textbuffer);
 		}
 
-		DEBUG_PRINT("Go one: '%s'\r\n", textbuffer);
-		length = r - 2;
-		for(i=0; i < length; i+=3){
+		DEBUG_PRINT("Go one: '");
+		for(i=2; i < length; i+=3){
 			  ledstripe_framebuffer[j].red = 	(uint8_t) textbuffer[i+0];
 			  ledstripe_framebuffer[j].green = 	(uint8_t) textbuffer[i+1];
 			  ledstripe_framebuffer[j].blue = 	(uint8_t) textbuffer[i+2];
 			  j++;
+			  DEBUG_PRINT("%.2X%.2X%.2X ", textbuffer[i+0], textbuffer[i+1], textbuffer[i+2]);
 		}
+		DEBUG_PRINT("\r\n");
 	}
 	else
 	{
-		if (chp != NULL) {
-			chprintf(chp, "Found only '%s'\r\n", textbuffer);
-		}
+		DEBUG_PRINT("Received only: '%s'\r\n", textbuffer);
 	}
 }
 
