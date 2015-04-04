@@ -34,7 +34,6 @@
 static const ShellCommand commands[] =
   {
     { "led", cmd_ledctrl },
-    { "w", cmd_ws2812 },
     { "mem", cmd_mem },
     { "threads", cmd_threads },
     { NULL, NULL } };

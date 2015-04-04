@@ -4,7 +4,6 @@ APPSRC = src/main.c \
 		src/ledstripe/ledstripe.c \
 		src/cmd/cmd_threads.c \
 		src/cmd/cmd_ledstripe.c \
-		src/cmd/cmd_ws2812.c \
 		src/cmd/cmd_mem.c 
 
 
