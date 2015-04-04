@@ -19,6 +19,7 @@
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
 #include "ledstripe/ledstripe.h"
+#include "boblight/boblight.h"
 
 /******************************************************************************
  * DEFINITIONS
@@ -88,11 +89,6 @@ main(void)
   chSysInit();
 
   /*
-   * Initialize USB serial console
-   */
-  usbcdc_init(NULL);
-
-  /*
    * Shell manager initialization.
    */
   shellInit();
@@ -117,6 +113,9 @@ main(void)
       blinkerThread, NULL);
   PRINT(" Done\r\n");
 
+  /* Start the Thread reading commands from the USB serial device */
+  boblight_init();
+
   shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
   /*
@@ -127,7 +126,6 @@ main(void)
    */
   while (TRUE)
     {
-      usbcdc_process();
 
       if (palReadPad(GPIOA, GPIOA_BUTTON))
         {

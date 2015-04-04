@@ -7,7 +7,6 @@
 
 #include "cmd.h"
 #include "ledstripe/ledstripe.h"
-#include "usbcdc/usbcdc.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -25,11 +24,6 @@
 
 #define LED_END_POSTION		0
 
-#define	STARTOFFSET				2
-#define HEX_SIZE				2
-#define TEXTLINE_MAX_LENGTH 	1024
-
-#define DEBUG_PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__);/**< Uart print */
 
 /******************************************************************************
  * GLOBAL VARIABLES for this module
@@ -105,41 +99,6 @@ ledThread(void *arg)
   return RDY_OK;
 }
 
-
-
-static void readDirectWS2812cmd(void)
-{
-	int offset=0,i, j = 0;
-	char textbuffer[TEXTLINE_MAX_LENGTH];
-	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	if(length >= 2 && (textbuffer[0] == 'W' && textbuffer[1] == 'S'))
-	{
-		DEBUG_PRINT("%3d ", offset);
-		for(i=2; i < length; i+=3){
-			  /* Check for the beginning */
-			  if (textbuffer[i+0] == 'W' && textbuffer[i+1] == 'S')
-			  {
-				  offset++;
-				  DEBUG_PRINT("\r\n%3d ", offset);
-				  i+=2;
-				  j=0;
-			  }
-
-			  ledstripe_framebuffer[j].red = 	(uint8_t) textbuffer[i+0];
-			  ledstripe_framebuffer[j].green = 	(uint8_t) textbuffer[i+1];
-			  ledstripe_framebuffer[j].blue = 	(uint8_t) textbuffer[i+2];
-			  j++;
-			  DEBUG_PRINT("%.2X%.2X%.2X ", textbuffer[i+0], textbuffer[i+1], textbuffer[i+2]);
-		}
-		DEBUG_PRINT("\r\n");
-		/* Send ACK to host */
-		usbcdc_print("WS\n");
-	}
-	else if (length > 0)
-	{
-		DEBUG_PRINT("Received only: '%s'\r\n", textbuffer);
-	}
-}
 
 /******************************************************************************
  * GLOBAL FUNCTIONS for this module
@@ -230,15 +189,6 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
         }
         chprintf(chp, "\r\n");
     }
-  else if (argc >= 1 && strcmp(argv[0], "read") == 0)
-  {
-	  chprintf(chp, "Start listening...\r\n");
-	  while (1)
-	  {
-		  readDirectWS2812cmd();
-		  chThdSleepMilliseconds(1);
-	  }
-  }
   else if (argc >= 1)  /* Update the LEDs directly */
   {
 	  int i,j= 0, color = 0;
@@ -275,7 +225,6 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
           "-end (red) (green) (blue)\tSet the last box\r\n"
           "-on\r\n"
           "-off\r\n"
-          "-read\r\n"
           "-show\r\n");
     }
 }
