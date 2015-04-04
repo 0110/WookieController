@@ -109,17 +109,18 @@ ledThread(void *arg)
 
 static void readDirectWS2812cmd(void)
 {
-	int i, j = 0;
+	int offset=0,i, j = 0;
 	char textbuffer[TEXTLINE_MAX_LENGTH];
 	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	if(length >= 2 && (textbuffer[0] == 'W' && textbuffer[1] == 'S'))
 	{
-		DEBUG_PRINT("Go one: '");
+		DEBUG_PRINT("%3d ", offset);
 		for(i=2; i < length; i+=3){
 			  /* Check for the beginning */
 			  if (textbuffer[i+0] == 'W' && textbuffer[i+1] == 'S')
 			  {
-				  DEBUG_PRINT("\r\nNext started : '");
+				  offset++;
+				  DEBUG_PRINT("\r\n%3d ", offset);
 				  i+=2;
 				  j=0;
 			  }
@@ -131,6 +132,8 @@ static void readDirectWS2812cmd(void)
 			  DEBUG_PRINT("%.2X%.2X%.2X ", textbuffer[i+0], textbuffer[i+1], textbuffer[i+2]);
 		}
 		DEBUG_PRINT("\r\n");
+		/* Send ACK to host */
+		usbcdc_print("WS\n");
 	}
 	else if (length > 0)
 	{
@@ -233,7 +236,7 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
 	  while (1)
 	  {
 		  readDirectWS2812cmd();
-		  chThdSleepMilliseconds(50);
+		  chThdSleepMilliseconds(1);
 	  }
   }
   else if (argc >= 1)  /* Update the LEDs directly */
