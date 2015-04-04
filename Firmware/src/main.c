@@ -37,6 +37,7 @@ ledThread(void *arg);
 #define HEX_SIZE				2
 #define TEXTLINE_MAX_LENGTH 	1024
 
+static int gLedStripeMode = 0;
 
 void readDirectWS2812cmd(void)
 {
@@ -224,9 +225,41 @@ blinkerThread(void *arg)
   chRegSetThreadName("blinker");
   while (TRUE)
     {
-      palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
-      chThdSleepMilliseconds(500);palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
-      chThdSleepMilliseconds(500);
+	  if (gLedStripeMode == 0)
+	  {
+		  palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
+		  chThdSleepMilliseconds(500);
+		  palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
+		  chThdSleepMilliseconds(500);
+	  }
+	  else
+	  {
+		  palSetPad(GPIOD, GPIOD_LED5); /* Green.  */
+		  chThdSleepMilliseconds(500);
+		  palClearPad(GPIOD, GPIOD_LED5); /* Green.  */
+		  chThdSleepMilliseconds(500);
+	  }
+
+    }
+  return RDY_OK;
+}
+
+/*
+ * This is a periodic thread that does absolutely nothing except flashing
+ * a LED.
+ */
+static WORKING_AREA(waThreadWS2812, 2048);
+static msg_t
+ws2812Thread(void *arg)
+{
+
+  (void) arg;
+  chRegSetThreadName("ws2812");
+  while (TRUE)
+    {
+	  readDirectWS2812cmd();
+	  /* Wait some time, to make the scheduler running tasks with lower prio */
+	  chThdSleep(MS2ST(10));
     }
   return RDY_OK;
 }
@@ -337,6 +370,12 @@ main(void)
   chThdCreateStatic(waThreadBlink, sizeof(waThreadBlink), NORMALPRIO,
       blinkerThread, NULL);
   PRINT(" Done\r\n");
+
+  /*if (!palReadPad(GPIOA, GPIOA_BUTTON))
+  {
+	  gLedStripeMode = 1;
+	  //chThdCreateStatic(waThreadWS2812, sizeof(waThreadWS2812), NORMALPRIO, ws2812Thread, NULL);
+  }*/
 
   shellCreate(&shell_cfg1, SHELL_WA_SIZE, NORMALPRIO);
 
