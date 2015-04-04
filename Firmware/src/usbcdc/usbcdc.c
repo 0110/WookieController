@@ -346,33 +346,42 @@ static Thread *shelltp = NULL;
 
 void usbcdc_init(const ShellCommand * commands)
 {
-        shell_cfg2.sc_commands = commands;
+      shell_cfg2.sc_commands = commands;
 
-          /*
-           * Initializes a serial-over-USB CDC driver.
-           */
-          sduObjectInit(&SDU1);
-          sduStart(&SDU1, &serusbcfg);
+	  /*
+	   * Initializes a serial-over-USB CDC driver.
+	   */
+	  sduObjectInit(&SDU1);
+	  sduStart(&SDU1, &serusbcfg);
 
-          /*
-          * Activates the USB driver and then the USB bus pull-up on D+.
-          * Note, a delay is inserted in order to not have to disconnect the cable
-          * after a reset.
-          */
-           usbDisconnectBus(serusbcfg.usbp);
-           chThdSleepMilliseconds(1500);
-           usbStart(serusbcfg.usbp, &usbcfg);
-           usbConnectBus(serusbcfg.usbp);
+	  /*
+	  * Activates the USB driver and then the USB bus pull-up on D+.
+	  * Note, a delay is inserted in order to not have to disconnect the cable
+	  * after a reset.
+	  */
+	   usbDisconnectBus(serusbcfg.usbp);
+	   chThdSleepMilliseconds(1500);
+	   usbStart(serusbcfg.usbp, &usbcfg);
+	   usbConnectBus(serusbcfg.usbp);
 }
 
 void usbcdc_process(void)
 {
-        if (!shelltp && (SDU1.config->usbp->state == USB_ACTIVE))
-                  shelltp = shellCreate(&shell_cfg2, SHELL_WA_SIZE, NORMALPRIO);
-          else if (chThdTerminated(shelltp)) {
-                  chThdRelease(shelltp); /* Recovers memory of the previous shell. */
-                  shelltp = NULL; /* Triggers spawning of a new shell. */
-          }
+	/* short cut: No shell config, nothing to do */
+	if (shell_cfg2.sc_commands == NULL)
+	{
+		return;
+	}
+
+	if (!shelltp && (SDU1.config->usbp->state == USB_ACTIVE))
+	{
+			  shelltp = shellCreate(&shell_cfg2, SHELL_WA_SIZE, NORMALPRIO);
+	}
+	else if (chThdTerminated(shelltp))
+	{
+			  chThdRelease(shelltp); /* Recovers memory of the previous shell. */
+			  shelltp = NULL; /* Triggers spawning of a new shell. */
+	}
 }
 
 
@@ -603,6 +612,13 @@ int usbcdc_readAll(char *pText, int bufferLeng)
 	flagsmask_t flags;
 	int i, read = 0;
 	int finishFlag = 0;
+
+	/* This can only work with an established USB connection */
+	if (SDU1.config->usbp->state != USB_ACTIVE)
+	{
+		return -1;
+	}
+
 	chEvtRegisterMask((EventSource *) chnGetEventSource(&SDU1), &elGPSdata,
 			EVENT_MASK(1));
 	/* Check faulty input parameter */

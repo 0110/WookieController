@@ -90,7 +90,7 @@ main(void)
   /*
    * Initialize USB serial console
    */
-  usbcdc_init(commands);
+  usbcdc_init(NULL);
 
   /*
    * Shell manager initialization.
