@@ -35,6 +35,9 @@
  ******************************************************************************/
 static WORKING_AREA(waBoblightThread, 2048);
 
+static int channelSize = 0;
+static int startChannel = 0;
+
 /******************************************************************************
  * LOCAL FUNCTIONS for this module
  ******************************************************************************/
@@ -44,12 +47,15 @@ static void readDirectWS2812cmd(void)
 	int offset=0,i, j = 0;
 	char textbuffer[TEXTLINE_MAX_LENGTH];
 	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	if(length >= 2 && (textbuffer[0] == 'W' && textbuffer[1] == 'S'))
+	if(length >= 2 && (textbuffer[0] == 0x81 && textbuffer[1] == 0x02))
 	{
-		DEBUG_PRINT("%3d ", offset);
-		for(i=2; i < length; i+=3){
+		startChannel =textbuffer[2];
+		channelSize = textbuffer[3];
+		DEBUG_PRINT("%3d [%2d chan.]", offset, channelSize);
+
+		for(i=4; i < length; i+=3){
 			  /* Check for the beginning */
-			  if (textbuffer[i+0] == 'W' && textbuffer[i+1] == 'S')
+			  if (textbuffer[0] == 0x55 && textbuffer[1] == 0xAA && textbuffer[2] == 0x00)
 			  {
 				  offset++;
 				  DEBUG_PRINT("\r\n%3d ", offset);
@@ -96,7 +102,8 @@ boblightThread(void *arg)
 			/* Send ACK to host each second */
 		  if (time + MS2ST(1000) < chTimeNow())
 		  {
-			usbcdc_print("WS\n");
+			uint8_t getValues[4] = {0x81, 0x02, startChannel, channelSize};
+			usbcdc_putMemory(getValues, 4);
 			time = chTimeNow();
 			DEBUG_PRINT("Still alive\r\n");
 		  }

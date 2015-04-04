@@ -49,6 +49,8 @@ extern ledstripe_color ledstripe_framebuffer[LEDSTRIPE_FRAMEBUFFER_SIZE];
  */
 void ledstripe_init(GPIO_TypeDef *port, int pin);
 
+void usbcdc_putMemory(uint8_t *text, unsigned int length);
+
 #ifdef __cplusplus
 }
 #endif

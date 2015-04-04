@@ -600,6 +600,18 @@ void usbcdc_print(const char *text, ...)
         }
 }
 
+void usbcdc_putMemory(uint8_t *text, unsigned int length)
+{
+	unsigned int i;
+	if (SDU1.config->usbp->state == USB_ACTIVE)
+	{
+		for(i=0; i< length; i++)
+		{
+			chSequentialStreamPut((BaseSequentialStream *)&SDU1, text[i]);
+		}
+	}
+}
+
 /** @fn int usbcdc_readAll(char *pText, int bufferLeng)
  * @brief Reads a line
  * @param[in|out] pText space for the text, that is read (and the read result)
