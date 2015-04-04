@@ -1,6 +1,8 @@
 #ifndef _CMD_H_
 #define _CMD_H_
 
+#include "ch.h"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -20,6 +22,9 @@ extern "C"
 
   void
   cmd_flash(BaseSequentialStream *chp, int argc, char *argv[]);
+
+
+  void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[]);
 
 #ifdef __cplusplus
 }
