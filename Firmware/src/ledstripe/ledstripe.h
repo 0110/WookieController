@@ -22,6 +22,8 @@
 //enter number of LEDs here!
 #define LEDSTRIPE_FRAMEBUFFER_SIZE 240
 
+#define	RGB_COLOR_WIDTH				3 /**< Three bytes are needed to describe one LED */
+
 //Size of Ring-Buffer
 #define LEDSTRIPE_PWM_BUFFER_SIZE 192
 

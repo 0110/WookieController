@@ -33,7 +33,7 @@
 /******************************************************************************
  * LOCAL VARIABLES for this module
  ******************************************************************************/
-static WORKING_AREA(waBoblightThread, 2048);
+static WORKING_AREA(waBoblightThread, 4096);
 
 static int channelSize = 0;
 static int startChannel = 0;
@@ -83,7 +83,11 @@ boblightThread(void *arg)
 {
 	(void) arg;
 	systime_t time = chTimeNow();
+	int length, i;
+	char textbuffer[TEXTLINE_MAX_LENGTH];
+
 	chRegSetThreadName("boblight");
+
 	/*
 	 * Initialize USB serial console
 	 */
@@ -91,6 +95,40 @@ boblightThread(void *arg)
 
 	/* Say hello to the host */
 	usbcdc_print("WS\n");
+
+	DEBUG_PRINT("Search start...\r\n");
+	while (channelSize <= 0)
+	{
+		length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+		DEBUG_PRINT("Got %3d \r\n", length);
+		for(i=0; i < length - 4; i++)
+		{
+			DEBUG_PRINT("%2X ", textbuffer[i]);
+			if(textbuffer[i] == 0x81 && textbuffer[i+1] == 0x02)
+			{
+				startChannel =textbuffer[i+2];
+				channelSize = textbuffer[i+3];
+				DEBUG_PRINT("%3d start channel is %2d; amount is %3d chan.\r\n", i, startChannel, channelSize);
+			}
+			else if (textbuffer[i] == 0x55 && textbuffer[i+1] == 0xAA)
+			{
+				uint8_t prefix[2] = {0x55, 0xAA};
+				usbcdc_putMemory(prefix, 2);
+				DEBUG_PRINT("Prefix\r\n");
+
+				/* Send the WS2812 Channel maximums */
+				uint8_t offsetAndMax[2] = {0x00, LEDSTRIPE_FRAMEBUFFER_SIZE};
+				usbcdc_putMemory(offsetAndMax, 2);
+				DEBUG_PRINT("WS2812 environment\r\n");
+				usbcdc_putMemory((uint8_t *) ledstripe_framebuffer, LEDSTRIPE_FRAMEBUFFER_SIZE);
+				DEBUG_PRINT("default data\r\n");
+			}
+
+		}
+		DEBUG_PRINT("\r\n");
+		chThdSleepMilliseconds(10);
+	}
+
 
 	DEBUG_PRINT("Start listening...\r\n");
 	  while (1)
@@ -102,8 +140,8 @@ boblightThread(void *arg)
 			/* Send ACK to host each second */
 		  if (time + MS2ST(1000) < chTimeNow())
 		  {
-			uint8_t getValues[4] = {0x81, 0x02, startChannel, channelSize};
-			usbcdc_putMemory(getValues, 4);
+			uint8_t prefix[2] = {0x55, 0xAA};
+			usbcdc_putMemory(prefix, 2);
 			time = chTimeNow();
 			DEBUG_PRINT("Still alive\r\n");
 		  }
@@ -114,7 +152,7 @@ boblightThread(void *arg)
 
 void boblight_init(void)
 {
-	DEBUG_PRINT("Start blinker thread ...");
+	DEBUG_PRINT("Start boblight thread ...");
 	  chThdCreateStatic(waBoblightThread, sizeof(waBoblightThread), NORMALPRIO,
 	      boblightThread, NULL);
 	DEBUG_PRINT(" Done\r\n");
