@@ -107,17 +107,13 @@ ledThread(void *arg)
 
 
 
-static void readDirectWS2812cmd(BaseSequentialStream *chp)
+static void readDirectWS2812cmd(void)
 {
 	int i, j = 0;
 	char textbuffer[TEXTLINE_MAX_LENGTH];
 	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	if(length >= 2 && (textbuffer[0] == 'W' && textbuffer[1] == 'S'))
 	{
-		if (chp != NULL) {
-			chprintf(chp, "Go one: '%s'\r\n", textbuffer);
-		}
-
 		DEBUG_PRINT("Go one: '");
 		for(i=2; i < length; i+=3){
 			  /* Check for the beginning */
@@ -236,7 +232,7 @@ void cmd_ledctrl(BaseSequentialStream *chp, int argc, char *argv[])
 	  chprintf(chp, "Start listening...\r\n");
 	  while (1)
 	  {
-		  readDirectWS2812cmd(chp);
+		  readDirectWS2812cmd();
 		  chThdSleepMilliseconds(50);
 	  }
   }
