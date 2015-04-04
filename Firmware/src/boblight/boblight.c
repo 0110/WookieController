@@ -36,7 +36,6 @@
 static WORKING_AREA(waBoblightThread, 4096);
 
 static int channelSize = 0;
-static int startChannel = 0;
 
 /******************************************************************************
  * LOCAL FUNCTIONS for this module
@@ -44,25 +43,15 @@ static int startChannel = 0;
 
 static void readDirectWS2812cmd(void)
 {
-	int offset=0,i, j = 0;
+	int offset=0,i=0,j = 0;
 	char textbuffer[TEXTLINE_MAX_LENGTH];
 	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	if(length >= 2 && (textbuffer[0] == 0x81 && textbuffer[1] == 0x02))
+	if(length >= 2 && (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a'))
 	{
-		startChannel =textbuffer[2];
-		channelSize = textbuffer[3];
+		channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
 		DEBUG_PRINT("%3d [%2d chan.]", offset, channelSize);
 
-		for(i=4; i < length; i+=3){
-			  /* Check for the beginning */
-			  if (textbuffer[0] == 0x55 && textbuffer[1] == 0xAA && textbuffer[2] == 0x00)
-			  {
-				  offset++;
-				  DEBUG_PRINT("\r\n%3d ", offset);
-				  i+=2;
-				  j=0;
-			  }
-
+		for(i=5; i < length; i+=3){
 			  ledstripe_framebuffer[j].red = 	(uint8_t) textbuffer[i+0];
 			  ledstripe_framebuffer[j].green = 	(uint8_t) textbuffer[i+1];
 			  ledstripe_framebuffer[j].blue = 	(uint8_t) textbuffer[i+2];
@@ -94,7 +83,8 @@ boblightThread(void *arg)
 	usbcdc_init(NULL);
 
 	/* Say hello to the host */
-	usbcdc_print("WS\n");
+	usbcdc_print("Ada\n");
+	time = chTimeNow();
 
 	DEBUG_PRINT("Search start...\r\n");
 	while (channelSize <= 0)
@@ -104,24 +94,10 @@ boblightThread(void *arg)
 		for(i=0; i < length - 4; i++)
 		{
 			DEBUG_PRINT("%2X ", textbuffer[i]);
-			if(textbuffer[i] == 0x81 && textbuffer[i+1] == 0x02)
+			if(textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a')
 			{
-				startChannel =textbuffer[i+2];
-				channelSize = textbuffer[i+3];
-				DEBUG_PRINT("%3d start channel is %2d; amount is %3d chan.\r\n", i, startChannel, channelSize);
-			}
-			else if (textbuffer[i] == 0x55 && textbuffer[i+1] == 0xAA)
-			{
-				uint8_t prefix[2] = {0x55, 0xAA};
-				usbcdc_putMemory(prefix, 2);
-				DEBUG_PRINT("Prefix\r\n");
-
-				/* Send the WS2812 Channel maximums */
-				uint8_t offsetAndMax[2] = {0x00, LEDSTRIPE_FRAMEBUFFER_SIZE};
-				usbcdc_putMemory(offsetAndMax, 2);
-				DEBUG_PRINT("WS2812 environment\r\n");
-				usbcdc_putMemory((uint8_t *) ledstripe_framebuffer, LEDSTRIPE_FRAMEBUFFER_SIZE);
-				DEBUG_PRINT("default data\r\n");
+				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
+				DEBUG_PRINT("\r\nFound %3d chan.\r\n", i, channelSize);
 			}
 
 		}
@@ -140,8 +116,7 @@ boblightThread(void *arg)
 			/* Send ACK to host each second */
 		  if (time + MS2ST(1000) < chTimeNow())
 		  {
-			uint8_t prefix[2] = {0x55, 0xAA};
-			usbcdc_putMemory(prefix, 2);
+			usbcdc_putMemory((uint8_t *) "Ada\n", 4);
 			time = chTimeNow();
 			DEBUG_PRINT("Still alive\r\n");
 		  }
