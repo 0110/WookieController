@@ -49,9 +49,9 @@ static void readDirectWS2812cmd(void)
 	if(length >= 2 && (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a'))
 	{
 		channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-		DEBUG_PRINT("%3d [%2d chan.]", offset, channelSize);
+		DEBUG_PRINT("%3d [%2d chan. %2X as checksum]", offset, channelSize, textbuffer[i+5]);
 
-		for(i=5; i < length; i+=3){
+		for(i=6; i < length; i+=3){
 			  ledstripe_framebuffer[j].red = 	(uint8_t) textbuffer[i+0];
 			  ledstripe_framebuffer[j].green = 	(uint8_t) textbuffer[i+1];
 			  ledstripe_framebuffer[j].blue = 	(uint8_t) textbuffer[i+2];
@@ -91,13 +91,13 @@ boblightThread(void *arg)
 	{
 		length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 		DEBUG_PRINT("Got %3d \r\n", length);
-		for(i=0; i < length - 4; i++)
+		for(i=0; i < length - 5; i++)
 		{
 			DEBUG_PRINT("%2X ", textbuffer[i]);
 			if(textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a')
 			{
 				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-				DEBUG_PRINT("\r\nFound %3d chan.\r\n", i, channelSize);
+				DEBUG_PRINT("\r\nFound %3d chan, checksum %2X\r\n", channelSize, textbuffer[i+5]);
 			}
 
 		}
