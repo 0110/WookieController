@@ -64,8 +64,6 @@ static void readDirectWS2812cmd(void)
 			  DEBUG_PRINT("%.2X%.2X%.2X ", textbuffer[i+0], textbuffer[i+1], textbuffer[i+2]);
 		}
 		DEBUG_PRINT("\r\n");
-		/* Send ACK to host */
-		usbcdc_print("WS\n");
 	}
 	else if (length > 0)
 	{
@@ -78,18 +76,30 @@ static msg_t
 boblightThread(void *arg)
 {
 	(void) arg;
+	systime_t time = chTimeNow();
 	chRegSetThreadName("boblight");
 	/*
 	 * Initialize USB serial console
 	 */
 	usbcdc_init(NULL);
 
+	/* Say hello to the host */
+	usbcdc_print("WS\n");
+
 	DEBUG_PRINT("Start listening...\r\n");
 	  while (1)
 	  {
 		  usbcdc_process();
 		  readDirectWS2812cmd();
-		  chThdSleepMilliseconds(1);
+		  chThdSleepMilliseconds(5);
+
+			/* Send ACK to host each second */
+		  if (time + MS2ST(1000) < chTimeNow())
+		  {
+			usbcdc_print("WS\n");
+			time = chTimeNow();
+			DEBUG_PRINT("Still alive\r\n");
+		  }
 	  }
 
 	  return RDY_OK;
