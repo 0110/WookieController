@@ -120,6 +120,14 @@ static void readDirectWS2812cmd(BaseSequentialStream *chp)
 
 		DEBUG_PRINT("Go one: '");
 		for(i=2; i < length; i+=3){
+			  /* Check for the beginning */
+			  if (textbuffer[i+0] == 'W' && textbuffer[i+1] == 'S')
+			  {
+				  DEBUG_PRINT("\r\nNext started : '");
+				  i+=2;
+				  j=0;
+			  }
+
 			  ledstripe_framebuffer[j].red = 	(uint8_t) textbuffer[i+0];
 			  ledstripe_framebuffer[j].green = 	(uint8_t) textbuffer[i+1];
 			  ledstripe_framebuffer[j].blue = 	(uint8_t) textbuffer[i+2];
@@ -128,7 +136,7 @@ static void readDirectWS2812cmd(BaseSequentialStream *chp)
 		}
 		DEBUG_PRINT("\r\n");
 	}
-	else
+	else if (length > 0)
 	{
 		DEBUG_PRINT("Received only: '%s'\r\n", textbuffer);
 	}
