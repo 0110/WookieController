@@ -26,7 +26,7 @@
 
 #define	STARTOFFSET				2
 #define HEX_SIZE				2
-#define TEXTLINE_MAX_LENGTH 	1024
+#define TEXTLINE_MAX_LENGTH 	256
 
 #define DEBUG_PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__);/**< Uart print */
 
@@ -43,20 +43,29 @@ static int channelSize = 0;
 
 static void readDirectWS2812cmd(void)
 {
-	int offset=0,i=0,j = 0;
+	int i=0,j = 0;
 	char textbuffer[TEXTLINE_MAX_LENGTH];
 	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	if(length >= 2 && (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a'))
 	{
 		channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-		DEBUG_PRINT("%3d [%2d chan. %2X as checksum]", offset, channelSize, textbuffer[i+5]);
+		DEBUG_PRINT("%3d [%2d chan. CRC: %2X]", i, channelSize, textbuffer[i+5]);
 
-		for(i=6; i < length; i+=3){
-			  ledstripe_framebuffer[j].red = 	(uint8_t) textbuffer[i+0];
-			  ledstripe_framebuffer[j].green = 	(uint8_t) textbuffer[i+1];
-			  ledstripe_framebuffer[j].blue = 	(uint8_t) textbuffer[i+2];
-			  j++;
-			  DEBUG_PRINT("%.2X%.2X%.2X ", textbuffer[i+0], textbuffer[i+1], textbuffer[i+2]);
+		for(i=6; i < length; i+=3)
+		{
+			if (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a')
+			{
+				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
+				DEBUG_PRINT("\r\n%3d [%2d chan. CRC: %2X]", i, channelSize, textbuffer[i+5]);
+				i+=6;
+				j=0;
+			}
+
+			ledstripe_framebuffer[j].red = 	(uint8_t) textbuffer[i+0];
+			ledstripe_framebuffer[j].green = 	(uint8_t) textbuffer[i+1];
+			ledstripe_framebuffer[j].blue = 	(uint8_t) textbuffer[i+2];
+			j++;
+			DEBUG_PRINT("%.2X%.2X%.2X ", textbuffer[i+0], textbuffer[i+1], textbuffer[i+2]);
 		}
 		DEBUG_PRINT("\r\n");
 	}
@@ -72,8 +81,6 @@ boblightThread(void *arg)
 {
 	(void) arg;
 	systime_t time = chTimeNow();
-	int length, i;
-	char textbuffer[TEXTLINE_MAX_LENGTH];
 
 	chRegSetThreadName("boblight");
 
@@ -85,26 +92,6 @@ boblightThread(void *arg)
 	/* Say hello to the host */
 	usbcdc_print("Ada\n");
 	time = chTimeNow();
-
-	DEBUG_PRINT("Search start...\r\n");
-	while (channelSize <= 0)
-	{
-		length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-		DEBUG_PRINT("Got %3d \r\n", length);
-		for(i=0; i < length - 5; i++)
-		{
-			DEBUG_PRINT("%2X ", textbuffer[i]);
-			if(textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a')
-			{
-				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-				DEBUG_PRINT("\r\nFound %3d chan, checksum %2X\r\n", channelSize, textbuffer[i+5]);
-			}
-
-		}
-		DEBUG_PRINT("\r\n");
-		chThdSleepMilliseconds(10);
-	}
-
 
 	DEBUG_PRINT("Start listening...\r\n");
 	  while (1)
