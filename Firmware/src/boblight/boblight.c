@@ -41,22 +41,21 @@ static int channelSize = 0;
  * LOCAL FUNCTIONS for this module
  ******************************************************************************/
 
-static void readDirectWS2812cmd(void)
+static void readDirectWS2812cmd(char *textbuffer)
 {
 	int i=0,j = 0;
-	char textbuffer[TEXTLINE_MAX_LENGTH];
 	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	if(length >= 2 && (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a'))
 	{
 		channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-		DEBUG_PRINT("%3d [%2d chan. CRC: %2X]", i, channelSize, textbuffer[i+5]);
+		/*DEBUG_PRINT("%3d [%2d chan. CRC: %2X]", i, channelSize, textbuffer[i+5]);*/
 
 		for(i=6; i < length; i+=3)
 		{
 			if (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a')
 			{
 				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-				DEBUG_PRINT("\r\n%3d [%2d chan. CRC: %2X]", i, channelSize, textbuffer[i+5]);
+				/*DEBUG_PRINT("\r\n%3d [%2d chan. CRC: %2X]", i, channelSize, textbuffer[i+5]);*/
 				i+=6;
 				j=0;
 			}
@@ -65,13 +64,9 @@ static void readDirectWS2812cmd(void)
 			ledstripe_framebuffer[j].green = 	(uint8_t) textbuffer[i+1];
 			ledstripe_framebuffer[j].blue = 	(uint8_t) textbuffer[i+2];
 			j++;
-			DEBUG_PRINT("%.2X%.2X%.2X ", textbuffer[i+0], textbuffer[i+1], textbuffer[i+2]);
+			/*DEBUG_PRINT("%.2X%.2X%.2X ", textbuffer[i+0], textbuffer[i+1], textbuffer[i+2]); */
 		}
-		DEBUG_PRINT("\r\n");
-	}
-	else if (length > 0)
-	{
-		DEBUG_PRINT("Received only: '%s'\r\n", textbuffer);
+		/* DEBUG_PRINT("\r\n"); */
 	}
 }
 
@@ -81,6 +76,7 @@ boblightThread(void *arg)
 {
 	(void) arg;
 	systime_t time = chTimeNow();
+	char textbuffer[TEXTLINE_MAX_LENGTH];
 
 	chRegSetThreadName("boblight");
 
@@ -97,7 +93,7 @@ boblightThread(void *arg)
 	  while (1)
 	  {
 		  usbcdc_process();
-		  readDirectWS2812cmd();
+		  readDirectWS2812cmd(textbuffer);
 		  chThdSleepMilliseconds(5);
 
 			/* Send ACK to host each second */
