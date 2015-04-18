@@ -26,7 +26,7 @@
 
 #define	STARTOFFSET				2
 #define HEX_SIZE				2
-#define TEXTLINE_MAX_LENGTH 	256
+#define TEXTLINE_MAX_LENGTH 	2048
 
 #define DEBUG_PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__);/**< Uart print */
 
@@ -37,13 +37,15 @@ static WORKING_AREA(waBoblightThread, 4096);
 
 static int channelSize = 0;
 
+static int ledOffset = 0;
+
 /******************************************************************************
  * LOCAL FUNCTIONS for this module
  ******************************************************************************/
 
 static void readDirectWS2812cmd(char *textbuffer)
 {
-	int i=0,j = 0;
+	int i=0;
 	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	if(length >= 2 && (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a'))
 	{
@@ -57,16 +59,26 @@ static void readDirectWS2812cmd(char *textbuffer)
 				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
 				/*DEBUG_PRINT("\r\n%3d [%2d chan. CRC: %2X]", i, channelSize, textbuffer[i+5]);*/
 				i+=6;
-				j=0;
+				ledOffset=0;
 			}
 
-			ledstripe_framebuffer[j].red = 	(uint8_t) textbuffer[i+0];
-			ledstripe_framebuffer[j].green = 	(uint8_t) textbuffer[i+1];
-			ledstripe_framebuffer[j].blue = 	(uint8_t) textbuffer[i+2];
-			j++;
+			ledstripe_framebuffer[ledOffset].red = 	(uint8_t) textbuffer[i+0];
+			ledstripe_framebuffer[ledOffset].green = 	(uint8_t) textbuffer[i+1];
+			ledstripe_framebuffer[ledOffset].blue = 	(uint8_t) textbuffer[i+2];
+			ledOffset++;
 			/*DEBUG_PRINT("%.2X%.2X%.2X ", textbuffer[i+0], textbuffer[i+1], textbuffer[i+2]); */
 		}
 		/* DEBUG_PRINT("\r\n"); */
+	}
+	else
+	{
+		for(i=0; i < (length - 3); i+=3)
+		{
+			ledstripe_framebuffer[ledOffset].red = 	(uint8_t) textbuffer[i+0];
+			ledstripe_framebuffer[ledOffset].green =(uint8_t) textbuffer[i+1];
+			ledstripe_framebuffer[ledOffset].blue = (uint8_t) textbuffer[i+2];
+			ledOffset++;
+		}
 	}
 }
 
@@ -101,7 +113,7 @@ boblightThread(void *arg)
 		  {
 			usbcdc_putMemory((uint8_t *) "Ada\n", 4);
 			time = chTimeNow();
-			DEBUG_PRINT("Still alive\r\n");
+			DEBUG_PRINT("Still alive, channel size %d\r\n", channelSize);
 		  }
 	  }
 
