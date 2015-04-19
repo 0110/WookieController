@@ -36,11 +36,7 @@
 static WORKING_AREA(waBoblightThread, 4096);
 
 static int channelSize = 0;
-
 static int ledOffset = 0;
-static int uartStarts = 0;	/**< Debug counter, how many UART strings began */
-static int uartAppends = 0; /**< Debug counter, how many UART strings were expanded */
-
 
 
 /******************************************************************************
@@ -51,44 +47,29 @@ static int readDirectWS2812cmd(char *textbuffer)
 {
 	int i=0;
 	int length = usbcdc_read(textbuffer, TEXTLINE_MAX_LENGTH);
-	if(length >= 6 && (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a'))
+	if(length > 0)
 	{
-		ledOffset=0;
-		channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-		for(i=6; i < length; i+=3)
+		for(i=0; i < length; i++)
 		{
+			/** Handle Frame beginning */
 			if (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a')
 			{
 				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
 				i+=6;
 				ledOffset=0;
 			}
+
+			/* Update the LED information */
 			if (ledOffset < LEDSTRIPE_FRAMEBUFFER_SIZE)
 			{
-				ledstripe_framebuffer[ledOffset].red = 	(uint8_t) textbuffer[i+0];
+				ledstripe_framebuffer[ledOffset].red = 		(uint8_t) textbuffer[i+0];
 				ledstripe_framebuffer[ledOffset].green = 	(uint8_t) textbuffer[i+1];
 				ledstripe_framebuffer[ledOffset].blue = 	(uint8_t) textbuffer[i+2];
+				i+=2;
 			}
 			ledOffset++;
 		}
-		uartStarts++;
 		palTogglePad(GPIOD, GPIOD_LED6); /* Blue.  */
-		return TRUE;
-	}
-	else if (length > 0)
-	{
-		for(i=0; i < (length - 3); i+=3)
-		{
-			if (ledOffset < LEDSTRIPE_FRAMEBUFFER_SIZE)
-			{
-				ledstripe_framebuffer[ledOffset].red = 	(uint8_t) textbuffer[i+0];
-				ledstripe_framebuffer[ledOffset].green =(uint8_t) textbuffer[i+1];
-				ledstripe_framebuffer[ledOffset].blue = (uint8_t) textbuffer[i+2];
-			}
-			ledOffset++;
-		}
-		palTogglePad(GPIOD, GPIOD_LED3); /* Orange.  */
-		uartAppends++;
 		return TRUE;
 	}
 	else
@@ -136,8 +117,8 @@ boblightThread(void *arg)
 	  {
 		usbcdc_putMemory((uint8_t *) "Ada\n", 4);
 		time = chTimeNow();
-		DEBUG_PRINT("======================================= Still alive ====================================\r\n")
-		DEBUG_PRINT("channel size %4d\tactual offset %4d\tUART-logging: starts %5d appends %5d\r\n", channelSize, ledOffset, uartAppends, uartAppends);
+		DEBUG_PRINT("================= Still alive ================\r\n")
+		DEBUG_PRINT("channel size %4d\tactual offset %4d\r\n", channelSize, ledOffset);
 
 	  }
 	  chThdSleepMilliseconds(50);
