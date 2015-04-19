@@ -10,7 +10,7 @@ boblight
 ## XBMC Service
 
 Install
-```boblightd```
+boblightd
 
 The configuration must be updated at this file:
 ```
