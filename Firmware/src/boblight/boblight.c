@@ -28,6 +28,10 @@
 #define HEX_SIZE				2
 #define TEXTLINE_MAX_LENGTH 	1024
 
+#define COLOR_RED				0
+#define COLOR_GREEN				1
+#define COLOR_BLUE				2
+
 #define DEBUG_PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__);/**< Uart print */
 
 /******************************************************************************
@@ -37,7 +41,9 @@ static WORKING_AREA(waBoblightThread, 4096);
 
 static int channelSize = 0;
 static int ledOffset = 0;
+static int startFound = FALSE;
 
+static int colorPosition=0;
 
 /******************************************************************************
  * LOCAL FUNCTIONS for this module
@@ -55,19 +61,33 @@ static int readDirectWS2812cmd(char *textbuffer)
 			if (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a')
 			{
 				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-				i+=6;
+				i+=4;
 				ledOffset=0;
+				startFound=TRUE;
 			}
-
-			/* Update the LED information */
-			if (ledOffset < LEDSTRIPE_FRAMEBUFFER_SIZE)
+			else if (startFound == TRUE)
 			{
-				ledstripe_framebuffer[ledOffset].red = 		(uint8_t) textbuffer[i+0];
-				ledstripe_framebuffer[ledOffset].green = 	(uint8_t) textbuffer[i+1];
-				ledstripe_framebuffer[ledOffset].blue = 	(uint8_t) textbuffer[i+2];
-				i+=2;
+				/* Update the LED information */
+				if (ledOffset < LEDSTRIPE_FRAMEBUFFER_SIZE)
+				{
+					switch(colorPosition)
+					{
+					case COLOR_RED:
+						ledstripe_framebuffer[ledOffset].red = 		(uint8_t) textbuffer[i];
+						break;
+					case COLOR_GREEN:
+						ledstripe_framebuffer[ledOffset].green = 	(uint8_t) textbuffer[i];
+						break;
+					case COLOR_BLUE:
+						ledstripe_framebuffer[ledOffset].blue = 	(uint8_t) textbuffer[i];
+						/* Reset for the next LED */
+						colorPosition = COLOR_RED;
+						ledOffset++;
+						break;
+					}
+					colorPosition++;
+				}
 			}
-			ledOffset++;
 		}
 		palTogglePad(GPIOD, GPIOD_LED6); /* Blue.  */
 		return TRUE;
@@ -117,8 +137,8 @@ boblightThread(void *arg)
 	  {
 		usbcdc_putMemory((uint8_t *) "Ada\n", 4);
 		time = chTimeNow();
-		DEBUG_PRINT("================= Still alive ================\r\n")
-		DEBUG_PRINT("channel size %4d\tactual offset %4d\r\n", channelSize, ledOffset);
+		DEBUG_PRINT("========== Still alive ===========\r\n")
+		DEBUG_PRINT("channel size %4d\tLEDs %4d\r\n", channelSize, ledOffset);
 
 	  }
 	  chThdSleepMilliseconds(50);
