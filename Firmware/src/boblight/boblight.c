@@ -40,15 +40,18 @@ static int channelSize = 0;
 static int ledOffset = 0;
 static int uartStarts = 0;	/**< Debug counter, how many UART strings began */
 static int uartAppends = 0; /**< Debug counter, how many UART strings were expanded */
+
+
+
 /******************************************************************************
  * LOCAL FUNCTIONS for this module
  ******************************************************************************/
 
-static void readDirectWS2812cmd(char *textbuffer)
+static int readDirectWS2812cmd(char *textbuffer)
 {
 	int i=0;
 	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
-	if(length >= 2 && (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a'))
+	if(length >= 6 && (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a'))
 	{
 		ledOffset=0;
 		channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
@@ -67,6 +70,8 @@ static void readDirectWS2812cmd(char *textbuffer)
 			ledOffset++;
 		}
 		uartStarts++;
+		palTogglePad(GPIOD, GPIOD_LED6); /* Blue.  */
+		return TRUE;
 	}
 	else if (length > 0)
 	{
@@ -77,7 +82,13 @@ static void readDirectWS2812cmd(char *textbuffer)
 			ledstripe_framebuffer[ledOffset].blue = (uint8_t) textbuffer[i+2];
 			ledOffset++;
 		}
+		palTogglePad(GPIOD, GPIOD_LED3); /* Orange.  */
 		uartAppends++;
+		return TRUE;
+	}
+	else
+	{
+		return FALSE; /* Nothing found */
 	}
 }
 
@@ -105,10 +116,18 @@ boblightThread(void *arg)
 	{
 	  usbcdc_process();
 	  memset(textbuffer, 0, TEXTLINE_MAX_LENGTH);
-	  readDirectWS2812cmd(textbuffer);
-	  chThdSleepMilliseconds(5);
+	  if (readDirectWS2812cmd(textbuffer) == TRUE)
+	  {
+		  /* Turn off the LED, as now, we found someone */
+		  palClearPad(GPIOD, GPIOD_LED5); /* Red.  */
+	  }
+	  else
+	  {
+		  /* Indicate, that no LEDs were communicated */
+		  palTogglePad(GPIOD, GPIOD_LED5); /* Red.  */
+	  }
 
-		/* Send ACK to host each second */
+	  /* Send ACK to host each second */
 	  if (time + MS2ST(1000) < chTimeNow())
 	  {
 		usbcdc_putMemory((uint8_t *) "Ada\n", 4);
@@ -120,7 +139,11 @@ boblightThread(void *arg)
 		debugLedOffset++; /* step by step */
 		if (debugLedOffset > ledOffset) /* reset the counter to ignore LEDs, we are not using */
 			debugLedOffset=0;
+
+		/* Reset channel size and wait for an update */
+		channelSize=0;
 	  }
+	  chThdSleepMilliseconds(100);
 	}
 
 	  return RDY_OK;
