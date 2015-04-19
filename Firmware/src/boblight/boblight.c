@@ -26,7 +26,7 @@
 
 #define	STARTOFFSET				2
 #define HEX_SIZE				2
-#define TEXTLINE_MAX_LENGTH 	2048
+#define TEXTLINE_MAX_LENGTH 	1024
 
 #define DEBUG_PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__);/**< Uart print */
 
@@ -49,15 +49,16 @@ static void readDirectWS2812cmd(char *textbuffer)
 	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	if(length >= 2 && (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a'))
 	{
+		ledOffset=0;
 		channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-		/*DEBUG_PRINT("%3d [%2d chan. CRC: %2X]", i, channelSize, textbuffer[i+5]);*/
+		//DEBUG_PRINT("%3d [%2d chan. CRC: %2X]\r\n", i, channelSize, textbuffer[i+5]);
 
 		for(i=6; i < length; i+=3)
 		{
 			if (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a')
 			{
 				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-				/*DEBUG_PRINT("\r\n%3d [%2d chan. CRC: %2X]", i, channelSize, textbuffer[i+5]);*/
+				//DEBUG_PRINT("\r\n%3d [%2d chan. CRC: %2X] REOPEND", i, channelSize, textbuffer[i+5]);
 				i+=6;
 				ledOffset=0;
 			}
@@ -70,7 +71,7 @@ static void readDirectWS2812cmd(char *textbuffer)
 		}
 		/* DEBUG_PRINT("\r\n"); */
 	}
-	else
+	else if (length > 0)
 	{
 		for(i=0; i < (length - 3); i+=3)
 		{
@@ -105,6 +106,7 @@ boblightThread(void *arg)
 	  while (1)
 	  {
 		  usbcdc_process();
+		  memset(textbuffer, 0, TEXTLINE_MAX_LENGTH);
 		  readDirectWS2812cmd(textbuffer);
 		  chThdSleepMilliseconds(5);
 
@@ -113,7 +115,7 @@ boblightThread(void *arg)
 		  {
 			usbcdc_putMemory((uint8_t *) "Ada\n", 4);
 			time = chTimeNow();
-			DEBUG_PRINT("Still alive, channel size %d\r\n", channelSize);
+			DEBUG_PRINT("Still alive, channel size %4d, actual offset %4d,\r\n", channelSize, ledOffset);
 		  }
 	  }
 
