@@ -28,9 +28,10 @@
 #define HEX_SIZE				2
 #define TEXTLINE_MAX_LENGTH 	1024
 
-#define COLOR_RED				0
-#define COLOR_GREEN				1
-#define COLOR_BLUE				2
+#define COLOR_RESET				0
+#define COLOR_RED				1
+#define COLOR_GREEN				2
+#define COLOR_BLUE				3
 
 #define DEBUG_PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__);/**< Uart print */
 
@@ -63,6 +64,7 @@ static int readDirectWS2812cmd(char *textbuffer)
 				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
 				i+=4;
 				ledOffset=0;
+				colorPosition=COLOR_RED;
 				startFound=TRUE;
 			}
 			else if (startFound == TRUE)
@@ -81,7 +83,7 @@ static int readDirectWS2812cmd(char *textbuffer)
 					case COLOR_BLUE:
 						ledstripe_framebuffer[ledOffset].blue = 	(uint8_t) textbuffer[i];
 						/* Reset for the next LED */
-						colorPosition = COLOR_RED;
+						colorPosition = COLOR_RESET;
 						ledOffset++;
 						break;
 					}
