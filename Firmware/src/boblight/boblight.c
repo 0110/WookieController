@@ -62,7 +62,7 @@ static int readDirectWS2812cmd(char *textbuffer)
 			if (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a')
 			{
 				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-				i+=4;
+				i=i+5;
 				ledOffset=0;
 				colorPosition=COLOR_RED;
 				startFound=TRUE;
