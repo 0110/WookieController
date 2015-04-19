@@ -134,14 +134,13 @@ boblightThread(void *arg)
 		time = chTimeNow();
 		DEBUG_PRINT("======================================= Still alive ====================================\r\n")
 		DEBUG_PRINT("channel size %4d\tactual offset %4d\tUART-logging: starts %5d appends %5d\r\n", channelSize, ledOffset, uartAppends, uartAppends);
+
 		/* Show the complete framebuffer */
 		DEBUG_PRINT("%5d\t%.2X%.2X%.2X\r\n", debugLedOffset, ledstripe_framebuffer[debugLedOffset].red, ledstripe_framebuffer[debugLedOffset].green, ledstripe_framebuffer[debugLedOffset].blue);
 		debugLedOffset++; /* step by step */
 		if (debugLedOffset > ledOffset) /* reset the counter to ignore LEDs, we are not using */
 			debugLedOffset=0;
 
-		/* Reset channel size and wait for an update */
-		channelSize=0;
 	  }
 	  chThdSleepMilliseconds(50);
 	}

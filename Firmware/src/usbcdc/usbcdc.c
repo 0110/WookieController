@@ -676,8 +676,6 @@ int usbcdc_read(char *pText, int bufferLeng)
 		return -1;
 	}
 
-	chSysLock();
 	amount = chnReadTimeout(&SDU1, (uint8_t *) pText, bufferLeng, MS2ST(2));
-	chSysUnlock();
 	return amount;
 }
