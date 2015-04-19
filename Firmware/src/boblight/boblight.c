@@ -38,7 +38,8 @@ static WORKING_AREA(waBoblightThread, 4096);
 static int channelSize = 0;
 
 static int ledOffset = 0;
-
+static int uartStarts = 0;	/**< Debug counter, how many UART strings began */
+static int uartAppends = 0; /**< Debug counter, how many UART strings were expanded */
 /******************************************************************************
  * LOCAL FUNCTIONS for this module
  ******************************************************************************/
@@ -51,14 +52,11 @@ static void readDirectWS2812cmd(char *textbuffer)
 	{
 		ledOffset=0;
 		channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-		//DEBUG_PRINT("%3d [%2d chan. CRC: %2X]\r\n", i, channelSize, textbuffer[i+5]);
-
 		for(i=6; i < length; i+=3)
 		{
 			if (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a')
 			{
 				channelSize = textbuffer[i+3] * 256 + textbuffer[i+4];
-				//DEBUG_PRINT("\r\n%3d [%2d chan. CRC: %2X] REOPEND", i, channelSize, textbuffer[i+5]);
 				i+=6;
 				ledOffset=0;
 			}
@@ -67,9 +65,8 @@ static void readDirectWS2812cmd(char *textbuffer)
 			ledstripe_framebuffer[ledOffset].green = 	(uint8_t) textbuffer[i+1];
 			ledstripe_framebuffer[ledOffset].blue = 	(uint8_t) textbuffer[i+2];
 			ledOffset++;
-			/*DEBUG_PRINT("%.2X%.2X%.2X ", textbuffer[i+0], textbuffer[i+1], textbuffer[i+2]); */
 		}
-		/* DEBUG_PRINT("\r\n"); */
+		uartStarts++;
 	}
 	else if (length > 0)
 	{
@@ -80,6 +77,7 @@ static void readDirectWS2812cmd(char *textbuffer)
 			ledstripe_framebuffer[ledOffset].blue = (uint8_t) textbuffer[i+2];
 			ledOffset++;
 		}
+		uartAppends++;
 	}
 }
 
@@ -90,7 +88,7 @@ boblightThread(void *arg)
 	(void) arg;
 	systime_t time = chTimeNow();
 	char textbuffer[TEXTLINE_MAX_LENGTH];
-
+	int debugLedOffset=0;
 	chRegSetThreadName("boblight");
 
 	/*
@@ -103,21 +101,27 @@ boblightThread(void *arg)
 	time = chTimeNow();
 
 	DEBUG_PRINT("Start listening...\r\n");
-	  while (1)
-	  {
-		  usbcdc_process();
-		  memset(textbuffer, 0, TEXTLINE_MAX_LENGTH);
-		  readDirectWS2812cmd(textbuffer);
-		  chThdSleepMilliseconds(5);
+	while (1)
+	{
+	  usbcdc_process();
+	  memset(textbuffer, 0, TEXTLINE_MAX_LENGTH);
+	  readDirectWS2812cmd(textbuffer);
+	  chThdSleepMilliseconds(5);
 
-			/* Send ACK to host each second */
-		  if (time + MS2ST(1000) < chTimeNow())
-		  {
-			usbcdc_putMemory((uint8_t *) "Ada\n", 4);
-			time = chTimeNow();
-			DEBUG_PRINT("Still alive, channel size %4d, actual offset %4d,\r\n", channelSize, ledOffset);
-		  }
+		/* Send ACK to host each second */
+	  if (time + MS2ST(1000) < chTimeNow())
+	  {
+		usbcdc_putMemory((uint8_t *) "Ada\n", 4);
+		time = chTimeNow();
+		DEBUG_PRINT("======================================= Still alive ====================================\r\n")
+		DEBUG_PRINT("channel size %4d\tactual offset %4d\tUART-logging: starts %5d appends %5d\r\n", channelSize, ledOffset, uartAppends, uartAppends);
+		/* Show the complete framebuffer */
+		DEBUG_PRINT("%5d\t%.2X%.2X%.2X\r\n", debugLedOffset, ledstripe_framebuffer[debugLedOffset].red, ledstripe_framebuffer[debugLedOffset].green, ledstripe_framebuffer[debugLedOffset].blue);
+		debugLedOffset++; /* step by step */
+		if (debugLedOffset > ledOffset) /* reset the counter to ignore LEDs, we are not using */
+			debugLedOffset=0;
 	  }
+	}
 
 	  return RDY_OK;
 }
