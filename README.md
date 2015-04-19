@@ -9,10 +9,15 @@ Control WS2812 LEDs from a  STM32F4 Discovery board. The Commands are set from a
 * PC / Raspberry to run boblight e.g. in combination with [Kodi](kodi.tv)
 * WS2812 LEDs
 * STM32F4 Discovery board
-  * PB0 is connected with the data input of the first WS2812
-  * GND is also connected with the WS2812
-  * 5V power supply, can be the same as for the WS2812
-  * USB-Connecten for the USB serial
+  * Hardware interface
+    * PB0 is connected with the data input of the first WS2812
+    * GND is also connected with the WS2812
+    * 5V power supply, can be the same as for the WS2812
+    * USB-Connecten for the USB serial
+  * LED interface
+    * Green LED blinking : Board running
+    * Red LED : nothing new on the USB-UART
+    * Blue LED : WS2812 LEDs updated with new information
 
 ### Software
 
