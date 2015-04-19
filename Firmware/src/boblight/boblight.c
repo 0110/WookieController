@@ -63,10 +63,12 @@ static int readDirectWS2812cmd(char *textbuffer)
 				i+=6;
 				ledOffset=0;
 			}
-
-			ledstripe_framebuffer[ledOffset].red = 	(uint8_t) textbuffer[i+0];
-			ledstripe_framebuffer[ledOffset].green = 	(uint8_t) textbuffer[i+1];
-			ledstripe_framebuffer[ledOffset].blue = 	(uint8_t) textbuffer[i+2];
+			if (ledOffset < LEDSTRIPE_FRAMEBUFFER_SIZE)
+			{
+				ledstripe_framebuffer[ledOffset].red = 	(uint8_t) textbuffer[i+0];
+				ledstripe_framebuffer[ledOffset].green = 	(uint8_t) textbuffer[i+1];
+				ledstripe_framebuffer[ledOffset].blue = 	(uint8_t) textbuffer[i+2];
+			}
 			ledOffset++;
 		}
 		uartStarts++;
@@ -77,9 +79,12 @@ static int readDirectWS2812cmd(char *textbuffer)
 	{
 		for(i=0; i < (length - 3); i+=3)
 		{
-			ledstripe_framebuffer[ledOffset].red = 	(uint8_t) textbuffer[i+0];
-			ledstripe_framebuffer[ledOffset].green =(uint8_t) textbuffer[i+1];
-			ledstripe_framebuffer[ledOffset].blue = (uint8_t) textbuffer[i+2];
+			if (ledOffset < LEDSTRIPE_FRAMEBUFFER_SIZE)
+			{
+				ledstripe_framebuffer[ledOffset].red = 	(uint8_t) textbuffer[i+0];
+				ledstripe_framebuffer[ledOffset].green =(uint8_t) textbuffer[i+1];
+				ledstripe_framebuffer[ledOffset].blue = (uint8_t) textbuffer[i+2];
+			}
 			ledOffset++;
 		}
 		palTogglePad(GPIOD, GPIOD_LED3); /* Orange.  */
@@ -99,7 +104,6 @@ boblightThread(void *arg)
 	(void) arg;
 	systime_t time = chTimeNow();
 	char textbuffer[TEXTLINE_MAX_LENGTH];
-	int debugLedOffset=0;
 	chRegSetThreadName("boblight");
 
 	/*
@@ -134,12 +138,6 @@ boblightThread(void *arg)
 		time = chTimeNow();
 		DEBUG_PRINT("======================================= Still alive ====================================\r\n")
 		DEBUG_PRINT("channel size %4d\tactual offset %4d\tUART-logging: starts %5d appends %5d\r\n", channelSize, ledOffset, uartAppends, uartAppends);
-
-		/* Show the complete framebuffer */
-		DEBUG_PRINT("%5d\t%.2X%.2X%.2X\r\n", debugLedOffset, ledstripe_framebuffer[debugLedOffset].red, ledstripe_framebuffer[debugLedOffset].green, ledstripe_framebuffer[debugLedOffset].blue);
-		debugLedOffset++; /* step by step */
-		if (debugLedOffset > ledOffset) /* reset the counter to ignore LEDs, we are not using */
-			debugLedOffset=0;
 
 	  }
 	  chThdSleepMilliseconds(50);
