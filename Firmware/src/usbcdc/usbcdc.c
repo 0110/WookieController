@@ -631,12 +631,13 @@ int usbcdc_readAll(char *pText, int bufferLeng)
 		return -1;
 	}
 
-	chEvtRegisterMask((EventSource *) chnGetEventSource(&SDU1), &elGPSdata,
-			EVENT_MASK(1));
 	/* Check faulty input parameter */
 	if (bufferLeng <= 0) {
 		return -1;
 	}
+
+	chEvtRegisterMask((EventSource *) chnGetEventSource(&SDU1), &elGPSdata,
+			EVENT_MASK(1));
 	for (i = 0; i < bufferLeng && !finishFlag; i++) {
 		/* Found serial reading here:
 		 * http://forum.chibios.org/phpbb/viewtopic.php?p=12262&sid=5f8c68257a2cd5be83790ce6f7e1282d#p12262 */
@@ -663,4 +664,20 @@ int usbcdc_readAll(char *pText, int bufferLeng)
 	/* also make a zero to mark the end of the text */
 	pText[read] = '\0';
 	return read;
+}
+
+int usbcdc_read(char *pText, int bufferLeng)
+{
+	int amount=0;
+
+	/* This can only work with an established USB connection */
+	if (SDU1.config->usbp->state != USB_ACTIVE)
+	{
+		return -1;
+	}
+
+	chSysLock();
+	amount = chnReadTimeout(&SDU1, (uint8_t *) pText, bufferLeng, MS2ST(2));
+	chSysUnlock();
+	return amount;
 }

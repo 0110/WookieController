@@ -99,6 +99,14 @@ void usbcdc_print(const char *s, ...);
  */
 int usbcdc_readAll(char *pText, int bufferLeng);
 
+/** @fn	int usbcdc_read(char *pText, int bufferLeng)
+ * @reads from USB serial
+ * @param[in|out]	pText 		space for the text, that is read (and the read result)
+ * @param[in] 		bufferLeng 	The maximum of characters, that could be read.
+ * @return amount of read characters (or -1 on errors)
+ */
+int usbcdc_read(char *pText, int bufferLeng);
+
 #ifdef __cplusplus
 }
 #endif

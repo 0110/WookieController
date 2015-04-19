@@ -50,7 +50,7 @@ static int uartAppends = 0; /**< Debug counter, how many UART strings were expan
 static int readDirectWS2812cmd(char *textbuffer)
 {
 	int i=0;
-	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+	int length = usbcdc_read(textbuffer, TEXTLINE_MAX_LENGTH);
 	if(length >= 6 && (textbuffer[i] == 'A' && textbuffer[i+1] == 'd' && textbuffer[i+2] == 'a'))
 	{
 		ledOffset=0;
@@ -143,7 +143,7 @@ boblightThread(void *arg)
 		/* Reset channel size and wait for an update */
 		channelSize=0;
 	  }
-	  chThdSleepMilliseconds(100);
+	  chThdSleepMilliseconds(50);
 	}
 
 	  return RDY_OK;
