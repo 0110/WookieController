@@ -100,6 +100,15 @@ static int readDirectWS2812cmd(char *textbuffer)
 	}
 }
 
+static void helper_watchdog(void *p) {
+
+  (void)p;
+  chSysHalt();
+}
+
+/******************************************************************************
+ * GLOBAL FUNCTIONS for this module
+ ******************************************************************************/
 
 static msg_t
 boblightThread(void *arg)
@@ -107,6 +116,7 @@ boblightThread(void *arg)
 	(void) arg;
 	systime_t time = chTimeNow();
 	char textbuffer[TEXTLINE_MAX_LENGTH];
+	VirtualTimer vt;
 	chRegSetThreadName("boblight");
 
 	/*
@@ -123,6 +133,12 @@ boblightThread(void *arg)
 	{
 	  usbcdc_process();
 	  memset(textbuffer, 0, TEXTLINE_MAX_LENGTH);
+
+	  /* Starts a VT working as watchdog to catch a malfunction in the USB reading.*/
+	  chSysLock();
+	  chVTSetI(&vt, MS2ST(2500), helper_watchdog, NULL);
+	  chSysUnlock();
+
 	  if (readDirectWS2812cmd(textbuffer) == TRUE)
 	  {
 		  /* Turn off the LED, as now, we found someone */
@@ -133,6 +149,12 @@ boblightThread(void *arg)
 		  /* Indicate, that no LEDs were communicated */
 		  palTogglePad(GPIOD, GPIOD_LED5); /* Red.  */
 	  }
+
+	  /* Stops the watchdog.*/
+	  chSysLock();
+	  if (chVTIsArmedI(&vt))
+		chVTResetI(&vt);
+	  chSysUnlock();
 
 	  /* Send ACK to host each second */
 	  if (time + MS2ST(1000) < chTimeNow())
