@@ -35,6 +35,8 @@
 
 #define DEBUG_PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__);/**< Uart print */
 
+#define BOBLIGHT_MAILBOX_SIZE	10
+
 /******************************************************************************
  * LOCAL VARIABLES for this module
  ******************************************************************************/
@@ -45,6 +47,9 @@ static int ledOffset = 0;
 static int startFound = FALSE;
 
 static int colorPosition=0;
+
+uint32_t*	gBoblightMailboxBuffer = NULL;
+Mailbox *	gBoblightMailbox = NULL;
 
 /******************************************************************************
  * LOCAL FUNCTIONS for this module
@@ -112,6 +117,12 @@ boblightThread(void *arg)
 	char textbuffer[TEXTLINE_MAX_LENGTH];
 	chRegSetThreadName("boblight");
 
+	/* Initialize the Message queue */
+	 gBoblightMailboxBuffer = chHeapAlloc(NULL,
+	      sizeof(uint32_t) * BOBLIGHT_MAILBOX_SIZE);
+	  MAILBOX_DECL(boblightMailbox, gBoblightMailboxBuffer, BOBLIGHT_MAILBOX_SIZE);
+	  gBoblightMailbox = &boblightMailbox;
+
 	/*
 	 * Initialize USB serial console
 	 */
@@ -126,6 +137,11 @@ boblightThread(void *arg)
 	{
 	  usbcdc_process();
 	  memset(textbuffer, 0, TEXTLINE_MAX_LENGTH);
+
+	  /* Put something into the Mailbox to say, that we are still alive */
+	  chSysLock();
+      chMBPostI(gBoblightMailbox, (uint32_t) 1);
+      chSysUnlock();
 
 	  if (readDirectWS2812cmd(textbuffer) == TRUE)
 	  {
@@ -159,4 +175,27 @@ void boblight_init(void)
 	  chThdCreateStatic(waBoblightThread, sizeof(waBoblightThread), NORMALPRIO,
 	      boblightThread, NULL);
 	DEBUG_PRINT(" Done\r\n");
+}
+
+int boblight_alive(void)
+{
+	msg_t msg1, status;
+	int newMessages, i;
+
+	/* Use nonblocking function to count incoming messages */
+	newMessages = chMBGetUsedCountI(gBoblightMailbox);
+
+	if (newMessages > 0)
+	{
+		for(i=0; i < newMessages; i++)
+		{
+			status = chMBFetch(gBoblightMailbox, &msg1, TIME_INFINITE);
+		}
+		return 1;
+	}
+	else
+
+	{
+		return 0;
+	}
 }

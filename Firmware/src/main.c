@@ -63,6 +63,11 @@ blinkerThread(void *arg)
 		  chThdSleepMilliseconds(500);
 		  palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
 		  chThdSleepMilliseconds(500);
+
+		  if (!boblight_alive())
+		  {
+			  chSysHalt();
+		  }
     }
   return RDY_OK;
 }
