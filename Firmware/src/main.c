@@ -56,6 +56,7 @@ blinkerThread(void *arg)
 {
 
   (void) arg;
+  int boblightRunning = FALSE;
   chRegSetThreadName("blinker");
   while (TRUE)
     {
@@ -64,10 +65,16 @@ blinkerThread(void *arg)
 		  palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
 		  chThdSleepMilliseconds(500);
 
-		  if (!boblight_alive())
+		  if (boblight_alive())
 		  {
+			  boblightRunning=TRUE;
+		  }
+		  else if (boblightRunning == TRUE)
+		  {
+			  /* once boblight was there, it must stay alive */
 			  chSysHalt();
 		  }
+
     }
   return RDY_OK;
 }

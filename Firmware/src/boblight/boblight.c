@@ -187,10 +187,8 @@ int boblight_alive(void)
 
 	if (newMessages > 0)
 	{
-		for(i=0; i < newMessages; i++)
-		{
-			status = chMBFetch(gBoblightMailbox, &msg1, TIME_INFINITE);
-		}
+		/* Remove only one message, it will take some time, until the dead thread is recognized */
+	    status = chMBFetch(gBoblightMailbox, &msg1, TIME_INFINITE);
 		return 1;
 	}
 	else
