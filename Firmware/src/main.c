@@ -21,6 +21,8 @@
 #include "ledstripe/ledstripe.h"
 #include "boblight/boblight.h"
 
+
+
 /******************************************************************************
  * DEFINITIONS
  ******************************************************************************/
@@ -72,7 +74,12 @@ blinkerThread(void *arg)
 		  else if (boblightRunning == TRUE)
 		  {
 			  /* once boblight was there, it must stay alive */
+#ifndef COMPLETE_SHUTDOWN
+			  /* Restart the board */
+			  SCB->AIRCR = 0x05fa0000 | SCB_AIRCR_VECTKEY_Pos;
+#else
 			  chSysHalt();
+#endif
 		  }
 
     }
