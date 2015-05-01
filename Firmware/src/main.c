@@ -39,6 +39,7 @@ static const ShellCommand commands[] =
     { "led", cmd_ledctrl },
     { "mem", cmd_mem },
     { "threads", cmd_threads },
+    { "reboot", cmd_reboot },
     { NULL, NULL } };
 
 static const ShellConfig shell_cfg1 =
@@ -74,12 +75,7 @@ blinkerThread(void *arg)
 		  else if (boblightRunning == TRUE)
 		  {
 			  /* once boblight was there, it must stay alive */
-#ifndef COMPLETE_SHUTDOWN
-			  /* Restart the board */
-			  SCB->AIRCR = 0x05fa0000 | SCB_AIRCR_VECTKEY_Pos;
-#else
-			  chSysHalt();
-#endif
+			  cmd_reboot(NULL, 0, NULL);
 		  }
 
     }
