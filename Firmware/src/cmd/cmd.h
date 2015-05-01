@@ -28,6 +28,13 @@ extern "C"
 
   void cmd_ws2812(BaseSequentialStream *chp, int argc, char *argv[]);
 
+  /** @fn void cmd_reboot(BaseSequentialStream *chp, int argc, char *argv[])
+   * @param[in] ch	shell to print on (optional, so it can be NULL)
+   * @param[in] argc amount of arguments passed to the function	(optional, can be zero)
+   * @param[in] argv arguments itself  (optional, can be NULL)
+   */
+  void cmd_reboot(BaseSequentialStream *chp, int argc, char *argv[]);
+
 #ifdef __cplusplus
 }
 #endif
