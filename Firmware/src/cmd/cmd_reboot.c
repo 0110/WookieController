@@ -21,12 +21,14 @@ void cmd_reboot(BaseSequentialStream *chp, int argc, char *argv[])
   }
 
   CHPRINT_SAFE("Rebooting the board...\r\n");
-  /* Restart the board */
-  while(1==1)
-  {
-	  SCB->AIRCR = 0x05fa0000 | SCB_AIRCR_VECTKEY_Pos;
-  }
 
+  /* Restart the board */
+  chSysLock();
+	  /*SCB->AIRCR = SCB_AIRCR_SYSRESETREQ_Msk; */
+	  /*0x05fa0000 | SCB_AIRCR_VECTKEY_Pos*/;
+	  SCB->AIRCR = ((0x5FA << SCB_AIRCR_VECTKEY_Pos) | (SCB->AIRCR & SCB_AIRCR_PRIGROUP_Msk) |
+			  SCB_AIRCR_VECTRESET_Msk | SCB_AIRCR_SYSRESETREQ_Msk);
+	  while(1);
 }
 
 void cmd_poweroff(BaseSequentialStream *chp, int argc, char *argv[])
