@@ -21,10 +21,23 @@ void cmd_reboot(BaseSequentialStream *chp, int argc, char *argv[])
   }
 
   CHPRINT_SAFE("Rebooting the board...\r\n");
-#ifndef COMPLETE_SHUTDOWN
-	  /* Restart the board */
+  /* Restart the board */
+  while(1==1)
+  {
 	  SCB->AIRCR = 0x05fa0000 | SCB_AIRCR_VECTKEY_Pos;
-#else
-	  chSysHalt();
-#endif
+  }
+
+}
+
+void cmd_poweroff(BaseSequentialStream *chp, int argc, char *argv[])
+{
+  (void) argv;
+  if (argc > 0)
+  {
+	  CHPRINT_SAFE("Usage: poweroff\r\n");
+      return;
+  }
+
+  CHPRINT_SAFE("Power down the board...\r\n");
+  chSysHalt();
 }
