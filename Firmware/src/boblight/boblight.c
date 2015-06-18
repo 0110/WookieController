@@ -158,6 +158,8 @@ boblightThread(void *arg)
 	  if (time + MS2ST(1000) < chTimeNow())
 	  {
 		usbcdc_putMemory((uint8_t *) "Ada\n", 4);
+		usbcdc_print("free memory : %u bytes\r\n", chCoreStatus());
+
 		time = chTimeNow();
 		DEBUG_PRINT("========== Still alive ===========\r\n")
 		DEBUG_PRINT("channel size %4d\tLEDs %4d\r\n", channelSize, ledOffset);
