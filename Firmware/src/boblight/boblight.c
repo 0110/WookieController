@@ -58,7 +58,7 @@ Mailbox *	gBoblightMailbox = NULL;
 static int readDirectWS2812cmd(char *textbuffer)
 {
 	int i=0;
-	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
+	int length = usbcdc_read(textbuffer, TEXTLINE_MAX_LENGTH);
 	if(length > 0)
 	{
 		for(i=0; i < length; i++)
@@ -101,6 +101,7 @@ static int readDirectWS2812cmd(char *textbuffer)
 	}
 	else
 	{
+		palClearPad(GPIOD, GPIOD_LED6); /* Turn off Blue, nothing new found */
 		return FALSE; /* Nothing found */
 	}
 }

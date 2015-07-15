@@ -27,7 +27,7 @@
 #define USBD1_DATA_AVAILABLE_EP         1
 #define USBD1_INTERRUPT_REQUEST_EP      2
 
-#define USB_READ_TIMEOUT				MS2ST(10)
+#define USB_READ_TIMEOUT				MS2ST(5)
 
 /*
  * Serial over USB Driver structure.
