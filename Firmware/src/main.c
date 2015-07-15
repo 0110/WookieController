@@ -60,20 +60,17 @@ blinkerThread(void *arg)
 
   (void) arg;
   int boblightRunning = FALSE;
-  int i;
   chRegSetThreadName("blinker");
   while (TRUE)
   {
-	  	  for(i=0; i < 5; i++)
-	  	  {
-			  /* Toggle the Green LED: (Takes one Second) */
-			  palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
-			  chThdSleepMilliseconds(500);
-			  palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
-			  chThdSleepMilliseconds(500);
-	  	  }
+		  /* Toggle the Green LED: (Takes one Second) */
+		  palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
+		  chThdSleepMilliseconds(500);
+		  palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
+		  chThdSleepMilliseconds(500);
 
-	  	  /* Check all 5 Seconds, if the boblight deamon is still alive */
+	  	  /* Checks each second, if the boblight deamon is still alive */
+		  /* The maximum mailbox buffer size is 10 -> after 10 seconds without new data, we will reboot */
 		  if (boblight_alive())
 		  {
 			  boblightRunning=TRUE;

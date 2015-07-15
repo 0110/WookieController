@@ -139,10 +139,14 @@ boblightThread(void *arg)
 	  usbcdc_process();
 	  memset(textbuffer, 0, TEXTLINE_MAX_LENGTH);
 
-	  /* Put something into the Mailbox to say, that we are still alive */
-	  chSysLock();
-      chMBPostI(gBoblightMailbox, (uint32_t) 1);
-      chSysUnlock();
+	  /* check if we can update the "I'm alive mailbox", or if it is full */
+	  if (chMBGetUsedCountI(gBoblightMailbox) < BOBLIGHT_MAILBOX_SIZE)
+	  {
+		  /* Put something into the Mailbox to say, that we are still alive */
+		  chSysLock();
+		  chMBPostI(gBoblightMailbox, (uint32_t) 1);
+		  chSysUnlock();
+	  }
 
 	  if (readDirectWS2812cmd(textbuffer) == TRUE)
 	  {
@@ -159,7 +163,7 @@ boblightThread(void *arg)
 	  if (time + MS2ST(1000) < chTimeNow())
 	  {
 		usbcdc_putMemory((uint8_t *) "Ada\n", 4);
-		usbcdc_print("free memory : %u bytes\r\n", chCoreStatus());
+		usbcdc_print("free -b : %6u bytes\tAlive-Mailbox: %2d\r\n", chCoreStatus(), chMBGetUsedCountI(gBoblightMailbox));
 
 		time = chTimeNow();
 		DEBUG_PRINT("========== Still alive ===========\r\n")
