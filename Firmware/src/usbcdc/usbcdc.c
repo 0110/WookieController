@@ -27,6 +27,8 @@
 #define USBD1_DATA_AVAILABLE_EP         1
 #define USBD1_INTERRUPT_REQUEST_EP      2
 
+#define USB_READ_TIMEOUT				MS2ST(10)
+
 /*
  * Serial over USB Driver structure.
  */
@@ -676,6 +678,6 @@ int usbcdc_read(char *pText, int bufferLeng)
 		return -1;
 	}
 
-	amount = chnReadTimeout(&SDU1, (uint8_t *) pText, bufferLeng, MS2ST(2));
+	amount = chnReadTimeout(&SDU1, (uint8_t *) pText, bufferLeng, USB_READ_TIMEOUT);
 	return amount;
 }

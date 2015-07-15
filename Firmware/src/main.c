@@ -60,14 +60,20 @@ blinkerThread(void *arg)
 
   (void) arg;
   int boblightRunning = FALSE;
+  int i;
   chRegSetThreadName("blinker");
   while (TRUE)
-    {
-		  palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
-		  chThdSleepMilliseconds(500);
-		  palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
-		  chThdSleepMilliseconds(500);
+  {
+	  	  for(i=0; i < 5; i++)
+	  	  {
+			  /* Toggle the Green LED: (Takes one Second) */
+			  palSetPad(GPIOD, GPIOD_LED4); /* Green.  */
+			  chThdSleepMilliseconds(500);
+			  palClearPad(GPIOD, GPIOD_LED4); /* Green.  */
+			  chThdSleepMilliseconds(500);
+	  	  }
 
+	  	  /* Check all 5 Seconds, if the boblight deamon is still alive */
 		  if (boblight_alive())
 		  {
 			  boblightRunning=TRUE;
@@ -78,7 +84,7 @@ blinkerThread(void *arg)
 			  cmd_reboot(NULL, 0, NULL);
 		  }
 
-    }
+  }
   return RDY_OK;
 }
 
