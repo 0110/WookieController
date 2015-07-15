@@ -58,7 +58,7 @@ Mailbox *	gBoblightMailbox = NULL;
 static int readDirectWS2812cmd(char *textbuffer)
 {
 	int i=0;
-	int length = usbcdc_read(textbuffer, TEXTLINE_MAX_LENGTH);
+	int length = usbcdc_readAll(textbuffer, TEXTLINE_MAX_LENGTH);
 	if(length > 0)
 	{
 		for(i=0; i < length; i++)
@@ -181,8 +181,8 @@ void boblight_init(void)
 
 int boblight_alive(void)
 {
-	msg_t msg1, status;
-	int newMessages, i;
+	msg_t msg1;
+	int newMessages;
 
 	/* Use nonblocking function to count incoming messages */
 	newMessages = chMBGetUsedCountI(gBoblightMailbox);
@@ -190,7 +190,7 @@ int boblight_alive(void)
 	if (newMessages > 0)
 	{
 		/* Remove only one message, it will take some time, until the dead thread is recognized */
-	    status = chMBFetch(gBoblightMailbox, &msg1, TIME_INFINITE);
+	    chMBFetch(gBoblightMailbox, &msg1, TIME_INFINITE);
 		return 1;
 	}
 	else
