@@ -35,8 +35,9 @@
 
 #define DEBUG_PRINT( ... )	chprintf((BaseSequentialStream *) &SD6, __VA_ARGS__);/**< Uart print */
 
-#define BOBLIGHT_MAILBOX_SIZE	10
-
+#define BOBLIGHT_MAILBOX_SIZE	1000
+#define BOBLIGHT_MAILBOX_DECR	50		/**< Amount of entries that are removed by one step */
+#define BOBLIGHT_MAILBOX_DECR_BORDER 100 /**< When Mailbox increased this amount,  BOBLIGHT_MAILBOX_DECR is used for decrementing */
 /******************************************************************************
  * LOCAL VARIABLES for this module
  ******************************************************************************/
@@ -187,7 +188,7 @@ void boblight_init(void)
 int boblight_alive(void)
 {
 	msg_t msg1;
-	int newMessages;
+	int newMessages, i;
 
 	/* Use nonblocking function to count incoming messages */
 	newMessages = chMBGetUsedCountI(gBoblightMailbox);
@@ -196,6 +197,13 @@ int boblight_alive(void)
 	{
 		/* Remove only one message, it will take some time, until the dead thread is recognized */
 	    chMBFetch(gBoblightMailbox, &msg1, TIME_INFINITE);
+	    if (newMessages > BOBLIGHT_MAILBOX_DECR_BORDER)
+	    {
+	    	for(i=0; i < BOBLIGHT_MAILBOX_DECR; i++)
+	    	{
+	    		chMBFetch(gBoblightMailbox, &msg1, TIME_INFINITE);
+	    	}
+	    }
 		return 1;
 	}
 	else
