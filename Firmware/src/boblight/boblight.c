@@ -38,6 +38,9 @@
 #define BOBLIGHT_MAILBOX_SIZE	1000
 #define BOBLIGHT_MAILBOX_DECR	50		/**< Amount of entries that are removed by one step */
 #define BOBLIGHT_MAILBOX_DECR_BORDER 100 /**< When Mailbox increased this amount,  BOBLIGHT_MAILBOX_DECR is used for decrementing */
+
+#define LOGGING_FACTOR		10
+
 /******************************************************************************
  * LOCAL VARIABLES for this module
  ******************************************************************************/
@@ -114,6 +117,7 @@ static int readDirectWS2812cmd(char *textbuffer)
 static msg_t
 boblightThread(void *arg)
 {
+	int loggingOutput=LOGGING_FACTOR;
 	(void) arg;
 	systime_t time = chTimeNow();
 	char textbuffer[TEXTLINE_MAX_LENGTH];
@@ -164,7 +168,13 @@ boblightThread(void *arg)
 	  if (time + MS2ST(1000) < chTimeNow())
 	  {
 		usbcdc_putMemory((uint8_t *) "Ada\n", 4);
-		usbcdc_print("free -b : %6u bytes\tAlive-Mailbox: %2d\r\n", chCoreStatus(), chMBGetUsedCountI(gBoblightMailbox));
+
+		loggingOutput--;
+		if (loggingOutput <= 0)
+		{
+			usbcdc_print("%s at %s Version:%s\tAlive-Mailbox: %2d\r\n", __DATE__, __TIME__,BOBLIGHT_VERSION, chCoreStatus(), chMBGetUsedCountI(gBoblightMailbox));
+			loggingOutput=LOGGING_FACTOR;
+		}
 
 		time = chTimeNow();
 		DEBUG_PRINT("========== Still alive ===========\r\n")
