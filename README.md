@@ -7,7 +7,7 @@ Using SSD1803A displays to communicate with.
 
 ## Hardware
 
-* PC / Raspberry to run boblight e.g. in combination with [Kodi](kodi.tv)
+* PC / Raspberry with an USB interface
 * STM32F4 Discovery board
 
 ## Interface
