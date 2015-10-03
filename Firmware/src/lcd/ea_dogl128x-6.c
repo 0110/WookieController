@@ -36,6 +36,8 @@ static void
 sendViaSPI(uint8_t data)
 {
   uint8_t transferStore[SPI_TELEGRAM_LENGTH];
+  uint8_t tmp;
+  int bit;
 
   /*Set the first byte (lower data) */
   //transferStore[1] = 0x00;
@@ -49,6 +51,8 @@ sendViaSPI(uint8_t data)
 
   /* Simply copy the data to transfer into the temporary storage */
   transferStore[0] = data;
+  SWAP_NIPPLE(tmp, 7, 0, transferStore[0]);
+
   spi_implement_send(SPI_TELEGRAM_LENGTH, transferStore);
   chThdSleep(MS2ST(5)); /* give the scheduler and the LCD some time */
 }
