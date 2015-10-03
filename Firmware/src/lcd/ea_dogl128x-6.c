@@ -5,7 +5,7 @@
  * @brief Module LCD with a SSD1803A controller
  */
 
-#include "lcd/ssd1803a-spi.h"
+#include "lcd/ea_dogl128x-6.h"
 #include "lcd/spi-implement.h"
 
 #include "ch.h"
@@ -64,7 +64,7 @@ sendViaSPI(int RW, int RS, uint8_t data)
  ******************************************************************************/
 
 void
-ssd1803a_spi_init(void)
+eadogl_init(void)
 {
 
   if (spi_implement_init() != SPI_IMPL_RET_OK)
@@ -116,14 +116,14 @@ ssd1803a_spi_init(void)
   gRunning = TRUE;
 }
 
-SSD1803A_RET
-ssd1803a_spi_sendText(char *s, int textLength)
+EADOGL_RET
+eadogl_sendText(char *s, int textLength)
 {
   int i;
 
   if (gRunning != TRUE)
   {
-    return SSD1803A_RET_NOTINITIALIZED;
+    return EADOGL_RET_NOTINITIALIZED;
   }
 
   sendViaSPI(0, 0, 0x01); /* Clear Display */
@@ -194,5 +194,5 @@ ssd1803a_spi_sendText(char *s, int textLength)
       }
       chThdSleep(MS2ST(5)); /* give the LCD some time */
   }
-  return SSD1803A_RET_OK;
+  return EADOGL_RET_OK;
 }

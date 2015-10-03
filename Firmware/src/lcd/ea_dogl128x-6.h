@@ -1,16 +1,12 @@
 /* @file ssd1803a-spi.h
- * @brief Interface to use LCD with a SSD1803A controller
+ * @brief Interface to use LCD with a EA DOGL128x-6 controller
  * @author Ollo
  *
- * Datasheets:
- * - https://cdn-reichelt.de/documents/datenblatt/A500/DS_DOGM204_UK.pdf
- * - http://www.lcd-module.de/fileadmin/eng/pdf/zubehoer/ssd1803a_2_0.pdf
- *
- * @defgroup SSD1803A
+ * @defgroup ea_dogl128x-6
  */
 
-#ifndef _SSD1803A_H_
-#define _SSD1803A_H_
+#ifndef _EADOGL_H_
+#define _EADOGL_H_
 
 #ifndef TRUE
 #define TRUE	1
@@ -20,26 +16,26 @@
 #define FALSE 0
 #endif
 
-/** @addtogroup SSD1803A */
+/** @addtogroup ea_dogl128x-6 */
 /*@{*/
 
-typedef enum {  SSD1803A_RET_OK,
-  SSD1803A_RET_NOTINITIALIZED,
-  SSD1803A_RET_IO_ERROR
-} SSD1803A_RET;
+typedef enum {  EADOGL_RET_OK,
+  EADOGL_RET_NOTINITIALIZED,
+  EADOGL_RET_IO_ERROR
+} EADOGL_RET;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-  void ssd1803a_spi_init(void);
+  void eadogl_init(void);
 
-  SSD1803A_RET ssd1803a_spi_sendText(char *s, int textLength);
+  EADOGL_RET eadogl_sendText(char *s, int textLength);
 
 #ifdef __cplusplus
 }
 #endif
 
 /*@}*/
-#endif /*_SSD1803A_H_*/
+#endif /*_EADOGL_H_*/

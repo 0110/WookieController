@@ -18,7 +18,7 @@
 
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
-#include "lcd/ssd1803a-spi.h"
+#include "lcd/ea_dogl128x-6.h"
 
 /******************************************************************************
  * DEFINITIONS
@@ -111,7 +111,7 @@ void cmd_lcd(BaseSequentialStream *chp, int argc, char *argv[])
  }
 
 
-  if (ssd1803a_spi_sendText(argv[0], strLength) != SSD1803A_RET_OK)
+  if (eadogl_sendText(argv[0], strLength) != EADOGL_RET_OK)
   {
       chprintf(chp, "Could not update LCD\r\n");
   }
@@ -244,7 +244,7 @@ int main(void) {
 	UPRINT( " Done\r\n");
 
 	UPRINT("Init LCD library ...");
-        ssd1803a_spi_init();
+        eadogl_init();
         UPRINT( " Done\r\n");
 
 	/*
@@ -264,8 +264,8 @@ int main(void) {
 
 			if (palReadPad(GPIOD, GPIOD_LED5))
                         {
-                            if (ssd1803a_spi_sendText("BUTTON pressed",
-                                strlen("BUTTON pressed")) != SSD1803A_RET_OK)
+                            if (eadogl_sendText("BUTTON pressed",
+                                strlen("BUTTON pressed")) != EADOGL_RET_OK)
                             {
                                 usbcdc_print("Could not update LCD\r\n");
                             }
@@ -273,7 +273,7 @@ int main(void) {
 			else
                         {
 			    /* Clear screen */
-			    ssd1803a_spi_sendText(" ", strlen(" "));
+			    eadogl_sendText(" ", strlen(" "));
                         }
 		}
 
