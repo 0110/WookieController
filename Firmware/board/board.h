@@ -379,9 +379,9 @@
                                      PIN_MODE_ALTERNATE(GPIOB_SDA) |        \
                                      PIN_MODE_INPUT(GPIOB_CLK_IN) |         \
                                      PIN_MODE_INPUT(GPIOB_PIN11) |          \
-                                     PIN_MODE_INPUT(GPIOB_PIN12) |          \
-                                     PIN_MODE_INPUT(GPIOB_PIN13) |          \
-                                     PIN_MODE_INPUT(GPIOB_PIN14) |          \
+                                     PIN_MODE_OUTPUT(GPIOB_PIN12) |          \
+                                     PIN_MODE_ALTERNATE(GPIOB_PIN13) |          \
+                                     PIN_MODE_ALTERNATE(GPIOB_PIN14) |          \
                                      PIN_MODE_ALTERNATE(GPIOB_PIN15))
 #define VAL_GPIOB_OTYPER            (PIN_OTYPE_PUSHPULL(GPIOB_PIN0) |       \
                                      PIN_OTYPE_PUSHPULL(GPIOB_PIN1) |       \
