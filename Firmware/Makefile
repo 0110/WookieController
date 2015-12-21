@@ -65,12 +65,21 @@ PROJECT = wookiectrl
 
 # Imported source files and paths
 CHIBIOS = lib/ChibiOS
+GFXLIB = lib/ugfx
 BOARD = board
 include $(BOARD)/board.mk
 include $(CHIBIOS)/os/hal/platforms/STM32F4xx/platform.mk
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/ports/GCC/ARMCMx/STM32F4xx/port.mk
 include $(CHIBIOS)/os/kernel/kernel.mk
+
+include $(GFXLIB)/gfx.mk
+#include $(GFXLIB)/boards/base/Embest-STM32-DMSTF4BB/board.mk	
+include $(GFXLIB)/drivers/gdisp/ST7565/driver.mk
+
+GFXINC  += $(GFXLIB)/boards/base/Embest-STM32-DMSTF4BB
+GFXSRC  +=
+GFXDEFS += -DGFX_USE_CHIBIOS=TRUE -DGFX_USE_GDISP=TRUE
 
 # Init custom extensions
 LIBSRC = 
@@ -93,6 +102,7 @@ CSRC = $(PORTSRC) \
        $(HALSRC) \
        $(PLATFORMSRC) \
        $(BOARDSRC) \
+       $(GFXSRC) \
        $(LWSRC) \
        $(CHIBIOS)/os/various/evtimer.c \
        $(CHIBIOS)/os/various/chprintf.c \
@@ -130,6 +140,7 @@ ASMSRC = $(PORTASM)
 INCDIR = $(PORTINC) $(KERNINC) $(LIBINC) \
          $(HALINC) $(PLATFORMINC) $(BOARDINC) \
          $(LWINC)  \
+         $(GFXINC) \
          $(CHIBIOS)/os/various \
          $(APPINC)
 

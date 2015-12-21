@@ -18,7 +18,6 @@
 
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
-#include "lcd/ea_dogl128x-6.h"
 
 /******************************************************************************
  * DEFINITIONS
@@ -110,15 +109,6 @@ void cmd_lcd(BaseSequentialStream *chp, int argc, char *argv[])
    chprintf(chp, "%2X (%c)\r\n", (int) argv[0][i], argv[0][i]);
  }
 
-
-  if (eadogl_sendText(argv[0], strLength) != EADOGL_RET_OK)
-  {
-      chprintf(chp, "Could not update LCD\r\n");
-  }
-  else
-  {
-    chprintf(chp, "Wrote %d characters on the screen\r\n", strLength);
-  }
 
 }
 
@@ -244,8 +234,8 @@ int main(void) {
 	UPRINT( " Done\r\n");
 
 	UPRINT("Init LCD library ...");
-        eadogl_init();
-        UPRINT( " Done\r\n");
+        //FIXME here the logic must be added here
+	UPRINT( " Done\r\n");
 
 	/*
 	 * Normal main() thread activity, in this demo it does nothing except
@@ -264,16 +254,11 @@ int main(void) {
 
 			if (palReadPad(GPIOD, GPIOD_LED5))
                         {
-                            if (eadogl_sendText("BUTTON pressed",
-                                strlen("BUTTON pressed")) != EADOGL_RET_OK)
-                            {
-                                usbcdc_print("Could not update LCD\r\n");
-                            }
+                      	   /*FIXME add here something to be displayed on the screen */   
                         }
 			else
                         {
-			    /* Clear screen */
-			    eadogl_sendText(" ", strlen(" "));
+			    /*FIXME Clear screen */
                         }
 		}
 
