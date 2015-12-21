@@ -77,8 +77,6 @@ include $(GFXLIB)/gfx.mk
 #include $(GFXLIB)/boards/base/Embest-STM32-DMSTF4BB/board.mk	
 include $(GFXLIB)/drivers/gdisp/ST7565/driver.mk
 
-GFXINC  += $(GFXLIB)/boards/base/Embest-STM32-DMSTF4BB
-GFXSRC  +=
 GFXDEFS += -DGFX_USE_CHIBIOS=TRUE -DGFX_USE_GDISP=TRUE
 
 # Init custom extensions

@@ -18,6 +18,7 @@
 
 #include "usbcdc/usbcdc.h"
 #include "cmd/cmd.h"
+#include "gfx.h"
 
 /******************************************************************************
  * DEFINITIONS
@@ -234,7 +235,7 @@ int main(void) {
 	UPRINT( " Done\r\n");
 
 	UPRINT("Init LCD library ...");
-        //FIXME here the logic must be added here
+        gfxInit();
 	UPRINT( " Done\r\n");
 
 	/*
