@@ -99,7 +99,22 @@ LLDSPEC bool_t gdisp_lld_init(GDisplay *g) {
     write_cmd(g, ST7565_COM_SCAN);
 
 	write_cmd(g, ST7565_START_LINE | 0);
-
+#define DEMO_INIT
+#ifdef DEMO_INIT
+	write_cmd(g, 0xA1); /* ADC reverse */
+	write_cmd(g, 0xC0); /* Normal COM0 ~ COM63 */
+	write_cmd(g, 0xA6); /* Normal Display */
+	write_cmd(g, 0xA2); /* Set Bias 1/9 (Duty 1/65) */
+	write_cmd(g, 0x2F); /* Booster, Regulator and Follower on */
+	write_cmd(g, 0xF8); /* Set initial Booster to 4x */
+	write_cmd(g, 0x00); /* - see above - */
+	write_cmd(g, 0x27); /* Set Contrast */
+	write_cmd(g, 0x81); /* - see aboce - */
+	write_cmd(g, 0x16); /* - see above - */
+	write_cmd(g, 0xAC); /* No indicator */
+	write_cmd(g, 0x00); /* - see above - */
+	write_cmd(g, 0xAF); /* Display on */
+#else
 	write_cmd2(g, ST7565_CONTRAST, GDISP_INITIAL_CONTRAST*64/101);
 	write_cmd(g, ST7565_RESISTOR_RATIO | 0x3);
 
@@ -120,7 +135,7 @@ LLDSPEC bool_t gdisp_lld_init(GDisplay *g) {
 	write_cmd(g, ST7565_POSITIVE_DISPLAY);	// Disable Inversion of display.
 
 	write_cmd(g, ST7565_RMW);
-
+#endif
     // Finish Init
     post_init_board(g);
 
