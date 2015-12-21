@@ -238,6 +238,9 @@ int main(void) {
         gfxInit();
 	UPRINT( " Done\r\n");
 
+	/* a tiny display test */
+	gdispDrawBox(5, 5, 20, 20, White);
+
 	/*
 	 * Normal main() thread activity, in this demo it does nothing except
 	 * sleeping in a loop and check the button state, when the button is

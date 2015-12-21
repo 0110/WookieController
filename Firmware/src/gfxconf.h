@@ -9,5 +9,8 @@
 //#define GFX_USE_OS_OSX		FALSE
 
 #define GFX_USE_GDISP	TRUE
+#define GDISP_SCREEN_WIDTH		128
+#define GDISP_SCREEN_HEIGHT		64
+
 
 #endif /* _GFXCONF_H */

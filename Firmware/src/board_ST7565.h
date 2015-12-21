@@ -22,7 +22,12 @@
 
 #define SPI_DRIVER (&SPID2)
 #define DNC_PORT    GPIOB
-#define DNC_PAD    11        // control=0, data=1
+#define DNC_PAD     11        // control=0, data=1
+#define RESET_PORT  GPIOB
+#define RESET_PAD   10        // 0 = reset
+#define CS_PORT     GPIOE
+#define CS_PAD      15        // 0 = chip selected
+
 /*
  * SPI end transfer callback.
  */
@@ -39,8 +44,8 @@ static SPIConfig spicfg = {
   spicb,
   /* HW dependent part.*/
   GPIOB,
-  12,
-  SPI_CR1_BR_2
+  CS_PAD,
+  0
 };
 
 static GFXINLINE void init_board(GDisplay *g) {
@@ -88,7 +93,11 @@ static GFXINLINE void init_board(GDisplay *g) {
 	  palSetPadMode(GPIOB, 15, PAL_MODE_ALTERNATE(5) |
 				   PAL_STM32_OSPEED_HIGHEST);           /* MOSI.    */
 
+	  palSetPadMode(CS_PORT, CS_PAD, PAL_MODE_OUTPUT_PUSHPULL);			
+	  palSetPadMode(RESET_PORT, RESET_PAD, PAL_MODE_OUTPUT_PUSHPULL);
 	  palSetPadMode(DNC_PORT, DNC_PAD, PAL_MODE_OUTPUT_PUSHPULL);
+	  palSetPad(CS_PORT, CS_PAD);
+	  palSetPad(RESET_PORT, RESET_PAD);
 	  palClearPad(DNC_PORT, DNC_PAD); 
 
        }
@@ -101,7 +110,7 @@ static GFXINLINE void post_init_board(GDisplay *g) {
 static GFXINLINE void setpin_reset(GDisplay *g, bool_t state) {
 	(void) g;
 	(void) state;
-	/*FIXME palWritePad(RESET_PORT, RESET_PAD, !state); */
+	palWritePad(RESET_PORT, RESET_PAD, !state);
 	/* Found here: https://bitbucket.org/Tectu/ugfx/pull-requests/15/some-improvements-to-the-ssd1306-driver/diff */
 }
 
