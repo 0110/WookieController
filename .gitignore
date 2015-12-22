@@ -1,2 +1,4 @@
 Firmware/.dep
 Firmware/build
+Firmware/lib/ChibiOS/ext/fatfs/
+Firmware/lib/ChibiOS/ext/lwip/
